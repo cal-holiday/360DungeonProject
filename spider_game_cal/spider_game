@@ -4,3 +4,4 @@ pygame.init()
 screen =pygame.display.set_more((576, 1024))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('04B_19.ttf', 40)
+#a comment no one will read
