@@ -10,7 +10,7 @@ class Pillar(ABC):
     @param image for that pillar (GUI)
     """
     def __init__(theSelf, theName, theImage):
-        theSelf.setFields(theSelf, theName, theImage)
+        theSelf.setFields(theName, theImage)
 
 
     """
@@ -25,6 +25,8 @@ class Pillar(ABC):
         if theName is not None and theImage is not None:
             theSelf.myName = theName
             theSelf.myImage = theImage
+        else:
+            print("The name or image is for this pillar is null")
 
 
     """
