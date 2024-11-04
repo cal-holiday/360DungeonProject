@@ -2,7 +2,7 @@ import sqlite3
 from Element import Element
 con = sqlite3.connect("character.db")
 cur = con.cursor()
-cur.execute("CREATE TABLE monster(name, image, element, opposite, health, speed, basicAttack, specialAttack)")
+cur.execute("CREATE TABLE monster(name, image, element, opposite, health, agility, basicAttack, specialAttack)")
 data = [
     ('Earth Monster', 'earth_monster.png', Element.EARTH.value, Element.AIR.value, 50, 20, 5, 10),
     ('Fire Monster', 'fire_monster.png', Element.FIRE.value, Element.WATER.value, 30, 40, 5, 10),
