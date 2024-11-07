@@ -46,12 +46,10 @@ class Potion(ABC):
 The healthPotion child class of the Potion ABC
 """
 class HealthPotion(Potion):
-    myHP = 0
+    myHP = 10
 
     def __init__(self, image, theHP):
         super().__init__(image)
-        if theHP > 0:
-            self.myHP = theHP
 
     def drink(self):
         return True
