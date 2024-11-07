@@ -1,152 +1,107 @@
 from abc import ABC
 from enum import Enum
-from random import random
+from random import randint
+
+
+def attack():
+    return randint(1,20)
+
+
+def specialAttack():
+    return randint(1, 20) - 3
 
 
 class CharacterInterface(ABC):
 
     #constructor
-    def __init__(theSelf, theName, theImage, theHealth, theMaxHP, theAgility, theElement, theOpposite, theBasicAttack, theMainAttack):
-        theSelf.setName(theName)
-        theSelf.setImage(theImage)
-        theSelf.setInitialHealth(theHealth)
-        theSelf.setMaxHP(theMaxHP)
-        theSelf.setAgility(theAgility)
-        theSelf.setElement(theElement)
-        theSelf.setOppositeElement(theOpposite)
-        theSelf.setBasicAttack(theBasicAttack)
-        theSelf.setMainAttack(theMainAttack)
+    def __init__(self, name, image, maxHP, agility, element, opposite, basicAttack, specialAttack):
+        self.setName(name)
+        self.setImage(image)
+        self.setMaxHP(maxHP)
+        self.setAgility(agility)
+        self.setElement(element)
+        self.setOppositeElement(opposite)
+        self.setAttack(basicAttack)
+        self.setSpecialAttack(specialAttack)
 
 
     #setter methods
     #setters
-    def setName(theSelf, theName):
-        if theName is not None:
-            theSelf.myName = theName
+    def setName(self, name):
+        if name is not None:
+            self.myName = name
         else:
             print("Name string is null")
 
-    def setImage(theSelf, theImage):
-        if theImage is not None:
-            theSelf.myImage = theImage
+    def setImage(self, image):
+        if image is not None:
+            self.myImage = image
         else:
             print("Image string is null")
 
-    def setInitialHealth(theSelf, theHealth):
-        if theHealth > 0:
-            theSelf.myHealth = theHealth
-        else:
-            print("Initial health cannot be 0 or negative")
-
-    def setHealth(theSelf, theHealth):
-        theSelf.myHealth = theHealth
-
-    def setMaxHP(theSelf, theMaxHP):
-        if theMaxHP > 0:
-            theSelf.myMaxHP = theMaxHP
+    def setMaxHP(self, maxHP):
+        if maxHP > 0:
+            self.myMaxHP = maxHP
+            self.myHP = maxHP
         else:
             print("Max HP cannot be 0 or negative")
 
-    def setAgility(theSelf, theAgility):
-        if theAgility > 0:
-            theSelf.myAgility = theAgility
+    def setAgility(self, agility):
+        if agility > 0:
+            self.myAgility = agility
         else:
             print("Agility cannot be 0 or negative")
 
-    def setElement(theSelf, theElement):
-        if isinstance(theElement, Enum):
-            theSelf.myElement = theElement
+    def setElement(self, element):
+        if isinstance(element, Enum):
+            self.myElement = element
         else:
-            print("Element is not an Enum")
+            print(f"{element} is not an Enum.")
 
-    def setOppositeElement(theSelf, theElement):
-        if isinstance(theElement, Enum):
-            theSelf.myOppositeElement = theElement
+    def setOppositeElement(self, element):
+        if isinstance(element, Enum):
+            self.myElement = element
         else:
-            print("Opposite element is not an Enum")
+            print(f"{element} is not an Enum.")
 
-    def setBasicAttack(theSelf, theBasicAttack):
-        if theBasicAttack > 0:
-            theSelf.myBasicAttack = theBasicAttack
+    def setAttack(self, attack):
+        if attack > 0:
+            self.myAttack = attack
         else:
             print("Basic attack cannot be 0 or negative")
 
-    def setMainAttack(theSelf, theMainAttack):
-        if theMainAttack > 0:
-            theSelf.myMainAttack = theMainAttack
+    def setSpecialAttack(self, specialAttack):
+        if specialAttack > 0:
+            self.mySpecialAttack = specialAttack
         else:
             print("Main attack cannot be 0 or negative")
 
 
 
     #getter methods
-    def getName(theSelf):
-        return theSelf.myName
+    def getName(self):
+        return self.myName
 
-    def getImage(theSelf):
-        return theSelf.myImage
+    def getImage(self):
+        return self.myImage
 
-    def getHealth(theSelf):
-        return theSelf.myHealth
+    def getHealth(self):
+        return self.myHealth
 
-    def getMaxHP(theSelf):
-        return theSelf.myMaxHP
+    def getHP(self):
+        return self.myMaxHP
 
-    def getAgility(theSelf):
-        return theSelf.myAgility
+    def getAgility(self):
+        return self.myAgility
 
-    def getElement(theSelf):
-        return theSelf.myElement
+    def getElement(self):
+        return self.myElement
 
-    def getOppositeElement(theSelf):
-        return theSelf.myOppositeElement
+    def getOppositeElement(self):
+        return self.myOppositeElement
 
-    def getBasicAttack(theSelf):
-        return theSelf.myBasicAttack
+    def getBasicAttack(self):
+        return self.myBasicAttack
 
-    def getMainAttack(theSelf):
-        return theSelf.myMainAttack
-
-
-    #behavior methods
-
-    #character has a pretty good chance at healing
-    def heal(theSelf):
-        randomNum = random.randint(1, 20)
-        if randomNum > 10:
-            theSelf.setHealth(theSelf.getHealth() + theSelf.getHealth() / 2)
-
-    #for every attack, the opponent has an opportunity to dodge
-    # if opponent is quicker than you and rolls higher than 7 -> dodge
-    # otherwise if opponent is slower but rolls higher than a 11 -> dodge
-    # basic attack should be easier to land than main attacks
-    def useBasicAttack(theSelf, theOther):
-        dodge = random.randint(1,20)
-        if dodge < 7 and theOther.getAgility() > theSelf.getAgility():
-            theOther.setHealth(theOther.getHealth() - theSelf.getBasicAttack())
-        elif dodge < 11 and theOther.getAgility() < theSelf.getName():
-            theOther.setHealth(theOther.getHealth() - theSelf.getBasicAttack())
-
-
-
-    #first dodge number is generated
-    #if you are faster and dodge is less than 17 -> you have a chance to land main attack on opponent
-    #note: if you and opponent are opposite types then you can do double damage if it hits, otherwise normal amount
-    #otherwise if the opponent is faster but they roll less than 15 -> you have the chance to hit
-    #if you can't hit then they dodge
-    #this concept works for both heros and monsters, each time hero or monster attack, the other has a chance to dodge
-    def useMainAttack(theSelf, theOther):
-        randomNum = random.randint(1, 20)
-        dodge = random.randint(1,20)
-        if dodge < 17 and theOther.getAgility() < theSelf.getAgility():
-            if randomNum > 12 and theOther.getElement() == theSelf.getOppositeElement:
-                theOther.setHealth(theOther.getHealth - theSelf.getMainAttack() * 2)
-            elif randomNum > 12:
-                theOther.setHealth(theOther.getHealth - theSelf.getMainAttack())
-        elif dodge < 15 and theOther.getAgility() > theSelf.getAgility():
-            if randomNum > 12 and theOther.getElement() == theSelf.getOppositeElement:
-                theOther.setHealth(theOther.getHealth - theSelf.getMainAttack() * 2)
-            elif randomNum > 12:
-                theOther.setHealth(theOther.getHealth - theSelf.getMainAttack())
-
-
+    def getMainAttack(self):
+        return self.myMainAttack
