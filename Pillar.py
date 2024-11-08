@@ -1,4 +1,6 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+
+
 class Pillar(ABC):
 
     """
@@ -8,52 +10,90 @@ class Pillar(ABC):
 
     @param name of OO pillar
     @param image for that pillar (GUI)
+    @param hero reference so pillars can give hero perks
     """
-    def __init__(theSelf, theName, theImage):
-        theSelf.setFields(theName, theImage)
+    def __init__(self, name, image, hero):
+        self.setName(name)
+        self.setImage(image)
+        self.setHero(hero)
 
 
     """
     Setter methods checks that name and image for pillar
     is not null and then sets fields for pillar object
     to those values.
-    
-    @param name of OO pillar
-    @param image for that pillar (GUI)
     """
-    def setFields(theSelf, theName, theImage):
-        if theName is not None and theImage is not None:
-            theSelf.myName = theName
-            theSelf.myImage = theImage
+    def setName(self, name):
+        if name is not None:
+            self.name = name
         else:
-            print("The name or image is for this pillar is null")
+            print("The name for this pillar is null")
 
+    def setImage(self, image):
+        if image is not None:
+            self.image = image
+        else:
+            print("The image for this pillar is null")
+    def setHero(self, hero):
+        if hero is not None:
+            self.hero = hero
+        else:
+            print("The hero for this pillar is null")
+
+
+    def getName(self):
+        return self.name
+
+    def getImage(self):
+        return self.image
+
+    def getHero(self):
+        return self.hero
 
     """
-    Once a hero finds the pillar, it will increase the hero's
-    max HP by 10 points and fully heal the hero.
-    
-    @param hero for game
+    Everytime hero finds pillar it fully heals the hero
     """
-    def increaseHP(theSelf, theHero):
-        theHero.setMaxHealth(theHero.getMaxHealth() + 10)
-        theHero.setHealth(theHero.getMaxHealth())
+    def restoreHealth(self):
+        self.hero.setHP(self.hero.getMaxHP())
 
     """
-    Add pillar to inventory
-    
-    @param the dungeon
+    Abstract method that all subclasses have to implement,
+    each pillar gives the hero a different perk
     """
-    def addToInventory(theSelf, theDungeon):
-        theDungeon.addToInventory(theSelf)
+    @abstractmethod
+    def enhance(self):
+        pass
 
 
+
+"""
+Abstraction pillar adds +5 damage to basic and special attack
+"""
 class AbstractionPillar(Pillar):
-    pass
+    def enhance(self):
+        self.hero.setAttack(self.hero.getAttack() + 5)
+        self.hero.setSpecialAttack(self.hero.getSpecialAttack() + 5)
+
+
+"""
+Polymorphism pillar increases hero's max health by 10
+"""
 class PolymorphismPillar(Pillar):
-    pass
+    def enhance(self):
+        self.hero.setMaxHP(self.hero.getMaxHP + 10)
+
+
+"""
+Inheritance pillar does +2 hit chance
+"""
 class InheritancePillar(Pillar):
-    pass
+    def enhance(self):
+        pass
+
+"""
+Encapsulation pillar adds +4 to hero's agility stat
+"""
 class EncapsulationPillar(Pillar):
-    pass
+    def enhance(self):
+        self.hero.setAgility(self.hero.getAgility() + 4)
 
