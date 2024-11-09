@@ -14,10 +14,8 @@ class CharacterFactory:
         agility = cur.execute("SELECT agility FROM monster WHERE element=element_val")
         element = element
         opposite = Element(cur.execute("SELECT opposite FROM monster WHERE element=element_val"))
-        basic_attack = cur.execute("SELECT basicAttack FROM monster WHERE element=element_val")
-        special_attack = cur.execute("SELECT specialAttack FROM monster WHERE element=element_val")
         con.close()
-        return Monster(name, image, max_hp, agility, element, opposite, basic_attack, special_attack)
+        return Monster(name, image, max_hp, agility, element, opposite)
 
     def createHero(self, name, element):
         element_val = element.value
@@ -28,7 +26,5 @@ class CharacterFactory:
         agility = cur.execute("SELECT agility FROM hero WHERE element=element_val")
         element = element
         opposite = Element(cur.execute("SELECT opposite FROM hero WHERE element=element_val"))
-        basic_attack = cur.execute("SELECT basicAttack FROM hero WHERE element=element_val")
-        special_attack = cur.execute("SELECT specialAttack FROM hero WHERE element=element_val")
         con.close()
-        return Hero(name, image, max_hp, agility, element, opposite, basic_attack, special_attack)
+        return Hero(name, image, max_hp, agility, element, opposite)
