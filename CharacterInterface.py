@@ -3,26 +3,18 @@ from enum import Enum
 from random import randint
 
 
-def attack():
-    return randint(1,20)
-
-
-def specialAttack():
-    return randint(1, 20) - 3
-
-
 class CharacterInterface(ABC):
+    BASIC_DAMAGE = 5
+    SPECIAL_DAMAGE = 10
 
     #constructor
-    def __init__(self, name, image, maxHP, agility, element, opposite, basicAttack, specialAttack):
+    def __init__(self, name, image, maxHP, agility, element, opposite):
         self.setName(name)
         self.setImage(image)
         self.setMaxHP(maxHP)
         self.setAgility(agility)
         self.setElement(element)
         self.setOppositeElement(opposite)
-        self.setAttack(basicAttack)
-        self.setSpecialAttack(specialAttack)
 
 
     #setter methods
@@ -42,9 +34,15 @@ class CharacterInterface(ABC):
     def setMaxHP(self, maxHP):
         if maxHP > 0:
             self.maxHP = maxHP
-            self.HP = maxHP
+            self.set_hp(maxHP)
         else:
             print("Max HP cannot be 0 or negative")
+
+    def set_hp(self, hp):
+        if 0 < hp <= self.maxHP:
+            self.hp = hp
+        else:
+            print("HP cannot be 0 or negative or higher than MaxHP")
 
     def setAgility(self, agility):
         if agility > 0:
@@ -64,17 +62,6 @@ class CharacterInterface(ABC):
         else:
             print(f"{element} is not an Enum.")
 
-    def setAttack(self, attack):
-        if attack > 0:
-            self.attack = attack
-        else:
-            print("Basic attack cannot be 0 or negative")
-
-    def setSpecialAttack(self, specialAttack):
-        if specialAttack > 0:
-            self.specialAttack = specialAttack
-        else:
-            print("Main attack cannot be 0 or negative")
 
 
 
@@ -88,8 +75,11 @@ class CharacterInterface(ABC):
     def getHealth(self):
         return self.HP
 
-    def getHP(self):
+    def getMaxHP(self):
         return self.maxHP
+
+    def getHP(self):
+        return self.hp
 
     def getAgility(self):
         return self.agility
@@ -100,8 +90,8 @@ class CharacterInterface(ABC):
     def getOppositeElement(self):
         return self.opposite
 
-    def getBasicAttack(self):
-        return self.attack
+    def attack(self):
+        return (randint(1, 20), 5)
 
-    def getMainAttack(self):
-        return self.specialAttack
+    def specialAttack(self):
+        return ((randint(1, 20) - 3), 10)
