@@ -32,23 +32,23 @@ class CharacterInterface(ABC):
             print("Image string is null")
 
     def setMaxHP(self, maxHP):
-        if maxHP > 0:
+        if maxHP.isdigit() and maxHP > 0:
             self.maxHP = maxHP
             self.set_hp(maxHP)
         else:
-            print("Max HP cannot be 0 or negative")
+            print("Max HP must be an int and cannot be 0 or negative")
 
     def set_hp(self, hp):
-        if 0 < hp <= self.maxHP:
+        if hp.isdigit() and 0 < hp <= self.maxHP:
             self.hp = hp
         else:
-            print("HP cannot be 0 or negative or higher than MaxHP")
+            print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
 
     def setAgility(self, agility):
-        if agility > 0:
+        if agility.isdigit() and agility > 0:
             self.agility = agility
         else:
-            print("Agility cannot be 0 or negative")
+            print("Agility must be an int and cannot be 0 or negative")
 
     def setElement(self, element):
         if isinstance(element, Enum):

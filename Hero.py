@@ -6,17 +6,30 @@ class Hero(CharacterInterface):
         super().__init__(name, image, max_hp, agility, element, opposite)
 
     def attack(self):
-        pre_mod  = super.attack()
-        pre_mod[0] += self.attack_mod
-        pre_mod[1] += self.damage_mod
+        pre_mod =  super().attack()
+        mod = (pre_mod[0] + self.attack_mod, pre_mod[1] + self.damage_mod)
+        return mod
 
     def specialAttack(self):
-        pre_mod  = super.specialAttack()
-        pre_mod[0] += self.attack_mod
-        pre_mod[1] += self.damage_mod
+        pre_mod = super().specialAttack()
+        mod = (pre_mod[0] + self.attack_mod, pre_mod[1] + self.damage_mod)
+        return mod
 
     def drinkPotion(self):
-        if self.getHP() <= (self.getMaxHP() - 5):
-            self.set_hp(self.getHP() + 5)
+        if self.getHP() <= (self.getMaxHP() - 10):
+            self.set_hp(self.getHP() + 10)
+
+    def addAttackMod(self, attack_mod):
+        if attack_mod.isdigit() and attack_mod > 0:
+            self.attack_mod = attack_mod
+        else:
+            print("Attack modifier must be an int and cannot be 0 or negative")
+
+    def addDamageMod(self, damage_mod):
+        if damage_mod.isdigit() and damage_mod > 0:
+            self.attack_mod = damage_mod
+        else:
+            print("Attack modifier must be an int and cannot be 0 or negative")
+
 
 

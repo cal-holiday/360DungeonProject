@@ -4,7 +4,8 @@ from Monster import Monster
 from Hero import Hero
 class CharacterFactory:
 
-    def createMonster(self, element):
+    @staticmethod
+    def createMonster(element):
         element_val = element.value
         con = sqlite3.connect("character.db")
         cur = con.cursor()

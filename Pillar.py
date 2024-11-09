@@ -71,8 +71,7 @@ Abstraction pillar adds +5 damage to basic and special attack
 """
 class AbstractionPillar(Pillar):
     def enhance(self):
-        self.hero.setAttack(self.hero.getAttack() + 5)
-        self.hero.setSpecialAttack(self.hero.getSpecialAttack() + 5)
+        self.hero.addDamageMod(5)
 
 
 """
@@ -88,7 +87,7 @@ Inheritance pillar does +2 hit chance
 """
 class InheritancePillar(Pillar):
     def enhance(self):
-        pass
+        self.hero.addAttackMod(2)
 
 """
 Encapsulation pillar adds +4 to hero's agility stat
