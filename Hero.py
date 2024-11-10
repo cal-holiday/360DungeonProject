@@ -2,8 +2,8 @@ from CharacterInterface import CharacterInterface
 class Hero(CharacterInterface):
     attack_mod = 0
     damage_mod = 0
-    def __init__(self, name, image, max_hp, agility, element, opposite):
-        super().__init__(name, image, max_hp, agility, element, opposite)
+    def __init__(self, name, image, max_hp, agility, element):
+        super().__init__(name, image, max_hp, agility, element)
 
     def attack(self):
         pre_mod =  super().attack()

@@ -2,9 +2,11 @@ from random import randint
 
 from CharacterInterface import CharacterInterface
 class Monster(CharacterInterface):
-    def __init__(self, name, image, max_hp, agility, element, opposite):
-        super().__init__(name, image, max_hp, agility, element, opposite)
+    def __init__(self, name, image, max_hp, agility, element):
+        super().__init__(name, image, max_hp, agility, element)
 
+    #if anyone sees this comment, are these necessary or will it work to just go my_monster.attack()?
+    #that should call the parent method inherently right?
     def attack(self):
         return super().attack()
 
