@@ -8,10 +8,10 @@ class Monster(CharacterInterface):
     def attack(self):
         return super().attack()
 
-    def specialAttack(self):
-        return super().specialAttack()
+    def special_attack(self):
+        return super().special_attack()
 
     def heal(self):
-        if randint(1, 20) > 10 and self.getHP() <= (self.getMaxHP() - 5):
-            self.set_hp(self.getHP() + 5)
+        if randint(1, 20) > 10 and self.get_hp() <= (self.get_max_hp() - 5):
+            self.set_hp(self.get_hp() + 5)
 
