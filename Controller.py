@@ -8,6 +8,7 @@ class Controller:
 
     def handle_event(self, event):
         if event.type == pygame.QUIT:
+            #fix this!
             View.run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:

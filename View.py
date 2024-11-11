@@ -15,12 +15,14 @@ clock = pygame.time.Clock()
 FPS = 60
 
 hero = CharacterFactory.create_hero("TEST", Element.EARTH)
+def draw_hero(hero):
+    screen.blit(hero.getImage(), (hero.get_x(),hero.get_y()))
 controller = Controller(hero)
 run = True
 while run:
     clock.tick(FPS)
     screen.fill(0)
-    hero.draw()
+    draw_hero(hero)
 
     for event in pygame.event.get():
         controller.handle_event(event)
