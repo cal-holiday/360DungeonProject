@@ -1,6 +1,7 @@
 import sqlite3
 from Monster import Monster
 from Hero import Hero
+
 class CharacterFactory:
 
     @staticmethod
@@ -16,7 +17,8 @@ class CharacterFactory:
         con.close()
         return Monster(name, image, max_hp, agility, element)
 
-    def create_hero(self, name, element):
+    @staticmethod
+    def create_hero(name, element):
         element_val = element.value
         con = sqlite3.connect("character.db")
         cur = con.cursor()

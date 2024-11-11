@@ -1,7 +1,6 @@
 from CharacterInterface import CharacterInterface
+from Direction import Direction
 class Hero(CharacterInterface):
-    attack_mod = 0
-    damage_mod = 0
     def __init__(self, name, image, max_hp, agility, element):
         super().__init__(name, image, max_hp, agility, element)
 
@@ -30,6 +29,13 @@ class Hero(CharacterInterface):
             self.attack_mod = damage_mod
         else:
             print("Attack modifier must be an int and cannot be 0 or negative")
+    def set_direction(self, direction):
+        if isinstance(direction, Direction):
+            self.direction = direction
+        else:
+            print(f"{direction} is not an Direction.")
 
+    def get_direction(self):
+        return self.direction
 
 
