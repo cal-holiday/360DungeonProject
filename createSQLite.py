@@ -11,13 +11,13 @@ data = [
 ]
 cur.executemany("INSERT INTO monster VALUES(?, ?, ? ,?, ?)", data)
 con.commit()
-cur.execute("CREATE TABLE IF NOT EXISTS hero(image, element UNIQUE, opposite, max_health, agility)")
+cur.execute("CREATE TABLE IF NOT EXISTS hero(image, element UNIQUE, max_health, agility)")
 data = [
     ('earth_hero.png', Element.EARTH.value, 100, 4),
     ('air_hero.png', Element.AIR.value, 40, 16),
     ('water_hero.png', Element.WATER.value, 60, 8),
     ('fire_hero.png', Element.FIRE.value, 80, 12),
 ]
-cur.executemany("INSERT INTO hero VALUES(?, ?, ? ,?, ?)", data)
+cur.executemany("INSERT INTO hero VALUES(?, ?, ?, ?)", data)
 con.commit()
 con.close()

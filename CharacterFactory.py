@@ -1,6 +1,7 @@
 import sqlite3
 from Monster import Monster
 from Hero import Hero
+
 class CharacterFactory:
 
     @staticmethod
@@ -8,21 +9,22 @@ class CharacterFactory:
         element_val = element.value
         con = sqlite3.connect("character.db")
         cur = con.cursor()
-        name = cur.execute("SELECT name FROM monster WHERE element=element_val")
-        image = cur.execute("SELECT image FROM monster WHERE element=element_val")
-        max_hp = cur.execute("SELECT health FROM monster WHERE element=element_val")
-        agility = cur.execute("SELECT agility FROM monster WHERE element=element_val")
+        name = cur.execute("SELECT name FROM monster WHERE element_val=element")
+        image = cur.execute("SELECT image FROM monster WHERE element_val=element")
+        max_hp = cur.execute("SELECT health FROM monster WHERE element_val=element")
+        agility = cur.execute("SELECT agility FROM monster WHERE element_val=element")
         element = element
         con.close()
         return Monster(name, image, max_hp, agility, element)
 
-    def create_hero(self, name, element):
+    @staticmethod
+    def create_hero(name, element):
         element_val = element.value
         con = sqlite3.connect("character.db")
         cur = con.cursor()
-        image = cur.execute("SELECT image FROM hero WHERE element=element_val")
-        max_hp = cur.execute("SELECT health FROM hero WHERE element=element_val")
-        agility = cur.execute("SELECT agility FROM hero WHERE element=element_val")
+        image = cur.execute("SELECT image FROM hero WHERE element=")
+        max_hp = cur.execute("SELECT health FROM hero WHERE element=")
+        agility = cur.execute("SELECT agility FROM hero WHERE element=")
         element = element
         con.close()
         return Hero(name, image, max_hp, agility, element)
