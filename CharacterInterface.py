@@ -48,24 +48,27 @@ class CharacterInterface(ABC):
     def set_image(self, image):
         if image is not None:
             self.image = image
+            #for testing I am calling image a string rn AW-11/14/24
+            #self.image = pygame.image.load(image)
+            #self.rect = self.image.get_rect()
         else:
             print("Image string is null")
 
     def set_max_hp(self, max_hp):
-        if isinstance(max_hp, int) and max_hp > 0:
+        if isinstance(max_hp,int) and max_hp > 0:
             self.max_hp = max_hp
             self.set_hp(max_hp)
         else:
             print("Max HP must be an int and cannot be 0 or negative")
 
     def set_hp(self, hp):
-        if isinstance(hp, int) and 0 < hp <= self.max_hp:
+        if isinstance(hp,int) and 0 < hp <= self.max_hp:
             self.hp = hp
         else:
             print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
 
     def set_agility(self, agility):
-        if isinstance(agility, int) and agility > 0:
+        if isinstance(agility,int) and agility > 0:
             self.agility = agility
         else:
             print("Agility must be an int and cannot be 0 or negative")
