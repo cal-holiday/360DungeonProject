@@ -26,6 +26,10 @@ class MyTestCase(unittest.TestCase):
         monster = Monster("Gross", "image", 12, 10, Element.EARTH)
         self.assertEqual(monster.heal(),False)
 
+    def test_is_opposite(self):
+        monster = Monster("Gross", "image", 12, 12, Element.EARTH)
+        self.assertEqual(monster.get_opposite_element(),Element.AIR)
+
 
 if __name__ == '__main__':
     unittest.main()
