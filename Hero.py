@@ -18,10 +18,6 @@ class Hero(CharacterInterface):
         mod = (pre_mod[0] + self.attack_mod, pre_mod[1] + self.damage_mod)
         return mod
 
-    def drink_potion(self):
-        if self.get_hp() <= (self.get_max_hp() - 10):
-            self.set_hp(self.get_hp() + 10)
-
     def set_attack_mod(self, attack_mod):
         if attack_mod.isdigit() and attack_mod > 0:
             self.attack_mod = attack_mod
@@ -33,6 +29,7 @@ class Hero(CharacterInterface):
             self.attack_mod = damage_mod
         else:
             print("Attack modifier must be an int and cannot be 0 or negative")
+
     def set_direction(self, direction):
         if isinstance(direction, Direction):
             self.direction = direction
