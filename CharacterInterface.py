@@ -1,107 +1,148 @@
 from abc import ABC
-from enum import Enum
+
+import pygame
+
+from Element import Element
 from random import randint
 
 
-def attack():
-    return randint(1,20)
-
-
-def specialAttack():
-    return randint(1, 20) - 3
-
-
 class CharacterInterface(ABC):
+    """
+    Static fields for all characters. Both monsters and heroes
+    deal 5 points damage for a basic attack and 10 for a special
+    attack, not including modifiers the hero can add from finding pillars.
+    """
+    BASIC_DAMAGE = 5
+    SPECIAL_DAMAGE = 10
 
-    #constructor
-    def __init__(self, name, image, maxHP, agility, element, opposite, basicAttack, specialAttack):
-        self.setName(name)
-        self.setImage(image)
-        self.setMaxHP(maxHP)
-        self.setAgility(agility)
-        self.setElement(element)
-        self.setOppositeElement(opposite)
-        self.setAttack(basicAttack)
-        self.setSpecialAttack(specialAttack)
+    """
+    Constructor for abstract base class for character object,
+    passes incoming parameters to a setter method to check that
+    incoming data is valid.
 
+    @param name of the character
+    @param image for the character (GUI)
+    @param max hit points(hp) the character can have
+    @param agility score of the character, determines if an attack hits
+    @param element of the character, enumerated element type
+    """
 
-    #setter methods
-    #setters
-    def setName(self, name):
+    def __init__(self, name, image, max_hp, agility, element):
+        self.set_name(name)
+        self.set_image(image)
+        self.set_max_hp(max_hp)
+        self.set_agility(agility)
+        self.set_element(element)
+
+    """
+    Setter methods checks that name and image for the character
+    is not null and then sets fields for character object
+    to those values.
+    """
+
+    def set_name(self, name):
         if name is not None:
             self.name = name
         else:
             print("Name string is null")
 
-    def setImage(self, image):
+    def set_image(self, image):
         if image is not None:
             self.image = image
+            # for testing I am calling image a string rn AW-11/14/24
+            # self.image = pygame.image.load(image)
+            # self.rect = self.image.get_rect()
         else:
             print("Image string is null")
 
-    def setMaxHP(self, maxHP):
-        if maxHP > 0:
-            self.maxHP = maxHP
-            self.HP = maxHP
+    def set_max_hp(self, max_hp):
+        if isinstance(max_hp, int) and max_hp > 0:
+            self.max_hp = max_hp
+            self.set_hp(max_hp)
         else:
-            print("Max HP cannot be 0 or negative")
+            print("Max HP must be an int and cannot be 0 or negative")
 
-    def setAgility(self, agility):
-        if agility > 0:
+    def set_hp(self, hp):
+        if isinstance(hp, int) and 0 < hp <= self.max_hp:
+            self.hp = hp
+        else:
+            print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
+
+    def set_agility(self, agility):
+        if isinstance(agility, int) and agility > 0:
             self.agility = agility
         else:
-            print("Agility cannot be 0 or negative")
+            print("Agility must be an int and cannot be 0 or negative")
 
-    def setElement(self, element):
-        if isinstance(element, Enum):
+    def set_element(self, element):
+        if isinstance(element, Element):
             self.element = element
         else:
-            print(f"{element} is not an Enum.")
+            print(f"{element} is not an Element.")
 
-    def setOppositeElement(self, element):
-        if isinstance(element, Enum):
-            self.opposite = element
+    def set_x(self, x):
+        if isinstance(x, int):
+            self.x = x
+            self.rect.x = self.x
         else:
-            print(f"{element} is not an Enum.")
+            print(x, "is not an integer")
 
-    def setAttack(self, attack):
-        if attack > 0:
-            self.attack = attack
+    def set_y(self, y):
+        if isinstance(y, int):
+            self.y = y
+            self.rect.y = self.y
         else:
-            print("Basic attack cannot be 0 or negative")
+            print(y, "is not an integer")
 
-    def setSpecialAttack(self, specialAttack):
-        if specialAttack > 0:
-            self.specialAttack = specialAttack
-        else:
-            print("Main attack cannot be 0 or negative")
+    """
+    Getters return the values of the fields for a 
+    character object
+    """
 
-
-
-    #getter methods
-    def getName(self):
+    def get_name(self):
         return self.name
 
-    def getImage(self):
+    def get_image(self):
         return self.image
 
-    def getHealth(self):
-        return self.HP
+    def get_max_hp(self):
+        return self.max_hp
 
-    def getHP(self):
-        return self.maxHP
+    def get_hp(self):
+        return self.hp
 
-    def getAgility(self):
+    def get_agility(self):
         return self.agility
 
-    def getElement(self):
+    def get_element(self):
         return self.element
 
-    def getOppositeElement(self):
-        return self.opposite
+    def get_opposite_element(self):
+        return self.element.get_opposite()
 
-    def getBasicAttack(self):
-        return self.attack
+    def get_x(self):
+        return self.x
 
-    def getMainAttack(self):
-        return self.specialAttack
+    def get_y(self):
+        return self.y
+
+    """
+    When a character uses its basic attack, it sends the character
+    it is attacking a tuple containing the value of the attack so 
+    the other player can determine if they can dodge the attack
+    and the amount of damage (5) the attack will do if it lands.
+    """
+
+    def attack(self):
+        return randint(1, 20), 5
+
+    """
+    When a character uses its special attack, it sends the character
+    it is attacking a tuple containing the value of the attack (which
+    is decreased by 3 because it is less likely to hit) so 
+    the other player can determine if they can dodge the attack
+    and the amount of damage (10) the attack will do if it lands.
+    """
+
+    def special_attack(self):
+        return (randint(1, 20) - 3), 10
