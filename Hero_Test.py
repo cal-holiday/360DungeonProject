@@ -17,6 +17,8 @@ class HeroTest(unittest.TestCase):
     def test_get_opposite(self):
         self.assertEqual(self.hero.get_opposite_element(), Element.AIR)
 
+    #stopping cause I'm going to eat dinner now but we may want to create a mock for hero
+    #since there's so much randomness for the mods and attacks etc. -Eva
 
 if __name__ == '__main__':
     unittest.main()

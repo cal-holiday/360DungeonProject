@@ -9,7 +9,7 @@ class Hero(CharacterInterface):
         super().__init__(name, image, max_hp, agility, element)
 
     def attack(self):
-        pre_mod =  super().attack()
+        pre_mod = super().attack()
         mod = (pre_mod[0] + self.attack_mod, pre_mod[1] + self.damage_mod)
         return mod
 
