@@ -47,8 +47,10 @@ class CharacterInterface(ABC):
 
     def set_image(self, image):
         if image is not None:
-            self.image = pygame.image.load(image)
-            self.rect = self.image.get_rect()
+            self.image = image
+            #for testing I am calling image a string rn AW-11/14/24
+            #self.image = pygame.image.load(image)
+            #self.rect = self.image.get_rect()
         else:
             print("Image string is null")
 
