@@ -79,19 +79,6 @@ class CharacterInterface(ABC):
         else:
             print(f"{element} is not an Element.")
 
-    def set_x(self, x):
-        if isinstance(x, int):
-            self.x = x
-            self.rect.x = self.x
-        else:
-            print(x, "is not an integer")
-
-    def set_y(self, y):
-        if isinstance(y, int):
-            self.y = y
-            self.rect.y = self.y
-        else:
-            print(y, "is not an integer")
 
     """
     Getters return the values of the fields for a 
@@ -118,11 +105,6 @@ class CharacterInterface(ABC):
     def get_opposite_element(self):
         return self.element.get_opposite()
 
-    def get_x(self):
-        return self.x
-
-    def get_y(self):
-        return self.y
 
     """
     When a character uses its basic attack, it sends the character
