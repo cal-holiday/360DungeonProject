@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(monster.get_agility(), 10) #tests aglility
         self.assertEqual(monster.get_element(), Element.EARTH) #tests element
 
-    def test_heal(self): #tests if the heal method is true that it updates health
+    def test_heal_if_not_at_full_health(self): #tests if the heal method is true that it updates health
         monster = Monster("Gross", "image", 12, 10, Element.EARTH)
         monster.set_hp(5)
         if monster.heal():
@@ -22,11 +22,9 @@ class MyTestCase(unittest.TestCase):
         else:
             self.assertEqual(monster.get_hp(),5)
 
-
-
-    #def test_specialattack(self):
-
-    #def test_attack(self):
+    def test_heal_if_at_full_health(self):
+        monster = Monster("Gross", "image", 12, 10, Element.EARTH)
+        self.assertEqual(monster.heal(),False)
 
 
 if __name__ == '__main__':

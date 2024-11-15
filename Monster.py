@@ -14,10 +14,10 @@ class Monster(CharacterInterface):
         return super().special_attack()
 
     def heal(self):
-        didHeal = False
+        did_heal = False
         roll = randint(1,20)
         if roll > 10 and self.get_hp() <= (self.get_max_hp() - 5):
             self.set_hp(self.get_hp() + 5)
-            didHeal = True
-        return didHeal
+            did_heal = True
+        return did_heal
 
