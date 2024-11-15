@@ -3,7 +3,6 @@ from Monster import Monster
 from Element import Element
 
 
-
 class MyTestCase(unittest.TestCase):
     monster = Monster("Gross", "image", 12, 12, Element.EARTH)
 
