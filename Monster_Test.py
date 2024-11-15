@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(monster.get_agility(), 10) #tests aglility
         self.assertEqual(monster.get_element(), Element.EARTH) #tests element
 
-    def test_heal(self):
+    #def test_heal(self):
 
     #def test_specialattack(self):
 
