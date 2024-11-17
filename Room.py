@@ -74,11 +74,11 @@ class Room:
     def get_wwall(self):
         return self.westWall
 
-    def get_nwall(self):
+    def get_location(self):
         return self.location
 
-    def get_nwall(self):
+    def get_potion(self):
         return self.potion
 
-    def get_nwall(self):
+    def get_monster(self):
         return self.monster
