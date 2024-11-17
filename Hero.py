@@ -19,16 +19,16 @@ class Hero(CharacterInterface):
         return mod
 
     def set_attack_mod(self, attack_mod):
-        if attack_mod.isdigit() and attack_mod > 0:
+        if attack_mod is isinstance(attack_mod, int) and attack_mod > 0:
             self.attack_mod = attack_mod
         else:
             print("Attack modifier must be an int and cannot be 0 or negative")
 
     def set_damage_mod(self, damage_mod):
-        if damage_mod.isdigit() and damage_mod > 0:
-            self.attack_mod = damage_mod
+        if damage_mod is isinstance(damage_mod, int) and damage_mod > 0:
+            self.damage_mod = damage_mod
         else:
-            print("Attack modifier must be an int and cannot be 0 or negative")
+            print("Damage modifier must be an int and cannot be 0 or negative")
 
     def set_direction(self, direction):
         if isinstance(direction, Direction):
@@ -50,6 +50,12 @@ class Hero(CharacterInterface):
         else:
             print(y, "is not an integer")
 
+
+    def get_damage_mod(self):
+        return self.damage_mod
+
+    def get_attack_mod(self):
+        return self.attack_mod
 
     def get_x(self):
         return self.x
