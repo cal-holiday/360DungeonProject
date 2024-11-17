@@ -15,6 +15,6 @@ pygame.display.set_caption('Dungeon Adventure')
 
 
 def draw_hero(hero):
-    screen.blit(hero.get_image(), (hero.get_x(),hero.get_y()))
+    screen.blit(pygame.image.load(hero.get_image()), (hero.get_x(),hero.get_y()))
 
 

@@ -39,14 +39,12 @@ class Hero(CharacterInterface):
     def set_x(self, x):
         if isinstance(x, int):
             self.x = x
-            self.rect.x = self.x
         else:
             print(x, "is not an integer")
 
     def set_y(self, y):
         if isinstance(y, int):
             self.y = y
-            self.rect.y = self.y
         else:
             print(y, "is not an integer")
 
