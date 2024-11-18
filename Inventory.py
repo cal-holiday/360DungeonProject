@@ -1,4 +1,4 @@
-import Potion
+from Potion import HealthPotion, VisionPotion
 from Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
 
 
@@ -11,12 +11,12 @@ class Inventory:
 
     def add(self, object):
         if object is not None:
-            if (object is isinstance(object, PolymorphismPillar)
-                    or (object is isinstance(object, EncapsulationPillar))
-                    or (object is isinstance(object, InheritancePillar))
-                    or object is isinstance(object, AbstractionPillar)):
+            if (isinstance(object, PolymorphismPillar)
+                    or (isinstance(object, EncapsulationPillar))
+                    or (isinstance(object, InheritancePillar))
+                    or isinstance(object, AbstractionPillar)):
                 self.pillars.append(object)
-            elif object is isinstance(object, Potion.HealthPotion) or object is isinstance(object, Potion.VisionPotion):
+            elif isinstance(object, HealthPotion) or isinstance(object, VisionPotion):
                 if object.get_name() == "health":
                     self.health_potions.append(object)
                 else:
