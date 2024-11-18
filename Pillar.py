@@ -91,7 +91,7 @@ class PolymorphismPillar(Pillar):
         super().__init__("polymorphism", image, hero)
     def enhance(self):
         self.restore_health()
-        self.hero.set_max_hp(self.hero.getMaxHP + 10)
+        self.hero.set_max_hp(self.hero.get_max_hp() + 10)
 
 
 """
