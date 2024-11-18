@@ -5,6 +5,8 @@ class Hero(CharacterInterface):
     attack_mod = 0
     x = 0
     y = 0
+    drank_vision_potion = False
+
     def __init__(self, name, image, max_hp, agility, element):
         super().__init__(name, image, max_hp, agility, element)
 
@@ -22,31 +24,37 @@ class Hero(CharacterInterface):
         if isinstance(attack_mod, int) and attack_mod > 0:
             self.attack_mod = attack_mod
         else:
-            print("Attack modifier must be an int and cannot be 0 or negative")
+            raise ValueError("Attack modifier must be an int and cannot be 0 or negative")
 
     def set_damage_mod(self, damage_mod):
         if isinstance(damage_mod, int) and damage_mod > 0:
             self.damage_mod = damage_mod
         else:
-            print("Damage modifier must be an int and cannot be 0 or negative")
+            raise ValueError("Damage modifier must be an int and cannot be 0 or negative")
 
     def set_direction(self, direction):
         if isinstance(direction, Direction):
             self.direction = direction
         else:
-            print(f"{direction} is not an Direction.")
+            raise ValueError(f"{direction} is not an Direction.")
 
     def set_x(self, x):
         if isinstance(x, int):
             self.x = x
         else:
-            print(x, "is not an integer")
+            raise ValueError(x, "is not an integer")
 
     def set_y(self, y):
         if isinstance(y, int):
             self.y = y
         else:
-            print(y, "is not an integer")
+            raise ValueError(y, "is not an integer")
+
+    def set_vision_status(self, value):
+        if isinstance(value, bool):
+            self.drank_vision_potion = value
+        else:
+            raise ValueError("Parameter needs to be a boolean")
 
 
     def get_damage_mod(self):
