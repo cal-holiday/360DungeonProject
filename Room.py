@@ -27,19 +27,19 @@ class Room:
 
     def set_swall(self,wall):
         if wall != None:
-            self.northWall = wall
+            self.southWall = wall
         else:
             print("Wall value is null.")
 
     def set_ewall(self,wall):
         if wall != None:
-            self.northWall = wall
+            self.eastWall = wall
         else:
             print("Wall value is null.")
 
     def set_wwall(self,wall):
         if wall != None:
-            self.northWall = wall
+            self.westWall = wall
         else:
             print("Wall value is null.")
 

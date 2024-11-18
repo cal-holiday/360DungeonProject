@@ -4,8 +4,10 @@ from Direction import Direction
 from Element import Element
 from CharacterFactory import CharacterFactory
 from Hero import Hero
-hero = CharacterFactory.create_hero("TEST", Element.EARTH)
+from Room import Room
 
+room = Room(False, False, False, False, (1,1), False, False)
+hero = CharacterFactory.create_hero("TEST", Element.EARTH)
 def move_hero(left, right, up, down):
     hero_x = hero.get_x()
     hero_y = hero.get_y()
@@ -56,8 +58,12 @@ down = False
 while run:
     clock.tick(FPS)
     View.screen.fill(0)
-    View.draw_hero(hero)
+    room_rects = View.draw_room(room, 300)
+    hero_rect = View.draw_hero(hero)
     move_hero(left, right, up, down)
+    #work on collisions next
+    #if hero_rect.collidelist(room_rects):
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
