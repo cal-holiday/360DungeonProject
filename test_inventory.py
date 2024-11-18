@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(inventory.health_potions, [])
         self.assertEqual(inventory.vision_potions,[])
         self.assertEqual(inventory.pillars,[])
-        self.assertEqual(inventory.has_all_pillars,False)
+        self.assertEqual(inventory.has_all_pillars(),False)
 
     #def test_inventory_add_health_potion(self):
     #def test_inventory_add_vision_potion(self):
@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
         pillar = PolymorphismPillar("image","hero")
         inventory.add(pillar)
         inventory.add(pillar)
-        self.assertEqual(inventory.has_all_pillars,False)
+        self.assertEqual(inventory.has_all_pillars(),False)
 
     def test_all_pillars_with_all_pillars(self):
         inventory = Inventory()
@@ -30,7 +30,8 @@ class MyTestCase(unittest.TestCase):
         inventory.add(pillar)
         inventory.add(pillar)
         inventory.add(pillar)
-        self.assertEqual(inventory.has_all_pillars, True)
+        print(len(inventory.pillars))
+        self.assertEqual(inventory.has_all_pillars(), True)
 
 if __name__ == '__main__':
     unittest.main()
