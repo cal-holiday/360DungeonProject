@@ -1,4 +1,5 @@
-from Potion import HealthPotion, VisionPotion
+import Pillar
+import Potion
 from Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
 
 
@@ -7,23 +8,23 @@ class Inventory:
         self.health_potions = []
         self.vision_potions = []
         self.pillars = []
+        self.has_all_pillars = False
 
 
     def add(self, object):
         if object is not None:
-            if (isinstance(object, PolymorphismPillar)
-                    or (isinstance(object, EncapsulationPillar))
-                    or (isinstance(object, InheritancePillar))
-                    or isinstance(object, AbstractionPillar)):
+            if (object is isinstance(object, PolymorphismPillar)
+                    or object is isinstance(object, EncapsulationPillar)
+                    or object is isinstance(object, InheritancePillar)
+                    or object is isinstance(object, AbstractionPillar)):
                 self.pillars.append(object)
-                object.enhance()
-            elif isinstance(object, HealthPotion) or isinstance(object, VisionPotion):
-                if object.get_name() == "health":
+            elif object is isinstance(object, HealthPotion) or object is isinstance(object, VisionPotion):
+                if object.get_name() == "health_potion":
                     self.health_potions.append(object)
                 else:
                     self.vision_potions.append(object)
         else:
-            raise ValueError("Cannot add null object to inventory")
+            print("Cannot add null object to inventory")
 
 
     def drink_potion(self, potion):
@@ -35,4 +36,6 @@ class Inventory:
             del self.vision_potions[0]
 
     def has_all_pillars(self):
-        return len(self.pillars) == 4
+        if len(self.pillars) == 4:
+            self.has_all_pillars = True
+
