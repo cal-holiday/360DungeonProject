@@ -100,3 +100,5 @@ class TestHero(TestCase):
         self.hero.set_vision_status(True)
         self.assertEqual(self.hero.drank_vision_potion, True)
 
+    def test_get_vision_status(self):
+        self.assertEqual(self.hero.get_drank_vision_potion(), False)

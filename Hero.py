@@ -72,4 +72,7 @@ class Hero(CharacterInterface):
     def get_direction(self):
         return self.direction
 
+    def get_drank_vision_potion(self):
+        return self.drank_vision_potion
+
 

@@ -16,6 +16,7 @@ class Inventory:
                     or (isinstance(object, InheritancePillar))
                     or isinstance(object, AbstractionPillar)):
                 self.pillars.append(object)
+                object.enhance()
             elif isinstance(object, HealthPotion) or isinstance(object, VisionPotion):
                 if object.get_name() == "health":
                     self.health_potions.append(object)
