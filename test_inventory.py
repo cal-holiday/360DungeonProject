@@ -11,11 +11,6 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(inventory.pillars,[])
         self.assertEqual(inventory.has_all_pillars,False)
 
-    #def test_inventory_add_health_potion(self):
-    #def test_inventory_add_vision_potion(self):
-    #def test_inventory_add_potion(self):
-    #def test_drink_health_potion(self):
-    #def test_drink_vision_potion(self):
     def test_has_all_pillars_with_two_pillars(self):
         inventory = Inventory()
         pillar = PolymorphismPillar("Polymorphism","image","hero")
