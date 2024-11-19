@@ -1,24 +1,102 @@
-import unittest
+from unittest import TestCase
+
+from Direction import Direction
 from Element import Element
 from Hero import Hero
 
 
-class HeroTest(unittest.TestCase):
+class TestHero(TestCase):
     def setUp(self):
-        self.hero = Hero("lil man", "image", 100, 2, Element.EARTH)
-    def test_constructor(self):
-        self.assertEqual(self.hero.get_name(), "lil man")
-        self.assertEqual(self.hero.get_image(), "image")
-        self.assertEqual(self.hero.get_max_hp(), 100)
-        self.assertEqual(self.hero.get_agility(), 2)
-        self.assertEqual(self.hero.get_element(), Element.EARTH)
-        self.assertEqual(self.hero.get_hp(), 100)
+        self.hero = Hero("name", "image", 100, 2, Element.EARTH)
+    def test_attack(self):
+        isTrue = False
+        result = self.hero.attack()
+        if result[0] >= 1 and result[1] >= 5:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-    def test_get_opposite(self):
-        self.assertEqual(self.hero.get_opposite_element(), Element.AIR)
+    def test_attack_with_attack_mod(self):
+        isTrue = False
+        self.hero.set_attack_mod(2) #simulating hero with inheritance pillar
+        result = self.hero.attack()
+        if result[0] >= 3 and result[1] >= 5:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-    #stopping cause I'm going to eat dinner now but we may want to create a mock for hero
-    #since there's so much randomness for the mods and attacks etc. -Eva
+    def test_attack_with_damage_mod(self):
+        isTrue = False
+        self.hero.set_damage_mod(5) #simulating hero with abstraction pillar
+        result = self.hero.attack()
+        if result[0] >= 1 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_special_attack(self):
+        isTrue = False
+        result = self.hero.special_attack()
+        if result[0] >= 1 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
+
+    def test_special_attack_with_attack_mod(self):
+        isTrue = False
+        self.hero.set_attack_mod(2)  # simulating hero with inheritance pillar
+        result = self.hero.special_attack()
+        if result[0] >= 3 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
+
+    def test_special_attack_with_damage_mod(self):
+        isTrue = False
+        self.hero.set_damage_mod(5)  # simulating hero with abstraction pillar
+        result = self.hero.special_attack()
+        if result[0] >= 1 and result[1] >= 15:
+            isTrue = True
+        self.assertEqual(isTrue, True)
+
+    def test_set_attack_mod(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_attack_mod(-1)
+
+        self.hero.set_attack_mod(6)
+        self.assertEqual(self.hero.get_attack_mod(), 6)
+
+    def test_set_damage_mod(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_damage_mod(-1)
+
+        self.hero.set_damage_mod(10)
+        self.assertEqual(self.hero.get_damage_mod(), 10)
+
+    def test_set_direction(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_direction("Hello")
+
+        self.hero.set_direction(Direction.NORTH)
+        self.assertEqual(self.hero.get_direction(), Direction.NORTH)
+
+    def test_set_x(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_x("Hi")
+
+        self.hero.set_x(58)
+        self.assertEqual(self.hero.get_x(), 58)
+
+        self.hero.set_x(-24)
+        self.assertEqual(self.hero.get_x(),-24)
+
+    def test_set_y(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_y("Hi")
+
+        self.hero.set_y(45)
+        self.assertEqual(self.hero.get_y(), 45)
+
+        self.hero.set_y(-38)
+        self.assertEqual(self.hero.get_y(), -38)
+
+    def test_set_vision_status(self):
+        self.assertEqual(self.hero.drank_vision_potion, False)
+        self.hero.set_vision_status(True)
+        self.assertEqual(self.hero.drank_vision_potion, True)
+
