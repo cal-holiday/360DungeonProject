@@ -6,7 +6,7 @@ from CharacterFactory import CharacterFactory
 from Hero import Hero
 from Room import Room
 
-room = Room(False, False, False, False, (1,1), False, False)
+room = Room(True, True, True, True, (1,1), False, False)
 hero = CharacterFactory.create_hero("TEST", Element.EARTH)
 def move_hero(left, right, up, down):
     hero_x = hero.get_x()
