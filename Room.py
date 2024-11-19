@@ -13,50 +13,43 @@ class Room:
         self.set_monster(monster)
         self.set_location(location)
 
-
-
     """
     setters for the instance fields
     """
 
     def set_nwall(self,wall):
-        if wall != None:
-            self.northWall = wall
+        if wall:
+            self.northWall = True
         else:
-            print("Wall value is null.")
+            self.northWall = False
 
     def set_swall(self,wall):
-        if wall != None:
-            self.southWall = wall
+        if wall:
+            self.southWall = True
         else:
-            print("Wall value is null.")
+            self.southWall = False
+
 
     def set_ewall(self,wall):
-        if wall != None:
-            self.eastWall = wall
+        if wall:
+            self.eastWall = True
         else:
-            print("Wall value is null.")
+            self.eastWall = False
 
     def set_wwall(self,wall):
-        if wall != None:
-            self.westWall = wall
+        if wall:
+            self.westWall = True
         else:
-            print("Wall value is null.")
+            self.westWall = False
 
     def set_monster(self,monster):
-        if monster != None:
             self.monster = monster
-        else:
-            print("Monster value is null.")
 
     def set_potion(self,potion):
-        if potion != None:
             self.potion = potion
-        else:
-            print("Potion value is null.")
 
     def set_location(self,location):
-        if location != None:
+        if location is not None:
             self.location = location
         else:
             print("Location value is null.")
