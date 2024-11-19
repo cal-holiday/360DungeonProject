@@ -1,50 +1,102 @@
-import unittest
-from abc import ABC
-from enum import Enum
+from unittest import TestCase
+
+from Direction import Direction
+from Element import Element
+from Hero import Hero
 
 
-class Element(Enum):
-    EARTH = 1
-    FIRE = 2
-    AIR = 3
-    WATER = 4
+class TestHero(TestCase):
+    def setUp(self):
+        self.hero = Hero("name", "image", 100, 2, Element.EARTH)
+    def test_attack(self):
+        isTrue = False
+        result = self.hero.attack()
+        if result[0] >= 1 and result[1] >= 5:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-    @staticmethod
-    def get_opposite():
-        if Element.EARTH:
-            return Element.AIR
-        elif Element.FIRE:
-            return Element.WATER
-        elif Element.AIR:
-            return Element.EARTH
-        else:
-            return Element.FIRE
+    def test_attack_with_attack_mod(self):
+        isTrue = False
+        self.hero.set_attack_mod(2) #simulating hero with inheritance pillar
+        result = self.hero.attack()
+        if result[0] >= 3 and result[1] >= 5:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-class CharacterInterface(ABC):
-    def __init__(self, name, image, health, element:Element):
-        self.name = name
-        self.image = image
-        self.health = health
-        self.element = element
+    def test_attack_with_damage_mod(self):
+        isTrue = False
+        self.hero.set_damage_mod(5) #simulating hero with abstraction pillar
+        result = self.hero.attack()
+        if result[0] >= 1 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
-class Hero(CharacterInterface):
-    def __init__(self, name, image, health, element:Element):
-        super().__init__(name, image, health, element)
+    def test_special_attack(self):
+        isTrue = False
+        result = self.hero.special_attack()
+        if result[0] >= 1 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
+    def test_special_attack_with_attack_mod(self):
+        isTrue = False
+        self.hero.set_attack_mod(2)  # simulating hero with inheritance pillar
+        result = self.hero.special_attack()
+        if result[0] >= 3 and result[1] >= 10:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
+    def test_special_attack_with_damage_mod(self):
+        isTrue = False
+        self.hero.set_damage_mod(5)  # simulating hero with abstraction pillar
+        result = self.hero.special_attack()
+        if result[0] >= 1 and result[1] >= 15:
+            isTrue = True
+        self.assertEqual(isTrue, True)
 
+    def test_set_attack_mod(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_attack_mod(-1)
 
-class Test(unittest.TestCase):
-    def test_constructor(self):
-        hero = Hero("Silly lil guy", "guy.jpg", 10, Element.EARTH)
-        self.assertEqual(hero.name, "Silly lil guy")
-        """
-        self.assertEqual(hero.get_image(), "guy.jpg")
-        self.assertEqual(hero.get_max_hp(), 10)
-        self.assertEqual(hero.get_agility(), 2)
-        self.assertEqual(hero.get_element(), Element.EARTH)
-        """
+        self.hero.set_attack_mod(6)
+        self.assertEqual(self.hero.get_attack_mod(), 6)
 
+    def test_set_damage_mod(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_damage_mod(-1)
 
-if __name__ == '__main__':
-    unittest.main()
+        self.hero.set_damage_mod(10)
+        self.assertEqual(self.hero.get_damage_mod(), 10)
+
+    def test_set_direction(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_direction("Hello")
+
+        self.hero.set_direction(Direction.NORTH)
+        self.assertEqual(self.hero.get_direction(), Direction.NORTH)
+
+    def test_set_x(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_x("Hi")
+
+        self.hero.set_x(58)
+        self.assertEqual(self.hero.get_x(), 58)
+
+        self.hero.set_x(-24)
+        self.assertEqual(self.hero.get_x(),-24)
+
+    def test_set_y(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_y("Hi")
+
+        self.hero.set_y(45)
+        self.assertEqual(self.hero.get_y(), 45)
+
+        self.hero.set_y(-38)
+        self.assertEqual(self.hero.get_y(), -38)
+
+    def test_set_vision_status(self):
+        self.assertEqual(self.hero.drank_vision_potion, False)
+        self.hero.set_vision_status(True)
+        self.assertEqual(self.hero.drank_vision_potion, True)
+

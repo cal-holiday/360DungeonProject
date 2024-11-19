@@ -13,7 +13,7 @@ class Potion(ABC):
     """
 
     def __init__(self, name, image, hero):
-        self.set_name(name)
+        self.name = name
         self.set_image(image)
         self.set_hero(hero)
 
@@ -21,23 +21,17 @@ class Potion(ABC):
     setter method for the image of the potion
     @param image the image for the potion
     """
-    def set_name(self, name):
-        if name is not None:
-            self.name = name
-        else:
-            print("Name string is null")
-
     def set_image(self, image):
         if image is not None:
             self.image = image
         else:
-            print("Image string is null")
+            raise ValueError("Image string is null")
 
     def set_hero(self, hero):
         if hero is not None:
             self.hero = hero
         else:
-            print("Hero is null")
+            raise ValueError("Hero is null")
 
     """
     return name of potion i.e health or vision
@@ -67,11 +61,13 @@ The healthPotion child class of the Potion ABC
 """
 
 class HealthPotion(Potion):
+    def __init__(self, image, hero):
+        super().__init__("health", image, hero)
     def drink(self):
         if self.hero.get_hp() + 10 > self.hero.get_max_hp():
             self.hero.set_hp(self.hero.get_max_hp())
         else:
-            self.hero.set_hp(self.hero.get_hp + 10)
+            self.hero.set_hp(self.hero.get_hp() + 10)
 
 """
 the vision potion child class of the Potion ABC
@@ -79,6 +75,7 @@ the vision potion child class of the Potion ABC
 
 
 class VisionPotion(Potion):
+    def __init__(self, image, hero):
+        super().__init__("vision", image, hero)
     def drink(self):
-        #increase hero's sight
-        pass
+        self.hero.set_vision_status(True)

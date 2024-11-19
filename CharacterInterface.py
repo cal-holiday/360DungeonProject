@@ -19,14 +19,13 @@ class CharacterInterface(ABC):
     Constructor for abstract base class for character object,
     passes incoming parameters to a setter method to check that
     incoming data is valid.
-
+    
     @param name of the character
     @param image for the character (GUI)
     @param max hit points(hp) the character can have
     @param agility score of the character, determines if an attack hits
     @param element of the character, enumerated element type
     """
-
     def __init__(self, name, image, max_hp, agility, element):
         self.set_name(name)
         self.set_image(image)
@@ -34,12 +33,12 @@ class CharacterInterface(ABC):
         self.set_agility(agility)
         self.set_element(element)
 
+
     """
     Setter methods checks that name and image for the character
     is not null and then sets fields for character object
     to those values.
     """
-
     def set_name(self, name):
         if name is not None:
             self.name = name
@@ -49,27 +48,27 @@ class CharacterInterface(ABC):
     def set_image(self, image):
         if image is not None:
             self.image = image
-            # for testing I am calling image a string rn AW-11/14/24
-            # self.image = pygame.image.load(image)
-            # self.rect = self.image.get_rect()
+            #for testing I am calling image a string rn AW-11/14/24
+            #self.image = pygame.image.load(image)
+            #self.rect = self.image.get_rect()
         else:
             print("Image string is null")
 
     def set_max_hp(self, max_hp):
-        if isinstance(max_hp, int) and max_hp > 0:
+        if isinstance(max_hp,int) and max_hp > 0:
             self.max_hp = max_hp
             self.set_hp(max_hp)
         else:
             print("Max HP must be an int and cannot be 0 or negative")
 
     def set_hp(self, hp):
-        if isinstance(hp, int) and 0 < hp <= self.max_hp:
+        if isinstance(hp,int) and 0 < hp <= self.max_hp:
             self.hp = hp
         else:
             print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
 
     def set_agility(self, agility):
-        if isinstance(agility, int) and agility > 0:
+        if isinstance(agility,int) and agility > 0:
             self.agility = agility
         else:
             print("Agility must be an int and cannot be 0 or negative")
@@ -80,25 +79,11 @@ class CharacterInterface(ABC):
         else:
             print(f"{element} is not an Element.")
 
-    def set_x(self, x):
-        if isinstance(x, int):
-            self.x = x
-            self.rect.x = self.x
-        else:
-            print(x, "is not an integer")
-
-    def set_y(self, y):
-        if isinstance(y, int):
-            self.y = y
-            self.rect.y = self.y
-        else:
-            print(y, "is not an integer")
 
     """
     Getters return the values of the fields for a 
     character object
     """
-
     def get_name(self):
         return self.name
 
@@ -120,11 +105,6 @@ class CharacterInterface(ABC):
     def get_opposite_element(self):
         return self.element.get_opposite()
 
-    def get_x(self):
-        return self.x
-
-    def get_y(self):
-        return self.y
 
     """
     When a character uses its basic attack, it sends the character
@@ -132,7 +112,6 @@ class CharacterInterface(ABC):
     the other player can determine if they can dodge the attack
     and the amount of damage (5) the attack will do if it lands.
     """
-
     def attack(self):
         return randint(1, 20), 5
 
@@ -143,6 +122,5 @@ class CharacterInterface(ABC):
     the other player can determine if they can dodge the attack
     and the amount of damage (10) the attack will do if it lands.
     """
-
     def special_attack(self):
         return (randint(1, 20) - 3), 10
