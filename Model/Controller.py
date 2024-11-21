@@ -2,8 +2,7 @@ import pygame
 import View
 from Direction import Direction
 from Element import Element
-from CharacterFactory import CharacterFactory
-from Hero import Hero
+from Model.CharacterFactory import CharacterFactory
 from Room import Room
 
 room = Room(True, True, True, True, (1,1), False, False)

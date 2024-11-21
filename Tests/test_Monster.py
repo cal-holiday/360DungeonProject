@@ -1,5 +1,5 @@
 import unittest
-from Monster import Monster
+from Model.Monster import Monster
 from Element import Element
 
 

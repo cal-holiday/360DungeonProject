@@ -12,47 +12,60 @@ class Room:
         self.set_potion(potion)
         self.set_monster(monster)
         self.set_location(location)
+        self.has_visited = False
+
 
     """
     setters for the instance fields
     """
 
     def set_nwall(self,wall):
-        if wall:
-            self.northWall = True
+        if wall is not None:
+            self.northWall = wall
         else:
-            self.northWall = False
+            print("Wall value is null.")
 
     def set_swall(self,wall):
-        if wall:
-            self.southWall = True
+        if wall is not None:
+            self.southWall = wall
         else:
-            self.southWall = False
-
+            print("Wall value is null.")
 
     def set_ewall(self,wall):
-        if wall:
-            self.eastWall = True
+        if wall is not None:
+            self.eastWall = wall
         else:
-            self.eastWall = False
+            print("Wall value is null.")
 
     def set_wwall(self,wall):
-        if wall:
-            self.westWall = True
+        if wall is not None:
+            self.westWall = wall
         else:
-            self.westWall = False
+            print("Wall value is null.")
 
     def set_monster(self,monster):
+        if monster is not None:
             self.monster = monster
+        else:
+            print("Monster value is null.")
 
     def set_potion(self,potion):
+        if potion is not None:
             self.potion = potion
+        else:
+            print("Potion value is null.")
 
     def set_location(self,location):
         if location is not None:
             self.location = location
         else:
             print("Location value is null.")
+            
+    def set_has_visited(self, visited):
+        if isinstance(visited, bool) and visited is not None:
+            self.has_visited = visited
+        else:
+            print("Visited status needs to be a boolean.")
 
     #getters for room
     def get_nwall(self):
@@ -75,3 +88,6 @@ class Room:
 
     def get_monster(self):
         return self.monster
+
+    def get_has_visited(self):
+        return self.has_visited

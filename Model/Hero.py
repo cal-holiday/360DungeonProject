@@ -1,5 +1,5 @@
-from CharacterInterface import CharacterInterface
-from Direction import Direction
+from Model.CharacterInterface import CharacterInterface
+from Model.Direction import Direction
 class Hero(CharacterInterface):
     damage_mod = 0
     attack_mod = 0
@@ -71,5 +71,8 @@ class Hero(CharacterInterface):
 
     def get_direction(self):
         return self.direction
+
+    def get_drank_vision_potion(self):
+        return self.drank_vision_potion
 
 
