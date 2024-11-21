@@ -1,5 +1,5 @@
-from Potion import HealthPotion, VisionPotion
-from Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
+from Model.Potion import HealthPotion, VisionPotion
+from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
 
 
 class Inventory:

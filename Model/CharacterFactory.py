@@ -1,12 +1,12 @@
 import sqlite3
-from Monster import Monster
-from Hero import Hero
+from Model.Monster import Monster
+from Model.Hero import Hero
 
 class CharacterFactory:
     @staticmethod
     def create_monster(element):
         element_val = element.value
-        con = sqlite3.connect("character.db")
+        con = sqlite3.connect("../Controller/character.db")
         cur = con.cursor()
         sql_query = f"SELECT name, image, max_health, agility FROM monster WHERE element = {element_val}"
         cur.execute(sql_query)
@@ -23,7 +23,7 @@ class CharacterFactory:
     @staticmethod
     def create_hero(name, element):
         element_val = element.value
-        con = sqlite3.connect("character.db")
+        con = sqlite3.connect("../Controller/character.db")
         cur = con.cursor()
         sql_query = f"SELECT image, max_health, agility FROM hero WHERE element = {element_val}"
         cur.execute(sql_query)

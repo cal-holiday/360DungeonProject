@@ -2,7 +2,7 @@ from abc import ABC
 
 import pygame
 
-from Element import Element
+from Model.Element import Element
 from random import randint
 
 

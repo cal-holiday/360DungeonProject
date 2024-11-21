@@ -1,5 +1,5 @@
 import sqlite3
-from Element import Element
+from Model import Element
 con = sqlite3.connect("character.db")
 cur = con.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS monster(name, image, element UNIQUE, max_health, agility)")

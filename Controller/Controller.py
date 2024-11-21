@@ -1,9 +1,9 @@
 import pygame
-import View
-from Direction import Direction
-from Element import Element
+from View import View
+from Model.Direction import Direction
+from Model.Element import Element
 from Model.CharacterFactory import CharacterFactory
-from Room import Room
+from Model.Room import Room
 
 room = Room(True, True, True, True, (1,1), False, False)
 hero = CharacterFactory.create_hero("TEST", Element.EARTH)
