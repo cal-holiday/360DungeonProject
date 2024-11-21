@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from Hero import Hero
-from Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
+from Model.Hero import Hero
+from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Element import Element
 
 class TestPillar(TestCase):

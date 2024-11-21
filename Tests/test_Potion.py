@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from Element import Element
-from Hero import Hero
-from Potion import HealthPotion, VisionPotion
+from Model.Hero import Hero
+from Model.Potion import HealthPotion, VisionPotion
 
 
 class TestPotion(TestCase):

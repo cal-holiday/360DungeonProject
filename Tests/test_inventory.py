@@ -1,11 +1,11 @@
 import unittest
 
 from Element import Element
-from Hero import Hero
-from Inventory import Inventory
+from Model.Hero import Hero
+from Model.Inventory import Inventory
 
-from Pillar import Pillar, PolymorphismPillar, AbstractionPillar, InheritancePillar, EncapsulationPillar
-from Potion import HealthPotion, VisionPotion
+from Model.Pillar import PolymorphismPillar, AbstractionPillar, InheritancePillar, EncapsulationPillar
+from Model.Potion import HealthPotion, VisionPotion
 
 
 class MyTestCase(unittest.TestCase):

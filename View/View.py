@@ -1,8 +1,5 @@
-from email.policy import default
-
 import pygame
-from Hero import Hero
-from Room import Room
+
 pygame.init()
 
 SCREEN_WIDTH = 900
