@@ -1,14 +1,30 @@
 from Model.CharacterInterface import CharacterInterface
 from Model.Direction import Direction
+from abc import ABCMeta, abstractstaticmethod
+class Singleton():
+    __instance = None
+
+
 class Hero(CharacterInterface):
+    __instance = None
     damage_mod = 0
     attack_mod = 0
     x = 0
     y = 0
     drank_vision_potion = False
+    @staticmethod
+    def get_instance():
+        if Hero.__instance is not None:
+            return Hero.__instance
+        else:
+            raise Exception("Hero does not exist yet!")
 
     def __init__(self, name, image, max_hp, agility, element):
-        super().__init__(name, image, max_hp, agility, element)
+        if Hero.__instance is not None:
+            raise Exception("Hero already exists!")
+        else:
+            super().__init__(name, image, max_hp, agility, element)
+            Hero.__instance = self
 
     def attack(self):
         pre_mod = super().attack()

@@ -4,24 +4,25 @@ from Model.Direction import Direction
 from Model.Element import Element
 from Model.CharacterFactory import CharacterFactory
 from Model.Room import Room
+from Model.Hero import Hero
 
 room = Room(True, True, True, True, (1,1), False, False)
-hero = CharacterFactory.create_hero("TEST", Element.EARTH)
+CharacterFactory.create_hero("TEST", Element.EARTH)
 def move_hero(left, right, up, down):
-    hero_x = hero.get_x()
-    hero_y = hero.get_y()
+    hero_x = Hero.get_instance().get_x()
+    hero_y = Hero.get_instance().get_y()
     if down:
-        hero.set_direction(Direction.SOUTH)
-        hero.set_y(hero_y + 5)
+        Hero.get_instance().set_direction(Direction.SOUTH)
+        Hero.get_instance().set_y(hero_y + 5)
     if up:
-        hero.set_direction(Direction.NORTH)
-        hero.set_y(hero_y - 5)
+        Hero.get_instance().set_direction(Direction.NORTH)
+        Hero.get_instance().set_y(hero_y - 5)
     if right:
-        hero.set_direction(Direction.EAST)
-        hero.set_x(hero_x + 5)
+        Hero.get_instance().set_direction(Direction.EAST)
+        Hero.get_instance().set_x(hero_x + 5)
     if left:
-        hero.set_direction(Direction.WEST)
-        hero.set_x(hero_x - 5)
+        Hero.get_instance().set_direction(Direction.WEST)
+        Hero.get_instance().set_x(hero_x - 5)
 
 
 def handle_event(event, left, right, up, down):
@@ -58,7 +59,7 @@ while run:
     clock.tick(FPS)
     View.screen.fill(0)
     room_rects = View.draw_room(room, 300)
-    hero_rect = View.draw_hero(hero)
+    hero_rect = View.draw_hero(Hero.get_instance())
     move_hero(left, right, up, down)
     #work on collisions next
     #if hero_rect.collidelist(room_rects):
