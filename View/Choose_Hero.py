@@ -23,9 +23,13 @@ def draw_text(text, x, y):
     img = font.render(text, True, BLACK)
     screen.blit(img, (x,y))
 
-
 def draw_image(img, x, y):
     screen.blit((pygame.image.load(img).convert()), (x,y))
+
+def draw_button(text, x, y):
+    button_text = font.render(text, True, BLACK)
+
+
 while True:
     screen.fill((234,165,108))
     draw_header("Choose Your Hero", 90, 50)
