@@ -7,7 +7,7 @@ SCREEN_HEIGHT = 810
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-header_font = pygame.font.SysFont("Times New Roman", 70, bold = True)
+header_font = pygame.font.Font("Times New Roman", 70, bold = True)
 font = pygame.font.SysFont("Times New Roman", 40)
 pygame.display.set_caption("Choose Your Hero")
 Clock = pygame.time.Clock()
