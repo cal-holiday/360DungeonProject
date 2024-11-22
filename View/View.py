@@ -22,8 +22,8 @@ def draw_room(room, room_size):
     x = room.get_location()[0] * room_size
     y = room.get_location()[1] * room_size
 
-    screen.blit(pygame.image.load('floor.png'), (x,y))
-    corner = pygame.image.load('corner.png')
+    screen.blit(pygame.image.load('../Controller/floor.png'), (x, y))
+    corner = pygame.image.load('../Controller/corner.png')
     corner = pygame.transform.scale(corner, (default_size, default_size))
     screen.blit(corner, (x, y))
     screen.blit(corner, (x + room_size - default_size, y))
