@@ -4,9 +4,8 @@ from Model.CharacterInterface import CharacterInterface
 class Monster(CharacterInterface):
     def __init__(self, name, image, max_hp, agility, element):
         super().__init__(name, image, max_hp, agility, element)
+        self.hp = max_hp
 
-    #if anyone sees this comment, are these necessary or will it work to just go my_monster.attack()?
-    #that should call the parent method inherently right?
     def attack(self):
         return super().attack()
 
@@ -21,3 +20,7 @@ class Monster(CharacterInterface):
             did_heal = True
         return did_heal
 
+    def get_image(self):
+        return self.image
+    def get_hp(self):
+        return self.hp

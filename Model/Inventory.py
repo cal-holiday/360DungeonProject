@@ -48,3 +48,6 @@ class Inventory:
 
     def has_all_pillars(self):
         return len(self.pillars) == 4
+
+    def get_pillars(self):
+        return self.pillars
