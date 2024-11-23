@@ -3,10 +3,22 @@ from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePil
 
 
 class Inventory:
+    __instance = None
+    @staticmethod
+    def get_instance():
+        if Inventory.__instance is not None:
+            return Inventory.__instance
+        else:
+            raise Exception("Inventory does not exist yet!")
+
     def __init__(self):
-        self.health_potions = []
-        self.vision_potions = []
-        self.pillars = []
+        if Inventory.__instance is not None:
+            raise Exception("Inventory already exists!")
+        else:
+            self.health_potions = []
+            self.vision_potions = []
+            self.pillars = []
+            Inventory.__instance = self
 
 
     def add(self, object):
@@ -27,7 +39,7 @@ class Inventory:
 
 
     def drink_potion(self, potion):
-        if len(self.health_potions) > 0 and potion.get_name() is "health":
+        if len(self.health_potions) > 0 and potion.get_name() == "health":
             self.health_potions[0].drink()
             del self.health_potions[0]
         elif len(self.vision_potions) > 0:
@@ -35,4 +47,4 @@ class Inventory:
             del self.vision_potions[0]
 
     def has_all_pillars(self):
-        return len(self.pillars) is 4
+        return len(self.pillars) == 4

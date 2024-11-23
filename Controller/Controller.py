@@ -1,10 +1,13 @@
 import pygame
+
+from Model.Potion import HealthPotion
 from View import View
 from Model.Direction import Direction
 from Model.Element import Element
 from Model.CharacterFactory import CharacterFactory
 from Model.Room import Room
 from Model.Hero import Hero
+from Model.Inventory import Inventory
 
 class ControllerHero(pygame.sprite.Sprite):
     left = False
@@ -20,6 +23,8 @@ class ControllerHero(pygame.sprite.Sprite):
     def move(self):
         hero_x = Hero.get_instance().get_x()
         hero_y = Hero.get_instance().get_y()
+        if self.rect.colliderect(potion_rect):
+            pygame.event.post(pygame.event.Event(GET_POTION))
         if self.down and not self.collide_down():
             Hero.get_instance().set_direction(Direction.SOUTH)
             Hero.get_instance().set_y(hero_y + 5)
@@ -60,6 +65,7 @@ class ControllerHero(pygame.sprite.Sprite):
 
 
 def handle_event(event):
+    global POTION_REMOVED
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             player.down = True
@@ -78,25 +84,35 @@ def handle_event(event):
             player.right = False
         if event.key == pygame.K_a:
             player.left = False
-
+    if event.type == GET_POTION and not POTION_REMOVED:
+        POTION_REMOVED = True
+        Inventory.get_instance().add(room.get_potion())
+        room.set_potion(None)
 
 
 clock = pygame.time.Clock()
 FPS = 60
 run = True
-room = Room(True, True, True, True, (1,1), False, False)
-CharacterFactory.create_hero("TEST", Element.EARTH)
-room_rects = View.draw_room(room, 300)
-print(room_rects)
-Hero.get_instance().set_x(450)
-Hero.get_instance().set_y(450)
-player = ControllerHero()
 
+GET_POTION = pygame.USEREVENT + 1
+
+inventory = Inventory()
+room = Room(True, True, True, True, (1,1), HealthPotion(), None)
+CharacterFactory.create_hero("TEST", Element.EARTH)
+room_rects = View.draw_room(room)
+potion_rect = View.draw_potion(room)
+print(potion_rect)
+Hero.get_instance().set_x(440)
+Hero.get_instance().set_y(440)
+player = ControllerHero()
+POTION_REMOVED = False
 while run:
     clock.tick(FPS)
     View.screen.fill(0)
-    View.draw_room(room, 300)
+    View.draw_room(room)
+    View.draw_potion(room)
     View.draw_hero()
+
 
     player.move()
 
