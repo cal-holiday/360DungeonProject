@@ -1,5 +1,5 @@
 import pygame
-
+from Model.Hero import Hero
 pygame.init()
 
 SCREEN_WIDTH = 900
@@ -11,11 +11,10 @@ pygame.display.set_caption('Dungeon Adventure')
 
 
 
-def draw_hero(hero):
-    hero_img = pygame.image.load(hero.get_image())
-    hero_rect = hero_img.get_rect()
-    screen.blit(hero_img, (hero.get_x(),hero.get_y()))
-    return hero_rect
+def draw_hero():
+    hero_img = pygame.image.load(Hero.get_instance().get_image())
+    screen.blit(hero_img, (Hero.get_instance().get_x(), Hero.get_instance().get_y()))
+
 def draw_room(room, room_size):
     rect_list = []
     default_size = 50
