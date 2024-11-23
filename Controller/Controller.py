@@ -4,74 +4,106 @@ from Model.Direction import Direction
 from Model.Element import Element
 from Model.CharacterFactory import CharacterFactory
 from Model.Room import Room
+from Model.Hero import Hero
 
-room = Room(True, True, True, True, (1,1), False, False)
-hero = CharacterFactory.create_hero("TEST", Element.EARTH)
-def move_hero(left, right, up, down):
-    hero_x = hero.get_x()
-    hero_y = hero.get_y()
-    if down:
-        hero.set_direction(Direction.SOUTH)
-        hero.set_y(hero_y + 5)
-    if up:
-        hero.set_direction(Direction.NORTH)
-        hero.set_y(hero_y - 5)
-    if right:
-        hero.set_direction(Direction.EAST)
-        hero.set_x(hero_x + 5)
-    if left:
-        hero.set_direction(Direction.WEST)
-        hero.set_x(hero_x - 5)
+class ControllerHero(pygame.sprite.Sprite):
+    left = False
+    right = False
+    up = False
+    down = False
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(Hero.get_instance().get_image())
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
+
+    def move(self):
+        hero_x = Hero.get_instance().get_x()
+        hero_y = Hero.get_instance().get_y()
+        if self.down and not self.collide_down():
+            Hero.get_instance().set_direction(Direction.SOUTH)
+            Hero.get_instance().set_y(hero_y + 5)
+        if self.up and not self.collide_up():
+            Hero.get_instance().set_direction(Direction.NORTH)
+            Hero.get_instance().set_y(hero_y - 5)
+        if self.right and not self.collide_right():
+            Hero.get_instance().set_direction(Direction.EAST)
+            Hero.get_instance().set_x(hero_x + 5)
+        if self.left and not self.collide_left():
+            Hero.get_instance().set_direction(Direction.WEST)
+            Hero.get_instance().set_x(hero_x - 5)
+        self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
+
+    def collide_down(self):
+        for rect in room_rects:
+            if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
+                return True
+        return False
+
+    def collide_up(self):
+        for rect in room_rects:
+            if self.rect.colliderect(rect) and self.rect.top >= rect.bottom - 5:
+                return True
+        return False
+
+    def collide_right(self):
+        for rect in room_rects:
+            if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
+                return True
+        return False
+
+    def collide_left(self):
+        for rect in room_rects:
+            if self.rect.colliderect(rect) and self.rect.left >= rect.right - 5:
+                return True
+        return False
 
 
-def handle_event(event, left, right, up, down):
+def handle_event(event):
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
-            down = True
+            player.down = True
         if event.key == pygame.K_w:
-            up = True
+            player.up = True
         if event.key == pygame.K_d:
-            right = True
+            player.right = True
         if event.key == pygame.K_a:
-            left = True
+            player.left = True
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_s:
-            down = False
+            player.down = False
         if event.key == pygame.K_w:
-            up = False
+            player.up = False
         if event.key == pygame.K_d:
-            right = False
+            player.right = False
         if event.key == pygame.K_a:
-            left = False
-    return_list = [left, right, up, down]
-    return return_list
+            player.left = False
+
 
 
 clock = pygame.time.Clock()
 FPS = 60
 run = True
-left = False
-right = False
-up = False
-down = False
+room = Room(True, True, True, True, (1,1), False, False)
+CharacterFactory.create_hero("TEST", Element.EARTH)
+room_rects = View.draw_room(room, 300)
+print(room_rects)
+Hero.get_instance().set_x(450)
+Hero.get_instance().set_y(450)
+player = ControllerHero()
+
 while run:
     clock.tick(FPS)
     View.screen.fill(0)
-    room_rects = View.draw_room(room, 300)
-    hero_rect = View.draw_hero(hero)
-    move_hero(left, right, up, down)
-    #work on collisions next
-    #if hero_rect.collidelist(room_rects):
+    View.draw_room(room, 300)
+    View.draw_hero()
 
+    player.move()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        directions = handle_event(event, left, right, up, down)
-        left = directions[0]
-        right = directions[1]
-        up = directions[2]
-        down = directions[3]
+        handle_event(event)
     pygame.display.update()
 pygame.quit()
 
