@@ -6,6 +6,7 @@ SCREEN_WIDTH = 810
 SCREEN_HEIGHT = 810
 FONT = "8-bit-pusab.ttf"
 BLACK = (0,0,0)
+WHITE = (255,255,255)
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -55,58 +56,22 @@ def draw_button(img, text, x, y, width, height):
 
     return False
 
-def draw_text_field(x, y, width, height, placeholder):
-    # Initial text and state
-    text = ""
-    active = False  # Tracks if the text field is active (clicked on)
-    placeholder_active = True  # Tracks if the placeholder text is displayed
+def draw_text_field(x, y, width, height, box_color, border_color, placeholder, active, text):
+    # Draw the text field box
+    pygame.draw.rect(screen, box_color, (x, y, width, height), border_radius=5)
+    pygame.draw.rect(screen, border_color if active else (200, 200, 200), (x, y, width, height), 2)
 
-    while True:
-        # Event handling
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # Check if the text field is clicked
-                if x < pygame.mouse.get_pos()[0] < x + width and y < pygame.mouse.get_pos()[1] < y + height:
-                    active = True
-                    placeholder_active = False  # Hide placeholder when clicked
-                else:
-                    active = False  # Deactivate if clicked outside
-
-            if event.type == pygame.KEYDOWN and active:
-                if event.key == pygame.K_BACKSPACE:
-                    # Remove the last character
-                    text = text[:-1]
-                elif len(text) < 20:  # Limit character input
-                    text += event.unicode
-
-        # Draw the text field box
-        pygame.draw.rect(screen, (255,255,255), (x, y, width, height), border_radius=5)
-
-        # Render text or placeholder
-        text_surface = font.render(text if not placeholder_active else placeholder, True, BLACK if not placeholder_active else (150, 150, 150))
-        screen.blit(text_surface, (x + 10, y + (height // 2 - text_surface.get_height() // 2)))
-
-        # Highlight the box if active
-        if active:
-            pygame.draw.rect(screen, (0, 0, 0), (x, y, width, height), 2)
-
-        # Update the display
-        pygame.display.update()
-
-        # Return the entered text when Enter is pressed
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and active:
-            return text
+    # Render the placeholder or user text
+    display_text = placeholder if not text and not active else text
+    text_surface = font.render(display_text, True, BLACK if text or active else (150, 150, 150))
+    screen.blit(text_surface, (x + 10, y + (height // 2 - text_surface.get_height() // 2)))
 
 while True:
     screen.fill((234,165,108))
     draw_scaled_image("banner.png", 45, 20, 700, 150)
     draw_header("Choose Your Hero", 90, 50)
 
-    draw_button("button.png", "confirm", 500, 200, 200,80)
+    draw_button("button.png", "confirm", 500, 230, 200,80)
 
     draw_text("Health:", 575, 400)
     draw_text("Agility:",570, 475)
@@ -121,6 +86,8 @@ while True:
     draw_image("earth_hero.png", 350, 400)
     draw_text("Earth Hero", 300, 475)
 
+    draw_text_field(100, 250, 300, 50, WHITE,BLACK,
+                    "Name Your Hero", False, "" )
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
