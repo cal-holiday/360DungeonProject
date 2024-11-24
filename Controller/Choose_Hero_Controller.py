@@ -31,17 +31,18 @@ class ChooseHeroController:
 
             # Draw the background and UI
             View.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
-            View.draw_scaled_image("banner.png", 45, 20, 700, 150)
-            View.draw_header("Choose Your Hero", 90, 50)
+            View.draw_scaled_image("banner.png", 55, 20, 700, 150)
+            View.draw_header("Choose Your Hero", 105, 50)
 
-            # Draw the text field
+            # If no confirmation prompt, draw the text field and stats
             if not self.confirmation_prompt:
-                View.draw_text_field(90, 200, 375, 50, "Name Your Hero", self.text_field_active, self.hero_name)
+                # Draw the text field centered
+                View.draw_text_field(218, 190, 375, 50, "Name Your Hero", self.text_field_active, self.hero_name)
 
-            # Draw current stats (display selected hero stats if a hero is selected, or hover stats if no hero selected)
-            View.draw_text(f"Element: {self.current_stats['element']}", 245, 300)
-            View.draw_text(f"Health: {self.current_stats['health']}", 265, 375)
-            View.draw_text(f"Agility: {self.current_stats['agility']}", 258, 450)
+                # Draw current stats centered
+                View.draw_text(f"Element: {self.current_stats['element']}", 275, 270)
+                View.draw_text(f"Health: {self.current_stats['health']}", 295, 330)
+                View.draw_text(f"Agility: {self.current_stats['agility']}", 288, 380)
 
             # Draw hero buttons and highlight if hovered or selected
             for hero, data in self.heroes.items():
@@ -73,12 +74,15 @@ class ChooseHeroController:
 
             # Draw the Confirm button if visible and no confirmation prompt
             if self.confirm_button_visible and not self.confirmation_prompt:
-                View.draw_button("button.png", "confirm", 490, 200, 200, 50)
+                # Centered confirm button
+                confirm_button_rect = pygame.Rect(305, 450, 200, 50)
+                View.draw_button("button.png", "confirm", confirm_button_rect.x, confirm_button_rect.y, confirm_button_rect.width, confirm_button_rect.height)
 
             # Handle the confirmation prompt
             if self.confirmation_prompt:
+                # Centered background box for confirmation
                 pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
-                View.draw_text("Are you sure?", 280, 325)
+                View.draw_text("Are you sure?", 280, 325)  # Centered "Are you sure?"
                 View.draw_button("button.png", "Yes", 250, 400, 100, 50)
                 View.draw_button("button.png", "No", 450, 400, 100, 50)
 
@@ -112,7 +116,9 @@ class ChooseHeroController:
                             self.text_field_active = False
 
                         # Check if the Confirm button is clicked
-                        if self.confirm_button_visible and pygame.Rect(490, 200, 200, 50).collidepoint(event.pos):
+                        if self.confirm_button_visible and pygame.Rect(305, 450, 200, 50).collidepoint(event.pos):
+                            # Hide the stats and show the confirmation prompt
+                            self.current_stats = {"element": "---", "health": "---", "agility": "---"}
                             self.confirmation_prompt = True  # Show the confirmation prompt
                             self.confirm_button_visible = False  # Hide the confirm button
 
@@ -121,8 +127,6 @@ class ChooseHeroController:
                         if event.key == pygame.K_BACKSPACE:
                             self.hero_name = self.hero_name[:-1]
                             self.confirm_button_visible = bool(self.hero_name and self.selected_hero)
-                        elif event.key == pygame.K_RETURN:
-                            print(f"Hero Name Confirmed: {self.hero_name}")
                         else:
                             self.hero_name += event.unicode
                             self.confirm_button_visible = bool(self.hero_name and self.selected_hero)
@@ -136,6 +140,12 @@ class ChooseHeroController:
                         elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                             self.confirmation_prompt = False  # Close the prompt
                             self.confirm_button_visible = True  # Re-show the confirm button
+                            # Reset stats to the selected hero's values if user presses "No"
+                            self.current_stats = {
+                                "element": self.heroes[self.selected_hero]["element"],
+                                "health": self.heroes[self.selected_hero]["health"],
+                                "agility": self.heroes[self.selected_hero]["agility"]
+                            }
 
             # Update the display
             pygame.display.update()

@@ -62,6 +62,11 @@ def draw_text_field(x, y, width, height, placeholder, active, text):
     # Render the placeholder or user text
     display_text = placeholder if not text and not active else text
     text_surface = font.render(display_text, True, BLACK if text or active else (150, 150, 150))
-    screen.blit(text_surface, (x + 10, y + (height // 2 - text_surface.get_height() // 2)))
+
+    # Center the text both horizontally and vertically within the text field
+    text_x = x + (width - text_surface.get_width()) // 2
+    text_y = y + (height - text_surface.get_height()) // 2
+    screen.blit(text_surface, (text_x, text_y))
+
 
 
