@@ -9,7 +9,7 @@ BLACK = (0,0,0)
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-header_font = pygame.font.Font(FONT, 40)
+header_font = pygame.font.Font(FONT, 25)
 font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Main Menu")
 
@@ -55,21 +55,4 @@ def draw_button(img, text, x, y, width, height):
 
     return False
 
-while True:
-    screen.fill((234,165,108))
-    draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
-    draw_scaled_image("banner.png",155,50,500,150)
-    draw_header("Dungeon Adventure", 70, 50)
-    draw_button("mainMenuButton.png","New Game",300,300,210,50)
-    draw_button("mainMenuButton.png","Load Game",300,370,210,50)
-    draw_button("mainMenuButton.png","How to play",300,440,210,50)
-    draw_button("mainMenuButton.png","Quit",300,510,210,50)
 
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-
-    pygame.display.update()
-    Clock.tick(60)
