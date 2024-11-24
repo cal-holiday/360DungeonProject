@@ -85,7 +85,7 @@ clock = pygame.time.Clock()
 FPS = 60
 run = True
 room = Room(True, True, True, True, (1,1), False, False)
-CharacterFactory.create_hero("TEST", Element.EARTH)
+CharacterFactory.create_hero("TEST", Element.FIRE)
 room_rects = View.draw_room(room, 300)
 print(room_rects)
 Hero.get_instance().set_x(450)

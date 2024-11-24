@@ -58,6 +58,7 @@ def draw_button(img, text, x, y, width, height):
 while True:
     screen.fill((234,165,108))
     draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
+    draw_scaled_image("banner.png",155,50,500,150)
     draw_header("Dungeon Adventure", 70, 50)
     draw_button("mainMenuButton.png","New Game",300,300,210,50)
     draw_button("mainMenuButton.png","Load Game",300,370,210,50)
