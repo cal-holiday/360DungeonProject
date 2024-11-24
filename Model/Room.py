@@ -44,16 +44,12 @@ class Room:
             print("Wall value is null.")
 
     def set_monster(self,monster):
-        if monster is not None:
-            self.monster = monster
-        else:
-            print("Monster value is null.")
+        self.monster = monster
+
 
     def set_potion(self,potion):
-        if potion is not None:
-            self.potion = potion
-        else:
-            print("Potion value is null.")
+        self.potion = potion
+
 
     def set_location(self,location):
         if location is not None:

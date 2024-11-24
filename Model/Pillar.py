@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Model.Hero import Hero
 
 
 class Pillar(ABC):
@@ -12,10 +13,9 @@ class Pillar(ABC):
     @param image for that pillar (GUI)
     @param hero reference so pillars can give hero perks
     """
-    def __init__(self, name, image, hero):
+    def __init__(self, name):
         self.name = name
-        self.set_image(image)
-        self.set_hero(hero)
+        self.image = None
 
 
     """
@@ -35,32 +35,17 @@ shouldn't need this because I edited constructors for subclasses to pass in name
     """
 
 
-    def set_image(self, image):
-        if image is not None:
-            self.image = image
-        else:
-            raise ValueError("The image for this pillar is null")
-    def set_hero(self, hero):
-        if hero is not None:
-            self.hero = hero
-        else:
-            raise ValueError("The hero for this pillar is null")
-
-
     def get_name(self):
         return self.name
 
     def get_image(self):
         return self.image
 
-    def get_hero(self):
-        return self.hero
-
     """
     Every time hero finds pillar it fully heals the hero
     """
     def restore_health(self):
-        self.hero.set_hp(self.hero.get_max_hp())
+        Hero.get_instance().set_hp(Hero.get_instance().get_max_hp())
 
     """
     Abstract method that all subclasses have to implement,
@@ -76,41 +61,45 @@ shouldn't need this because I edited constructors for subclasses to pass in name
 Abstraction pillar adds +5 damage to basic and special attack
 """
 class AbstractionPillar(Pillar):
-    def __init__(self,image,hero):
-        super().__init__("abstraction", image, hero)
+    def __init__(self):
+        super().__init__("abstraction")
+        self.image = "abstraction_pillar.png"
     def enhance(self):
         self.restore_health()
-        self.hero.set_damage_mod(self.hero.get_damage_mod() + 5)
+        Hero.get_instance().set_damage_mod(Hero.get_instance().get_damage_mod() + 5)
 
 
 """
 Polymorphism pillar increases hero's max health by 10
 """
 class PolymorphismPillar(Pillar):
-    def __init__(self,image,hero):
-        super().__init__("polymorphism", image, hero)
+    def __init__(self):
+        super().__init__("polymorphism")
+        self.image = "polymorphism_pillar.png"
     def enhance(self):
         self.restore_health()
-        self.hero.set_max_hp(self.hero.get_max_hp() + 10)
+        Hero.get_instance().set_max_hp(Hero.get_instance().get_max_hp() + 10)
 
 
 """
 Inheritance pillar does +2 hit chance
 """
 class InheritancePillar(Pillar):
-    def __init__(self,image,hero):
-        super().__init__("inheritance", image, hero)
+    def __init__(self):
+        super().__init__("inheritance")
+        self.image = "inheritance_pillar.png"
     def enhance(self):
         self.restore_health()
-        self.hero.set_attack_mod(self.hero.get_attack_mod() + 2)
+        Hero.get_instance().set_attack_mod(Hero.get_instance().get_attack_mod() + 2)
 
 """
 Encapsulation pillar adds +4 to hero's agility stat
 """
 class EncapsulationPillar(Pillar):
-    def __init__(self,image,hero):
-        super().__init__("encapsulation", image, hero)
+    def __init__(self):
+        super().__init__("encapsulation")
+        self.image = "encapsulation_pillar.png"
     def enhance(self):
         self.restore_health()
-        self.hero.set_agility(self.hero.get_agility() + 4)
+        Hero.get_instance().set_agility(Hero.get_instance().get_agility() + 4)
 

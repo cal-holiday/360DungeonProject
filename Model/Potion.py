@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Model.Hero import Hero
 
 """
 The abstract potion class for both the health and 
@@ -12,26 +13,9 @@ class Potion(ABC):
     @param image is the image for the potion
     """
 
-    def __init__(self, name, image, hero):
+    def __init__(self, name):
         self.name = name
-        self.set_image(image)
-        self.set_hero(hero)
-
-    """
-    setter method for the image of the potion
-    @param image the image for the potion
-    """
-    def set_image(self, image):
-        if image is not None:
-            self.image = image
-        else:
-            raise ValueError("Image string is null")
-
-    def set_hero(self, hero):
-        if hero is not None:
-            self.hero = hero
-        else:
-            raise ValueError("Hero is null")
+        self.image = None
 
     """
     return name of potion i.e health or vision
@@ -61,13 +45,14 @@ The healthPotion child class of the Potion ABC
 """
 
 class HealthPotion(Potion):
-    def __init__(self, image, hero):
-        super().__init__("health", image, hero)
+    def __init__(self):
+        super().__init__("health")
+        self.image = "health_potion.png"
     def drink(self):
-        if self.hero.get_hp() + 10 > self.hero.get_max_hp():
-            self.hero.set_hp(self.hero.get_max_hp())
+        if Hero.get_instance().get_hp() + 10 > Hero.get_instance().get_max_hp():
+            Hero.get_instance().set_hp(Hero.get_instance().get_max_hp())
         else:
-            self.hero.set_hp(self.hero.get_hp() + 10)
+            Hero.get_instance().set_hp(Hero.get_instance().get_hp() + 10)
 
 """
 the vision potion child class of the Potion ABC
@@ -75,7 +60,8 @@ the vision potion child class of the Potion ABC
 
 
 class VisionPotion(Potion):
-    def __init__(self, image, hero):
-        super().__init__("vision", image, hero)
+    def __init__(self):
+        super().__init__("vision")
+        self.image = "vision_potion.png"
     def drink(self):
-        self.hero.set_vision_status(True)
+        Hero.get_instance().set_vision_status(True)
