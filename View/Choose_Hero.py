@@ -1,5 +1,4 @@
 import pygame
-from sys import exit
 pygame.init()
 
 SCREEN_WIDTH = 810
@@ -14,7 +13,7 @@ header_font = pygame.font.Font(FONT, 40)
 font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Choose Your Hero")
 
-Clock = pygame.time.Clock()
+
 
 def draw_header(text, x,y):
     img = header_font.render(text, True, BLACK)
@@ -56,43 +55,14 @@ def draw_button(img, text, x, y, width, height):
 
     return False
 
-def draw_text_field(x, y, width, height, box_color, border_color, placeholder, active, text):
+def draw_text_field(x, y, width, height, placeholder, active, text):
     # Draw the text field box
-    pygame.draw.rect(screen, box_color, (x, y, width, height), border_radius=5)
-    pygame.draw.rect(screen, border_color if active else (200, 200, 200), (x, y, width, height), 2)
+    pygame.draw.rect(screen, WHITE, (x, y, width, height), border_radius=5)
+    pygame.draw.rect(screen, WHITE if active else (200, 200, 200), (x, y, width, height), 2)
 
     # Render the placeholder or user text
     display_text = placeholder if not text and not active else text
     text_surface = font.render(display_text, True, BLACK if text or active else (150, 150, 150))
     screen.blit(text_surface, (x + 10, y + (height // 2 - text_surface.get_height() // 2)))
 
-while True:
-    screen.fill((234,165,108))
-    draw_scaled_image("banner.png", 45, 20, 700, 150)
-    draw_header("Choose Your Hero", 90, 50)
 
-    draw_button("button.png", "confirm", 500, 230, 200,80)
-
-    draw_text("Health:", 575, 400)
-    draw_text("Agility:",570, 475)
-    draw_text("Element:", 555, 550)
-
-    draw_image("fire_hero.png", 100, 400)
-    draw_text("Fire Hero", 50, 475)
-    draw_image("water_hero.png", 350, 600)
-    draw_text("Water Hero", 300, 675)
-    draw_image("air_hero.png", 100, 600)
-    draw_text("Air Hero", 50, 675)
-    draw_image("earth_hero.png", 350, 400)
-    draw_text("Earth Hero", 300, 475)
-
-    draw_text_field(100, 250, 300, 50, WHITE,BLACK,
-                    "Name Your Hero", False, "" )
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-
-    pygame.display.update()
-    Clock.tick(60)
