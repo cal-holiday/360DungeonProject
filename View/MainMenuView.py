@@ -59,10 +59,10 @@ while True:
     screen.fill((234,165,108))
     draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
     draw_header("Dungeon Adventure", 70, 50)
-    draw_button("mainMenuButton.png","New Game",300,300,210,50)
-    draw_button("mainMenuButton.png","Load Game",300,370,210,50)
-    draw_button("mainMenuButton.png","How to play",300,440,210,50)
-    draw_button("mainMenuButton.png","Quit",300,510,210,50)
+    draw_button("button.png","New Game",300,300,210,50)
+    draw_button("button.png","Load Game",300,370,210,50)
+    draw_button("button.png","How to play",300,440,210,50)
+    draw_button("button.png","Quit",300,510,210,50)
 
 
     for event in pygame.event.get():
