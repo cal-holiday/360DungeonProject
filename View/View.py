@@ -93,17 +93,30 @@ def draw_room(room):
         screen.blit(horz_wall, (x + ROOM_SIZE - 3*DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE))
         s_wall = pygame.Rect(x + DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE, ROOM_SIZE - 2*DEFAULT_SIZE, DEFAULT_SIZE)
         rect_list.append(s_wall)
-
     return rect_list
+
+def draw_exit(room):
+    if room.has_exit and Inventory.get_instance().has_all_pillars():
+        x = room.get_location()[0] * ROOM_SIZE
+        y = room.get_location()[1] * ROOM_SIZE
+        door = pygame.image.load("exit_door.png")
+        door_img = pygame.transform.scale(door, (DEFAULT_SIZE*2, DEFAULT_SIZE*2))
+        door_rect = door_img.get_rect()
+        door_rect.topleft = (x + (ROOM_SIZE/2) -45, y + (ROOM_SIZE/2)-45)
+        screen.blit(door_img, (x + (ROOM_SIZE / 2) -45, y + (ROOM_SIZE / 2)-45))
+        return door_rect
+    else:
+        return None
+
 def draw_potion(room):
     x = room.get_location()[0] * ROOM_SIZE
     y = room.get_location()[1] * ROOM_SIZE
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
-        img = pygame.image.load(potion)
-        potion_rect = img.get_rect()
-        potion_rect.topleft = (x + (ROOM_SIZE/2) -21, y + (ROOM_SIZE/2) -18)
-        screen.blit(img, (x + (ROOM_SIZE/2) -21, y + (ROOM_SIZE/2) -18))
+        potion_img = pygame.image.load(potion)
+        potion_rect = (potion_img.get_rect())
+        potion_rect.topleft = (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30)
+        screen.blit(potion_img, (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30))
         return potion_rect
     else:
         return None

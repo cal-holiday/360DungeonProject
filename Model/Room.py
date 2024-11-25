@@ -14,6 +14,7 @@ class Room:
         self.set_location(location)
         self.has_visited = False
         self.hero_has_visited = False
+        self.has_exit = False
 
     """
     setters for the instance fields
@@ -68,6 +69,12 @@ class Room:
             self.hero_has_visited = visited
         else:
             print("Visited status needs to be a boolean.")
+
+    def set_has_exit(self, exit_door):
+        if isinstance(exit_door, bool) and exit_door is not None:
+            self.has_exit = exit_door
+        else:
+            print("Exit status needs to be a boolean.")
 
     #getters for room
     def get_nwall(self):

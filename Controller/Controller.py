@@ -27,6 +27,8 @@ class ControllerHero(pygame.sprite.Sprite):
             pygame.event.post(pygame.event.Event(GET_POTION))
         if monster_rect is not None and self.rect.colliderect(monster_rect):
             pygame.event.post(pygame.event.Event(MONSTER_BATTLE))
+        if exit_rect is not None and self.rect.colliderect(exit_rect):
+            pygame.event.post(pygame.event.Event(EXIT_DUNGEON))
         if self.down and not self.collide_down():
             Hero.get_instance().set_direction(Direction.SOUTH)
             Hero.get_instance().set_y(hero_y + 5)
@@ -95,6 +97,8 @@ def handle_event(event):
         MONSTER_DEFEATED = True
         #jump to battle here
         room.set_monster(None)
+    if event.type == EXIT_DUNGEON:
+        print("END Game")
 
 
 clock = pygame.time.Clock()
@@ -103,29 +107,34 @@ run = True
 
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
+EXIT_DUNGEON = pygame.USEREVENT + 3
 
 monster = CharacterFactory.create_monster(Element.EARTH)
 room = Room(False, False, False, False, (1,1), None, monster)
+room.set_has_exit(True)
 CharacterFactory.create_hero("TEST", Element.AIR)
 room_rects = View.draw_room(room)
 potion_rect = View.draw_potion(room)
 monster_rect = View.draw_monster(room)
+
 inventory = Inventory()
 inventory.add(AbstractionPillar())
 inventory.add(PolymorphismPillar())
 inventory.add(InheritancePillar())
-inventory.add(EncapsulationPillar())
+
 Hero.get_instance().set_x(10)
 Hero.get_instance().set_y(10)
 player = ControllerHero(View.draw_hero())
 POTION_REMOVED = False
 MONSTER_DEFEATED = False
+exit_rect = View.draw_exit(room)
 while run:
     clock.tick(FPS)
     View.screen.fill(0)
     View.draw_room(room)
     View.draw_potion(room)
     View.draw_monster(room)
+    View.draw_exit(room)
     View.draw_hero()
 
 
