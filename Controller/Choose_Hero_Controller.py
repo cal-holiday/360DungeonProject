@@ -1,9 +1,9 @@
 import pygame
-from View import Choose_Hero as View
+
+from View import Choose_Hero_View as View
 
 class ChooseHeroController:
     def __init__(self):
-        pygame.init()
         self.isRunning = True
         self.clock = pygame.time.Clock()
         self.hero_name = ""
