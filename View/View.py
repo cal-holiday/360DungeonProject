@@ -138,7 +138,13 @@ def draw_monster(room):
 
 def draw_toolbar():
     image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE))
-    image.fill()
+    image.fill((0,0,0))
     rect = image.get_rect()
     rect.topleft = (0, 0)
+    inventory_button = pygame.Rect(0,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
+    map_button = pygame.Rect(0, DEFAULT_SIZE * 2, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    save_button = pygame.Rect(0, DEFAULT_SIZE * 4, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    help_button = pygame.Rect(0, 0, DEFAULT_SIZE * 6, DEFAULT_SIZE)
+    quit_button = pygame.Rect(0, 0, DEFAULT_SIZE * 8, DEFAULT_SIZE)
+
 
