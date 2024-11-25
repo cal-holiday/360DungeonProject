@@ -137,21 +137,31 @@ def draw_monster(room):
         return None
 
 def draw_toolbar():
-    font = pygame.font.Font(FONT, 20)
-    rect_list = []
-    image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE))
-    image.fill((0,0,0))
+    font = pygame.font.Font("8-bit-pusab.ttf", 15)
+
+    image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE/1.5))
+    image.fill((0,255,255))
     rect = image.get_rect()
     rect.topleft = (0, 0)
-    inventory_button = pygame.Rect(0,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
-    map_button = pygame.Rect(0, DEFAULT_SIZE * 2, DEFAULT_SIZE * 2, DEFAULT_SIZE)
-    save_button = pygame.Rect(0, DEFAULT_SIZE * 4, DEFAULT_SIZE * 2, DEFAULT_SIZE)
-    help_button = pygame.Rect(0, 0, DEFAULT_SIZE * 6, DEFAULT_SIZE)
-    quit_button = pygame.Rect(0, 0, DEFAULT_SIZE * 8, DEFAULT_SIZE)
+    screen.blit(image, rect)
+    inventory_button = pygame.Rect(5,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
+    map_button = pygame.Rect(DEFAULT_SIZE * 4, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    save_button = pygame.Rect(DEFAULT_SIZE * 6, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    help_button = pygame.Rect(DEFAULT_SIZE * 8, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    quit_button = pygame.Rect(DEFAULT_SIZE * 10, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    rect_list = [inventory_button, map_button, save_button, help_button, quit_button]
 
-    text_surface = font.render(text, True, (255,255,255))
-    screen.blit()
-    screen.blit()
+    inventory_surface = font.render("Inventory", True, (255,255,255))
+    map_surface = font.render("Map", True, (255, 255, 255))
+    save_surface = font.render("Save", True, (255, 255, 255))
+    help_surface = font.render("Help", True, (255, 255, 255))
+    quit_surface = font.render("Quit", True, (255, 255, 255))
+
+    screen.blit(inventory_surface, inventory_button)
+    screen.blit(map_surface, map_button)
+    screen.blit(save_surface, save_button)
+    screen.blit(help_surface, help_button)
+    screen.blit(quit_surface, quit_button)
 
     # Return the button rectangle for external use
     return rect_list

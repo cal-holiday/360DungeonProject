@@ -116,6 +116,7 @@ CharacterFactory.create_hero("TEST", Element.AIR)
 room_rects = View.draw_room(room)
 potion_rect = View.draw_potion(room)
 monster_rect = View.draw_monster(room)
+toolbar_rects = View.draw_toolbar()
 
 inventory = Inventory()
 inventory.add(AbstractionPillar())
@@ -136,6 +137,7 @@ while run:
     View.draw_monster(room)
     View.draw_exit(room)
     View.draw_hero()
+    View.draw_toolbar()
 
 
     player.move()
