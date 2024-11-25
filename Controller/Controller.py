@@ -71,6 +71,7 @@ class ControllerHero(pygame.sprite.Sprite):
 def handle_event(event):
     global POTION_REMOVED
     global MONSTER_DEFEATED
+    global RUN
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             player.down = True
@@ -99,11 +100,27 @@ def handle_event(event):
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        # Check if a hero is clicked
+        for i in range(len(toolbar_rects)):
+            if toolbar_rects[i].collidepoint(event.pos):
+                if i == 0:
+                    print("Inventory")
+                elif i == 1:
+                    print("Map")
+                elif i == 2:
+                    print("Save")
+                elif i == 3:
+                    print("Help")
+                else:
+                    RUN = False
+
+
 
 
 clock = pygame.time.Clock()
 FPS = 60
-run = True
+RUN = True
 
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
@@ -129,7 +146,7 @@ player = ControllerHero(View.draw_hero())
 POTION_REMOVED = False
 MONSTER_DEFEATED = False
 exit_rect = View.draw_exit(room)
-while run:
+while RUN:
     clock.tick(FPS)
     View.screen.fill(0)
     View.draw_room(room)
@@ -144,7 +161,7 @@ while run:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            RUN = False
         handle_event(event)
     pygame.display.update()
 pygame.quit()
