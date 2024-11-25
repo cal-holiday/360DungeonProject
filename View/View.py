@@ -137,6 +137,8 @@ def draw_monster(room):
         return None
 
 def draw_toolbar():
+    font = pygame.font.Font(FONT, 20)
+    rect_list = []
     image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE))
     image.fill((0,0,0))
     rect = image.get_rect()
@@ -147,11 +149,10 @@ def draw_toolbar():
     help_button = pygame.Rect(0, 0, DEFAULT_SIZE * 6, DEFAULT_SIZE)
     quit_button = pygame.Rect(0, 0, DEFAULT_SIZE * 8, DEFAULT_SIZE)
 
-    text_surface = font.render(text, True, WHITE)
-    text_rect = text_surface.get_rect(center=button_rect.center)
-    screen.blit(scaled_img, button_rect)
-    screen.blit(text_surface, text_rect)
+    text_surface = font.render(text, True, (255,255,255))
+    screen.blit()
+    screen.blit()
 
     # Return the button rectangle for external use
-    return button_rect
+    return rect_list
 
