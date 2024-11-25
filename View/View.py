@@ -38,9 +38,11 @@ def draw_room(room):
 
     rect_list = []
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE
 
-    screen.blit(pygame.image.load('floor.png'), (x, y))
+    floor = pygame.image.load('floor.png')
+    floor_img = pygame.transform.scale(floor, (ROOM_SIZE - 5, ROOM_SIZE - 5))
+    screen.blit(floor_img, (x, y))
     corner = pygame.image.load('corner.png')
     corner = pygame.transform.scale(corner, (DEFAULT_SIZE, DEFAULT_SIZE))
     screen.blit(corner, (x, y))
@@ -98,7 +100,7 @@ def draw_room(room):
 def draw_exit(room):
     if room.has_exit and Inventory.get_instance().has_all_pillars():
         x = room.get_location()[0] * ROOM_SIZE
-        y = room.get_location()[1] * ROOM_SIZE
+        y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE
         door = pygame.image.load("exit_door.png")
         door_img = pygame.transform.scale(door, (DEFAULT_SIZE*2, DEFAULT_SIZE*2))
         door_rect = door_img.get_rect()
@@ -110,7 +112,7 @@ def draw_exit(room):
 
 def draw_potion(room):
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
         potion_img = pygame.image.load(potion)
@@ -123,7 +125,7 @@ def draw_potion(room):
 
 def draw_monster(room):
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE
     if room.get_monster() is not None:
         monster = room.get_monster()
         monster_img = monster.get_image()
@@ -134,4 +136,9 @@ def draw_monster(room):
     else:
         return None
 
+def draw_toolbar():
+    image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE))
+    image.fill()
+    rect = image.get_rect()
+    rect.topleft = (0, 0)
 
