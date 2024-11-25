@@ -147,4 +147,11 @@ def draw_toolbar():
     help_button = pygame.Rect(0, 0, DEFAULT_SIZE * 6, DEFAULT_SIZE)
     quit_button = pygame.Rect(0, 0, DEFAULT_SIZE * 8, DEFAULT_SIZE)
 
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect(center=button_rect.center)
+    screen.blit(scaled_img, button_rect)
+    screen.blit(text_surface, text_rect)
+
+    # Return the button rectangle for external use
+    return button_rect
 
