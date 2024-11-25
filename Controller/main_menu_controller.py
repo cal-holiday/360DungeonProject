@@ -12,9 +12,9 @@ def run():
         new_game = main_menu_view.draw_button("button.png", "New Game", 300, 300, 210, 50)
         load_game = main_menu_view.draw_button("button.png", "Load Game", 300, 370, 210, 50)
         rules = main_menu_view.draw_button("button.png", "How to play", 300, 440, 210, 50)
-        quit = main_menu_view.draw_button("button.png", "Quit", 300, 510, 210, 50)
+        quit_game = main_menu_view.draw_button("button.png", "Quit", 300, 510, 210, 50)
 
-        if(quit):
+        if(quit_game):
             run = False
 
         if(new_game):
@@ -25,3 +25,5 @@ def run():
                 exit()
 
         pygame.display.update()
+
+run()
