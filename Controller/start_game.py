@@ -1,7 +1,5 @@
 import pygame
-from Controller import main_menu_controller, Choose_Hero_Controller
-from Model.CharacterFactory import CharacterFactory
-from Model.Element import Element
+from Controller import main_menu_controller
 
 
 class StartGame:
