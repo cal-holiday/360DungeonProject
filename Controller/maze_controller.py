@@ -34,8 +34,8 @@ def run(screen):
 
     Hero.get_instance().set_x(10)
     Hero.get_instance().set_y(10)
-    player = self.ControllerHero(maze_view.draw_hero(screen))
-    controller_room = self.ControllerRoom(current_room)
+    player = ControllerHero(maze_view.draw_hero(screen))
+    controller_room = ControllerRoom(screen, current_room)
     while RUN:
         clock.tick(fps)
         screen.fill(0)
@@ -46,7 +46,7 @@ def run(screen):
         maze_view.draw_hero(screen)
         maze_view.draw_toolbar(screen)
 
-        player.move()
+        player.move(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
