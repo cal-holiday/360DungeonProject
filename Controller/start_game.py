@@ -10,5 +10,4 @@ class StartGame:
     SCREEN_HEIGHT = 810
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    #main_menu_controller.run(screen)
-    Choose_Hero_Controller.run(screen)
+    main_menu_controller.run(screen)

@@ -37,12 +37,16 @@ class Inventory:
         else:
             raise ValueError("Cannot add null object to inventory")
 
+    def has_health_potion(self):
+        return len(self.health_potions) > 0
 
-    def drink_potion(self, potion):
-        if len(self.health_potions) > 0 and potion.get_name() == "health":
+    def drink_health_potion(self):
+        if len(self.health_potions) > 0:
             self.health_potions[0].drink()
             del self.health_potions[0]
-        elif len(self.vision_potions) > 0:
+
+    def drink_vision_potion(self, potion):
+        if len(self.vision_potions) > 0:
             self.vision_potions[0].drink()
             del self.vision_potions[0]
 
