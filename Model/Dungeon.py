@@ -43,6 +43,7 @@ class Dungeon:
             if not south.get_has_visited():
                 neighbors.append(south)
         return choice(neighbors) if neighbors else None
+
     def remove_walls(self, current, next_room):
         curr_location = current.get_location()
         next_location = next_room.get_location()
@@ -65,16 +66,29 @@ class Dungeon:
             current.set_swall(False)
             next_room.set_nwall(False)
         #next_room.set_has_visited(True)
+    def check_all_rooms(self):
+        for i in range(len(self.room_array)):
+            for j in range(len(self.room_array[i])):
+                if not self.room_array[i][j].has_visited:
+                    return False
+        return True
+    def room_has_path(self, room):
+        if room.get_nwall() and room.get_nwall and room.get_ewall() and room.get_wwall():
+            return False
+        else:
+            return True
 
 
     def generate_maze(self):
         current_room = self.room_array[0][0]
         stack = []
         break_count = 1
-        while break_count != (self.size * self.size):
+        while not self.check_all_rooms(): #and not self.room_has_path(current_room):#break_count != (self.size * self.size):
             current_room.set_has_visited(True)
+            print(f"Visiting Room: {current_room.get_location()}, Break Count: {break_count}")
             next_room = self.check_neighbors(current_room)
             if next_room is not None:
+                print(f"Moving to Room: {next_room.get_location()}")
                 next_room.set_has_visited(True)
                 break_count += 1
                 stack.append(current_room)
@@ -82,10 +96,15 @@ class Dungeon:
                 current_room = next_room
             elif stack:
                 current_room = stack.pop()
+                print(f"Backtracking to Room: {current_room.get_location()}")
         return self.room_array
 
 thing = Dungeon(6)
 array = thing.generate_maze()
+for i in range(len(array)):
+    for j in range(len(array[i])):
+        if array[i][j].has_visited:
+            print(f"Room {array[i][j].get_location()} was visited")
 run = True
 while run:
     View.screen.fill(0)

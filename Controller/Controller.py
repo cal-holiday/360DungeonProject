@@ -165,7 +165,3 @@ while RUN:
         handle_event(event)
     pygame.display.update()
 pygame.quit()
-
-
-
-
