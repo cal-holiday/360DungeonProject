@@ -22,7 +22,7 @@ confirmation_prompt = False
 # Confirmation state
 confirmation_result = False
 
-def run(self, screen):
+def run(screen):
     while isRunning:
         View.pass_screen(screen)
         mouse_pos = pygame.mouse.get_pos()
