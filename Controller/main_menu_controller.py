@@ -5,7 +5,6 @@ import pygame
 def run():
     is_running = True
     while is_running:
-
         main_menu_view.screen.fill((234, 165, 108))
         main_menu_view.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
         main_menu_view.draw_scaled_image("banner.png", 155, 80, 500, 150)
