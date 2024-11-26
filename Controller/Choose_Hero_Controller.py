@@ -1,10 +1,13 @@
 import pygame
 
+from Controller import maze_controller
+from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
+from Model.Hero import Hero
 from View import Choose_Hero_View as View
 
-
-
 def run(screen):
+    View.pass_screen(screen)
     isRunning = True
     clock = pygame.time.Clock()
     hero_name = ""
@@ -22,11 +25,9 @@ def run(screen):
     selected_hero = None
     confirm_button_visible = False
     confirmation_prompt = False
-    screen = screen
     # Confirmation state
     confirmation_result = False
     while isRunning:
-        View.pass_screen(screen)
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI
         View.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
@@ -133,16 +134,21 @@ def run(screen):
                     # Check for Yes button click
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
-                        print(f"Hero {hero_name} selected with {current_stats['element']}.")
-                        isRunning = False  # End loop or proceed to next screen
+                        if current_stats["element"] == "Fire":
+                            CharacterFactory.create_hero(hero_name, Element.FIRE)
+                        elif current_stats["element"] == "Water":
+                            CharacterFactory.create_hero(hero_name, Element.WATER)
+                        elif current_stats["element"] == "Air":
+                            CharacterFactory.create_hero(hero_name, Element.AIR)
+                        else:
+                            CharacterFactory.create_hero(hero_name, Element.EARTH)
+                        maze_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
                         confirm_button_visible = True
-
         # Update the display
         pygame.display.update()
         clock.tick(60)
-
 
 

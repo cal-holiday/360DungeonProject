@@ -5,8 +5,8 @@ pygame.init()
 
 SCREEN_WIDTH = 810
 SCREEN_HEIGHT = 810
-ROOM_SIZE = SCREEN_WIDTH//3
-DEFAULT_SIZE = SCREEN_WIDTH // 18
+ROOM_SIZE = SCREEN_WIDTH//6
+DEFAULT_SIZE = SCREEN_WIDTH // 36
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -38,9 +38,11 @@ def draw_room(room):
 
     rect_list = []
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE
 
-    screen.blit(pygame.image.load('floor.png'), (x, y))
+    floor = pygame.image.load('floor.png')
+    floor_img = pygame.transform.scale(floor, (ROOM_SIZE - 5, ROOM_SIZE - 5))
+    screen.blit(floor_img, (x, y))
     corner = pygame.image.load('corner.png')
     corner = pygame.transform.scale(corner, (DEFAULT_SIZE, DEFAULT_SIZE))
     screen.blit(corner, (x, y))
@@ -93,24 +95,37 @@ def draw_room(room):
         screen.blit(horz_wall, (x + ROOM_SIZE - 3*DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE))
         s_wall = pygame.Rect(x + DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE, ROOM_SIZE - 2*DEFAULT_SIZE, DEFAULT_SIZE)
         rect_list.append(s_wall)
-
     return rect_list
+
+def draw_exit(room):
+    if room.has_exit and Inventory.get_instance().has_all_pillars():
+        x = room.get_location()[0] * ROOM_SIZE
+        y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE
+        door = pygame.image.load("exit_door.png")
+        door_img = pygame.transform.scale(door, (DEFAULT_SIZE*2, DEFAULT_SIZE*2))
+        door_rect = door_img.get_rect()
+        door_rect.topleft = (x + (ROOM_SIZE/2) -45, y + (ROOM_SIZE/2)-45)
+        screen.blit(door_img, (x + (ROOM_SIZE / 2) -45, y + (ROOM_SIZE / 2)-45))
+        return door_rect
+    else:
+        return None
+
 def draw_potion(room):
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
-        img = pygame.image.load(potion)
-        potion_rect = img.get_rect()
-        potion_rect.topleft = (x + (ROOM_SIZE/2) -21, y + (ROOM_SIZE/2) -18)
-        screen.blit(img, (x + (ROOM_SIZE/2) -21, y + (ROOM_SIZE/2) -18))
+        potion_img = pygame.image.load(potion)
+        potion_rect = (potion_img.get_rect())
+        potion_rect.topleft = (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30)
+        screen.blit(potion_img, (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30))
         return potion_rect
     else:
         return None
 
 def draw_monster(room):
     x = room.get_location()[0] * ROOM_SIZE
-    y = room.get_location()[1] * ROOM_SIZE
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE
     if room.get_monster() is not None:
         monster = room.get_monster()
         monster_img = monster.get_image()
@@ -121,4 +136,33 @@ def draw_monster(room):
     else:
         return None
 
+def draw_toolbar():
+    font = pygame.font.Font("8-bit-pusab.ttf", 15)
+
+    image = pygame.Surface((SCREEN_WIDTH, DEFAULT_SIZE/1.5))
+    image.fill((0,255,255))
+    rect = image.get_rect()
+    rect.topleft = (0, 0)
+    screen.blit(image, rect)
+    inventory_button = pygame.Rect(5,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
+    map_button = pygame.Rect(DEFAULT_SIZE * 4, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    save_button = pygame.Rect(DEFAULT_SIZE * 6, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    help_button = pygame.Rect(DEFAULT_SIZE * 8, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    quit_button = pygame.Rect(DEFAULT_SIZE * 10, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    rect_list = [inventory_button, map_button, save_button, help_button, quit_button]
+
+    inventory_surface = font.render("Inventory", True, (255,255,255))
+    map_surface = font.render("Map", True, (255, 255, 255))
+    save_surface = font.render("Save", True, (255, 255, 255))
+    help_surface = font.render("Help", True, (255, 255, 255))
+    quit_surface = font.render("Quit", True, (255, 255, 255))
+
+    screen.blit(inventory_surface, inventory_button)
+    screen.blit(map_surface, map_button)
+    screen.blit(save_surface, save_button)
+    screen.blit(help_surface, help_button)
+    screen.blit(quit_surface, quit_button)
+
+    # Return the button rectangle for external use
+    return rect_list
 
