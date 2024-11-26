@@ -7,21 +7,18 @@ FONT = "8-bit-pusab.ttf"
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 
-screen =
-header_font = pygame.font.Font(FONT, 40)
+screen = pygame.display.set_mode((10,4))
 font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Battle")
 
 def pass_screen(passed_screen):
     screen = passed_screen
+
 def draw_text(text, x, y):
     img = font.render(text, True, WHITE)
     screen.blit(img, (x,y))
 
-def draw_image(img, x, y):
-    screen.blit((pygame.image.load(img).convert()), (x,y))
-
-def draw_scaled_image(img, x, y, width, height):
+def draw_image(img, x, y, width, height):
     original_img = pygame.image.load(img).convert()
     scaled_img = pygame.transform.scale(original_img, (width, height))
     screen.blit(scaled_img, (x, y))

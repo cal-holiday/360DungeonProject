@@ -1,5 +1,7 @@
 import pygame
-from Controller import main_menu_controller
+from Controller import main_menu_controller, Choose_Hero_Controller
+from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
 
 
 class StartGame:
@@ -8,4 +10,5 @@ class StartGame:
     SCREEN_HEIGHT = 810
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    main_menu_controller.run(screen)
+    #main_menu_controller.run(screen)
+    Choose_Hero_Controller.run(screen)
