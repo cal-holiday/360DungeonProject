@@ -2,27 +2,29 @@ import pygame
 
 from View import Choose_Hero_View as View
 
-isRunning = True
-clock = pygame.time.Clock()
-hero_name = ""
-text_field_active = False
-text_field_rect = pygame.Rect(200, 180, 400, 50)
-# Hero button definitions
-heroes = {
-    "fire": {"rect": pygame.Rect(150, 675, 100, 100), "element": "Fire", "health": "80", "agility": "12"},
-    "water": {"rect": pygame.Rect(450, 550, 100, 100), "element": "Water", "health": "60", "agility": "8"},
-    "air": {"rect": pygame.Rect(250, 550, 100, 100), "element": "Air", "health": "40", "agility": "16"},
-    "earth": {"rect": pygame.Rect(550, 675, 100, 100), "element": "Earth", "health": "100", "agility": "4"},
-}
-# Default stats (updated on hover or selection)
-current_stats = {"element": "---", "health": "---", "agility": "---"}
-selected_hero = None
-confirm_button_visible = False
-confirmation_prompt = False
-# Confirmation state
-confirmation_result = False
+
 
 def run(screen):
+    isRunning = True
+    clock = pygame.time.Clock()
+    hero_name = ""
+    text_field_active = False
+    text_field_rect = pygame.Rect(200, 180, 400, 50)
+    # Hero button definitions
+    heroes = {
+        "fire": {"rect": pygame.Rect(150, 675, 100, 100), "element": "Fire", "health": "80", "agility": "12"},
+        "water": {"rect": pygame.Rect(450, 550, 100, 100), "element": "Water", "health": "60", "agility": "8"},
+        "air": {"rect": pygame.Rect(250, 550, 100, 100), "element": "Air", "health": "40", "agility": "16"},
+        "earth": {"rect": pygame.Rect(550, 675, 100, 100), "element": "Earth", "health": "100", "agility": "4"},
+    }
+    # Default stats (updated on hover or selection)
+    current_stats = {"element": "---", "health": "---", "agility": "---"}
+    selected_hero = None
+    confirm_button_visible = False
+    confirmation_prompt = False
+    screen = screen
+    # Confirmation state
+    confirmation_result = False
     while isRunning:
         View.pass_screen(screen)
         mouse_pos = pygame.mouse.get_pos()
@@ -142,6 +144,5 @@ def run(screen):
         pygame.display.update()
         clock.tick(60)
 
-def confirmed():
-    return confirmation_result
+
 

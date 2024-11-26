@@ -2,8 +2,9 @@ from View import main_menu_view
 from Controller import Choose_Hero_Controller
 import pygame
 
-def run(screen):
+def run(theScreen):
     is_running = True
+    screen = theScreen
     while is_running:
         main_menu_view.setScreen(screen)
         main_menu_view.screen.fill((234, 165, 108))
@@ -20,7 +21,7 @@ def run(screen):
             is_running = False
 
         if(new_game):
-            pass
+            Choose_Hero_Controller.run(screen)
 
 
         for event in pygame.event.get():
