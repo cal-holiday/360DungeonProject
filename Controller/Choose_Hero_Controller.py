@@ -3,7 +3,6 @@ import pygame
 from Controller import maze_controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
-from Model.Hero import Hero
 from View import Choose_Hero_View as View
 
 def run(screen):
