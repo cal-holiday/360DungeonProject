@@ -1,0 +1,172 @@
+import pygame
+
+from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
+from Model.Potion import HealthPotion
+from View import View
+from Model.Direction import Direction
+from Model.Element import Element
+from Model.CharacterFactory import CharacterFactory
+from Model.Room import Room
+from Model.Hero import Hero
+from Model.Inventory import Inventory
+
+GET_POTION = pygame.USEREVENT + 1
+MONSTER_BATTLE = pygame.USEREVENT + 2
+EXIT_DUNGEON = pygame.USEREVENT + 3
+POTION_REMOVED = False
+MONSTER_DEFEATED = False
+RUN = True
+
+
+def run(self, screen):
+    global RUN
+    clock = pygame.time.Clock()
+    fps = 60
+
+    monster = CharacterFactory.create_monster(Element.EARTH)
+    current_room = Room(False, False, False, False, (1, 1), None, monster)
+    current_room.set_has_exit(True)
+    CharacterFactory.create_hero("TEST", Element.AIR)
+
+
+    inventory = Inventory()
+    inventory.add(AbstractionPillar())
+    inventory.add(PolymorphismPillar())
+    inventory.add(InheritancePillar())
+
+    Hero.get_instance().set_x(10)
+    Hero.get_instance().set_y(10)
+    player = self.ControllerHero(View.draw_hero())
+    controller_room = self.ControllerRoom(current_room)
+    while RUN:
+        clock.tick(fps)
+        View.screen.fill(0)
+        View.draw_room(current_room)
+        View.draw_potion(current_room)
+        View.draw_monster(current_room)
+        View.draw_exit(current_room)
+        View.draw_hero()
+        View.draw_toolbar()
+
+        player.move()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                RUN = False
+            handle_event(player, event, controller_room)
+        pygame.display.update()
+    pygame.quit()
+class ControllerHero(pygame.sprite.Sprite):
+    left = False
+    right = False
+    up = False
+    down = False
+
+    def __init__(self, rect):
+        pygame.sprite.Sprite.__init__(self)
+        self.rect = rect
+        self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
+
+    def move(self, room):
+        hero_x = Hero.get_instance().get_x()
+        hero_y = Hero.get_instance().get_y()
+        if room.potion_rect is not None and self.rect.colliderect(room.potion_rect):
+            pygame.event.post(pygame.event.Event(GET_POTION))
+        if room.monster_rect is not None and self.rect.colliderect(room.monster_rect):
+            pygame.event.post(pygame.event.Event(MONSTER_BATTLE))
+        if room.exit_rect is not None and self.rect.colliderect(room.exit_rect):
+            pygame.event.post(pygame.event.Event(EXIT_DUNGEON))
+        if self.down and not self.collide_down(room):
+            Hero.get_instance().set_direction(Direction.SOUTH)
+            Hero.get_instance().set_y(hero_y + 5)
+        if self.up and not self.collide_up(room):
+            Hero.get_instance().set_direction(Direction.NORTH)
+            Hero.get_instance().set_y(hero_y - 5)
+        if self.right and not self.collide_right(room):
+            Hero.get_instance().set_direction(Direction.EAST)
+            Hero.get_instance().set_x(hero_x + 5)
+        if self.left and not self.collide_left(room):
+            Hero.get_instance().set_direction(Direction.WEST)
+            Hero.get_instance().set_x(hero_x - 5)
+        self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
+
+    def collide_down(self, room):
+        for rect in room.room_rects:
+            if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
+                return True
+        return False
+
+    def collide_up(self, room):
+        for rect in room.room_rects:
+            if self.rect.colliderect(rect) and self.rect.top >= rect.bottom - 5:
+                return True
+        return False
+
+    def collide_right(self, room):
+        for rect in room.room_rects:
+            if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
+                return True
+        return False
+
+    def collide_left(self, room):
+        for rect in room.room_rects:
+            if self.rect.colliderect(rect) and self.rect.left >= rect.right - 5:
+                return True
+        return False
+class ControllerRoom():
+    def __init__(self, room):
+        self.room = room
+        self.room_rects = View.draw_room(self.room)
+        self.potion_rect = View.draw_potion(self.room)
+        self.monster_rect = View.draw_monster(room)
+        self.toolbar_rects = View.draw_toolbar()
+        self.exit_rect = View.draw_exit(room)
+
+
+
+def handle_event(player, event, room):
+    global POTION_REMOVED
+    global MONSTER_DEFEATED
+    global RUN
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_s:
+            player.down = True
+        if event.key == pygame.K_w:
+            player.up = True
+        if event.key == pygame.K_d:
+            player.right = True
+        if event.key == pygame.K_a:
+            player.left = True
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_s:
+            player.down = False
+        if event.key == pygame.K_w:
+            player.up = False
+        if event.key == pygame.K_d:
+            player.right = False
+        if event.key == pygame.K_a:
+            player.left = False
+    if event.type == GET_POTION and not POTION_REMOVED:
+        POTION_REMOVED = True
+        Inventory.get_instance().add(room.get_potion())
+        room.set_potion(None)
+    if event.type == MONSTER_BATTLE and not MONSTER_DEFEATED:
+        MONSTER_DEFEATED = True
+        #jump to battle here
+        room.set_monster(None)
+    if event.type == EXIT_DUNGEON:
+        print("END Game")
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        # Check if a hero is clicked
+        for i in range(len(room.toolbar_rects)):
+            if room.toolbar_rects[i].collidepoint(event.pos):
+                if i == 0:
+                    print("Inventory")
+                elif i == 1:
+                    print("Map")
+                elif i == 2:
+                    print("Save")
+                elif i == 3:
+                    print("Help")
+                else:
+                    RUN = False
