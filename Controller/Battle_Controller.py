@@ -173,8 +173,14 @@ def run(screen, monster):
 
                 if monster_turn:
                     monsters_turn()
+            pygame.display.update()
+            clock.tick(60)
 
 
-        # Update the display
-        pygame.display.update()
-        clock.tick(60)
+if __name__ == '__main__':
+    hero = CharacterFactory.create_hero("hero", Element.WATER)
+    screen = pygame.display.set_mode((810, 810))
+    monster = CharacterFactory.create_monster(Element.EARTH)
+    Inventory()
+    run(screen, monster)
+
