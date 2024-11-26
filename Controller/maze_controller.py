@@ -26,8 +26,6 @@ def run(self, screen):
     monster = CharacterFactory.create_monster(Element.EARTH)
     current_room = Room(False, False, False, False, (1, 1), None, monster)
     current_room.set_has_exit(True)
-    CharacterFactory.create_hero("TEST", Element.AIR)
-
 
     inventory = Inventory()
     inventory.add(AbstractionPillar())
