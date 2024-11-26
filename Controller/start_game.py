@@ -1,6 +1,6 @@
 import pygame
 from Controller import main_menu_controller
-class StartGame:
+
 
 class StartGame:
     pygame.init()
