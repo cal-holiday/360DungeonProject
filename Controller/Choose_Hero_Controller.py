@@ -1,6 +1,6 @@
 import pygame
 
-from Controller import maze_controller
+from Controller import maze_controller, Battle_Controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from View import Choose_Hero_View as View
@@ -141,7 +141,9 @@ def run(screen):
                             CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
                             CharacterFactory.create_hero(hero_name, Element.EARTH)
-                        maze_controller.run(screen)
+                        #maze_controller.run(screen)
+                        monster = CharacterFactory.create_monster(Element.FIRE)
+                        Battle_Controller.run(screen, monster)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False

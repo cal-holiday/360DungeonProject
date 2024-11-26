@@ -14,8 +14,7 @@ font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Choose Your Hero")
 
 def pass_screen(passed_screen):
-    if passed_screen is not None:
-        passed_screen = screen
+    screen = passed_screen
 
 def draw_header(text, x,y):
     img = header_font.render(text, True, WHITE)
