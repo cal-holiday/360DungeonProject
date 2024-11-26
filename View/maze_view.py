@@ -141,7 +141,6 @@ def draw_monster(screen, room):
 
 def draw_toolbar(screen):
     width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
     default_size = width // 18
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
@@ -171,3 +170,32 @@ def draw_toolbar(screen):
 
     # Return the button rectangle for external use
     return rect_list
+def draw_inventory(screen):
+    width, height = pygame.display.get_surface().get_size()
+    default_size = width // 18
+    font = pygame.font.Font("8-bit-pusab.ttf", 15)
+    row_height = default_size*2
+
+    image = pygame.Surface((width, row_height))
+    image.fill((255,255, 0))
+    rect = image.get_rect()
+    rect.topleft = (0, default_size*1.5)
+    screen.blit(image, rect)
+    potion_label = pygame.Rect(5,0,default_size*2, default_size)
+    pillar_label = pygame.Rect(default_size * 4, 0, default_size * 2, default_size)
+    save_button = pygame.Rect(default_size * 6, 0, default_size * 2, default_size)
+    help_button = pygame.Rect(default_size * 8, 0, default_size * 2, default_size)
+    quit_button = pygame.Rect(default_size * 10, 0, default_size * 2, default_size)
+    rect_list = [save_button, help_button, quit_button]
+
+    inventory_surface = font.render("Inventory", True, (255,255,255))
+    map_surface = font.render("Map", True, (255, 255, 255))
+    save_surface = font.render("Save", True, (255, 255, 255))
+    help_surface = font.render("Help", True, (255, 255, 255))
+    quit_surface = font.render("Quit", True, (255, 255, 255))
+
+    screen.blit(inventory_surface, potion_label)
+    screen.blit(map_surface, pillar_label)
+    screen.blit(save_surface, save_button)
+    screen.blit(help_surface, help_button)
+    screen.blit(quit_surface, quit_button)

@@ -1,5 +1,6 @@
 import pygame
 
+from Controller.demo_controller import inventory
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion
 from View import maze_view
@@ -15,6 +16,7 @@ MONSTER_BATTLE = pygame.USEREVENT + 2
 EXIT_DUNGEON = pygame.USEREVENT + 3
 POTION_REMOVED = False
 MONSTER_DEFEATED = False
+INVENTORY_CLICKED = False
 RUN = True
 
 
@@ -126,6 +128,7 @@ def handle_event(player, event, controller_room, room):
     global POTION_REMOVED
     global MONSTER_DEFEATED
     global RUN
+    global INVENTORY_CLICKED
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             player.down = True
@@ -159,7 +162,11 @@ def handle_event(player, event, controller_room, room):
         for i in range(len(controller_room.toolbar_rects)):
             if controller_room.toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
-                    print("Inventory")
+                    if not INVENTORY_CLICKED:
+                        print("inventory")
+                        INVENTORY_CLICKED = True
+                    else:
+                        INVENTORY_CLICKED = False
                 elif i == 1:
                     print("Map")
                 elif i == 2:
