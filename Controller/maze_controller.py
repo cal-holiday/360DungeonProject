@@ -2,7 +2,7 @@ import pygame
 
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion
-from View import View
+from View import maze_view
 from Model.Direction import Direction
 from Model.Element import Element
 from Model.CharacterFactory import CharacterFactory
@@ -36,17 +36,17 @@ def run(self, screen):
 
     Hero.get_instance().set_x(10)
     Hero.get_instance().set_y(10)
-    player = self.ControllerHero(View.draw_hero())
+    player = self.ControllerHero(maze_view.draw_hero(screen))
     controller_room = self.ControllerRoom(current_room)
     while RUN:
         clock.tick(fps)
-        View.screen.fill(0)
-        View.draw_room(current_room)
-        View.draw_potion(current_room)
-        View.draw_monster(current_room)
-        View.draw_exit(current_room)
-        View.draw_hero()
-        View.draw_toolbar()
+        screen.fill(0)
+        maze_view.draw_room(screen, current_room)
+        maze_view.draw_potion(screen, current_room)
+        maze_view.draw_monster(screen, current_room)
+        maze_view.draw_exit(screen, current_room)
+        maze_view.draw_hero(screen)
+        maze_view.draw_toolbar(screen)
 
         player.move()
 
@@ -114,13 +114,13 @@ class ControllerHero(pygame.sprite.Sprite):
                 return True
         return False
 class ControllerRoom():
-    def __init__(self, room):
+    def __init__(self, screen, room):
         self.room = room
-        self.room_rects = View.draw_room(self.room)
-        self.potion_rect = View.draw_potion(self.room)
-        self.monster_rect = View.draw_monster(room)
-        self.toolbar_rects = View.draw_toolbar()
-        self.exit_rect = View.draw_exit(room)
+        self.room_rects = maze_view.draw_room(screen, self.room)
+        self.potion_rect = maze_view.draw_potion(screen, self.room)
+        self.monster_rect = maze_view.draw_monster(screen, room)
+        self.toolbar_rects = maze_view.draw_toolbar(screen)
+        self.exit_rect = maze_view.draw_exit(screen, room)
 
 
 
