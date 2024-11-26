@@ -1,3 +1,5 @@
+from random import randint
+
 import pygame
 
 from Model.CharacterFactory import CharacterFactory
@@ -26,10 +28,30 @@ def run(screen, monster):
         result = character.get_hp() + damage
         if result > 0:
             character.set_hp(character.get_hp() + damage)
-            print("monster: " + str(monster.get_hp()))
+            print(character.get_name() + ": " + str(character.get_hp()))
+            monsters_turn()
             return True
         View.draw_result(character.get_name() + " won!", 40, 500)
         return False
+
+    def monsters_turn():
+        num = randint(1, 3)
+        if num == 1:
+            result = monster.attack()
+            if result[0] > 5:
+                in_battle = update(hero, hero.get_name() + " took " + str(result[1]) + " damage!", -result[1])
+            else:
+                in_battle = update(hero, hero.get_name() + " dodged!", 0)
+        elif num == 2:  # Special button
+            result = hero.get_instance().special_attack()
+            if result[0] > 5 and monster.get_opposite_element() == monster.get_element():
+                in_battle = update(hero, hero.get_name() + " took " + str(result[1]) + " damage!", 2 * -result[1])
+            elif result[0] > 5:
+                in_battle = update(hero, hero.get_name() + " took " + str(result[1]) + " damage!", -result[1])
+            else:
+                in_battle = update(hero, hero.get_name() + " dodged!", 0)
+        else:
+            monster.heal()
 
     while isRunning and in_battle:
         # Fill the screen and draw the background
@@ -92,7 +114,6 @@ def run(screen, monster):
                     elif 605 <= mx <= 790 and 700 <= my <= 775:  # Skip button
                         # Skip logic (if any)
                         pass
-
 
         # Update the display
         pygame.display.update()
