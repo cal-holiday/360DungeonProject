@@ -8,7 +8,7 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 
 
-screen = screen = pygame.display.set_mode((10,4))
+screen = pygame.display.set_mode((10,4))
 header_font = pygame.font.Font(FONT, 40)
 font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Choose Your Hero")

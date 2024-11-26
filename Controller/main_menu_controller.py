@@ -23,6 +23,11 @@ def run(theScreen):
         if(new_game):
             Choose_Hero_Controller.run(screen)
 
+        if(rules):
+            pass
+
+        if(load_game):
+            pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
