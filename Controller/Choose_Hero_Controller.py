@@ -134,11 +134,11 @@ def run(screen):
                     # Check for Yes button click
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
-                        if current_stats["element"] is "Fire":
+                        if current_stats["element"] == "Fire":
                             CharacterFactory.create_hero(hero_name, Element.FIRE)
-                        elif current_stats["element"] is "Water":
+                        elif current_stats["element"] == "Water":
                             CharacterFactory.create_hero(hero_name, Element.WATER)
-                        elif current_stats["element"] is "Air":
+                        elif current_stats["element"] == "Air":
                             CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
                             CharacterFactory.create_hero(hero_name, Element.EARTH)
