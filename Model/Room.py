@@ -13,7 +13,8 @@ class Room:
         self.set_monster(monster)
         self.set_location(location)
         self.has_visited = False
-
+        self.hero_has_visited = False
+        self.has_exit = False
 
     """
     setters for the instance fields
@@ -63,6 +64,18 @@ class Room:
         else:
             print("Visited status needs to be a boolean.")
 
+    def set_hero_has_visited(self, visited):
+        if isinstance(visited, bool) and visited is not None:
+            self.hero_has_visited = visited
+        else:
+            print("Visited status needs to be a boolean.")
+
+    def set_has_exit(self, exit_door):
+        if isinstance(exit_door, bool) and exit_door is not None:
+            self.has_exit = exit_door
+        else:
+            print("Exit status needs to be a boolean.")
+
     #getters for room
     def get_nwall(self):
         return self.northWall
@@ -87,3 +100,6 @@ class Room:
 
     def get_has_visited(self):
         return self.has_visited
+
+    def get_hero_has_visited(self):
+        return self.hero_has_visited

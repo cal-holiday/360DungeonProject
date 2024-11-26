@@ -1,9 +1,6 @@
 from Model.CharacterInterface import CharacterInterface
 from Model.Direction import Direction
 from abc import ABCMeta, abstractstaticmethod
-class Singleton():
-    __instance = None
-
 
 class Hero(CharacterInterface):
     __instance = None
