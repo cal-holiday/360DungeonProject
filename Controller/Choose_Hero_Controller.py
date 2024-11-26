@@ -1,6 +1,8 @@
 import pygame
 
+from Controller import maze_controller
 from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
 from Model.Hero import Hero
 from View import Choose_Hero_View as View
 
@@ -132,8 +134,15 @@ def run(screen):
                     # Check for Yes button click
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
-                        CharacterFactory.create_hero(hero_name, current_stats["element"])
-                        maze_controller(screen)
+                        if current_stats["element"] is "Fire":
+                            CharacterFactory.create_hero(hero_name, Element.FIRE)
+                        elif current_stats["element"] is "Water":
+                            CharacterFactory.create_hero(hero_name, Element.WATER)
+                        elif current_stats["element"] is "Air":
+                            CharacterFactory.create_hero(hero_name, Element.AIR)
+                        else:
+                            CharacterFactory.create_hero(hero_name, Element.EARTH)
+                        maze_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
