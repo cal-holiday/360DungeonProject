@@ -1,5 +1,7 @@
 import pygame
 
+from Model.CharacterFactory import CharacterFactory
+from Model.Hero import Hero
 from View import Choose_Hero_View as View
 
 def run(screen):
@@ -130,13 +132,12 @@ def run(screen):
                     # Check for Yes button click
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
-                        print(f"Hero {hero_name} selected with {current_stats['element']}.")
-                        isRunning = False  # End loop or proceed to next screen
+                        CharacterFactory.create_hero(hero_name, current_stats["element"])
+                        maze_controller(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
                         confirm_button_visible = True
-
         # Update the display
         pygame.display.update()
         clock.tick(60)
