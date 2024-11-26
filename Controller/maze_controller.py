@@ -53,7 +53,7 @@ def run(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(player, event, controller_room, current_room)
+            handle_event(player, event, controller_room)
         pygame.display.update()
     pygame.quit()
 class ControllerHero(pygame.sprite.Sprite):
@@ -124,7 +124,7 @@ class ControllerRoom():
 
 
 
-def handle_event(player, event, controller_room, room):
+def handle_event(player, event, room):
     global POTION_REMOVED
     global MONSTER_DEFEATED
     global RUN
@@ -159,8 +159,8 @@ def handle_event(player, event, controller_room, room):
         print("END Game")
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
-        for i in range(len(controller_room.toolbar_rects)):
-            if controller_room.toolbar_rects[i].collidepoint(event.pos):
+        for i in range(len(room.toolbar_rects)):
+            if room.toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
                     if not INVENTORY_CLICKED:
                         print("inventory")
