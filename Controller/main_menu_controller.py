@@ -1,9 +1,10 @@
 from View import main_menu_view
+from Controller import Choose_Hero_Controller
 import pygame
 
 def run():
-    run = True
-    while run:
+    is_running = True
+    while is_running:
 
         main_menu_view.screen.fill((234, 165, 108))
         main_menu_view.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
@@ -19,6 +20,8 @@ def run():
 
         if(new_game):
             pass
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -26,4 +29,3 @@ def run():
 
         pygame.display.update()
 
-run()

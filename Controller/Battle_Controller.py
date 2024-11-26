@@ -1,6 +1,6 @@
 import pygame
 
-from Controller.Controller import monster
+from Controller.demo_controller import monster
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from View import Battle_View as View

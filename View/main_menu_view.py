@@ -1,19 +1,18 @@
 import pygame
-from Model import *
+from Controller import start_game
 pygame.init()
 
-SCREEN_WIDTH = 810
-SCREEN_HEIGHT = 810
 FONT = "8-bit-pusab.ttf"
 BLACK = (0,0,0)
 
 
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = start_game.screen
 header_font = pygame.font.Font(FONT, 25)
 font = pygame.font.Font(FONT, 20)
 pygame.display.set_caption("Main Menu")
 
 Clock = pygame.time.Clock()
+
 
 def draw_header(text, x,y):
     img = header_font.render(text, True, BLACK)
