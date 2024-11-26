@@ -28,21 +28,21 @@ class Dungeon:
 
         if x > 0:
             west = self.room_array[x - 1][y]
-            if not west.get_has_visited():
+            if west.get_ewall() and not west.get_has_visited():
                 neighbors.append(west)
         if y > 0:
             north = self.room_array[x][y - 1]
-            if not north.get_has_visited():
+            if north.get_swall() and not north.get_has_visited():
                 neighbors.append(north)
         if x < self.size - 1:
             east = self.room_array[x + 1][y]
-            if not east.get_has_visited():
+            if east.get_wwall() and not east.get_has_visited():
                 neighbors.append(east)
         if y < self.size - 1:
             south = self.room_array[x][y + 1]
-            if not south.get_has_visited():
+            if south.get_nwall() and not south.get_has_visited():
                 neighbors.append(south)
-        return choice(neighbors) if neighbors else None
+        return neighbors if neighbors else None #choice(neighbors)
 
     def remove_walls(self, current, next_room):
         curr_location = current.get_location()
@@ -78,26 +78,43 @@ class Dungeon:
         else:
             return True
 
-
     def generate_maze(self):
+        visited = set()
+        stack = [self.room_array[0][0]]
+
+        while stack:
+            room = stack.pop()
+            room_coords = room.get_location()
+            if room_coords not in visited:
+                visited.add(room_coords)
+                neighbors = self.check_neighbors(room)
+                if neighbors:
+                    next_room = choice(neighbors)
+                    stack.append(room)
+                    stack.append(next_room)
+                    self.remove_walls(room, next_room)
+        return self.room_array
+
+
+    """def generate_maze(self):
         current_room = self.room_array[0][0]
         stack = []
         break_count = 1
-        while not self.check_all_rooms(): #and not self.room_has_path(current_room):#break_count != (self.size * self.size):
+        while break_count != (self.size * self.size):
             current_room.set_has_visited(True)
             print(f"Visiting Room: {current_room.get_location()}, Break Count: {break_count}")
             next_room = self.check_neighbors(current_room)
             if next_room is not None:
                 print(f"Moving to Room: {next_room.get_location()}")
                 next_room.set_has_visited(True)
-                break_count += 1
                 stack.append(current_room)
                 self.remove_walls(current_room, next_room)
+                break_count += 1
                 current_room = next_room
             elif stack:
                 current_room = stack.pop()
                 print(f"Backtracking to Room: {current_room.get_location()}")
-        return self.room_array
+        return self.room_array """
 
 thing = Dungeon(6)
 array = thing.generate_maze()

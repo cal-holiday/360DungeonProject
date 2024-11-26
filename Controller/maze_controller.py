@@ -18,7 +18,7 @@ MONSTER_DEFEATED = False
 RUN = True
 
 
-def run(self, screen):
+def run(screen):
     global RUN
     clock = pygame.time.Clock()
     fps = 60
