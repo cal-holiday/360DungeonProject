@@ -46,7 +46,7 @@ def run(screen):
         maze_view.draw_hero(screen)
         maze_view.draw_toolbar(screen)
 
-        player.move(screen)
+        player.move(controller_room)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
