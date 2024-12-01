@@ -40,6 +40,9 @@ class Inventory:
     def has_health_potion(self):
         return len(self.health_potions) > 0
 
+    def has_vision_potion(self):
+        return len(self.vision_potions) > 0
+
     def drink_health_potion(self):
         if len(self.health_potions) > 0:
             self.health_potions[0].drink()

@@ -24,6 +24,9 @@ def draw_result(text, x, y):
     img = text_font.render(text, True, WHITE)
     screen.blit(img, (x,y))
 
+def draw_monster_result(text, x, y):
+    img = text_font.render(text, True, (255,0,0))
+    screen.blit(img, (x, y))
 
 def draw_image(img, x, y, width, height):
     original_img = pygame.image.load(img).convert()
