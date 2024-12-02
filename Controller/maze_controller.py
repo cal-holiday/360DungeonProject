@@ -26,7 +26,7 @@ def run(screen):
     fps = 60
 
     monster = CharacterFactory.create_monster(Element.EARTH)
-    current_room = Room(False, False, False, False, (1, 1), None, monster)
+    current_room = Room(False, False, False, False, (1, 1), HealthPotion(), None)
     current_room.set_has_exit(True)
 
     inventory = Inventory()

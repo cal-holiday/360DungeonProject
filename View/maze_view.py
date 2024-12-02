@@ -27,8 +27,8 @@ def draw_hero(screen):
 
 def draw_room(screen, room):
     width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
-    default_size = width // 18
+    room_size = width // 6
+    default_size = width // 36
 
     rect_list = []
     x = room.get_location()[0] * room_size
