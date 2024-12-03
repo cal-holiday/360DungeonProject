@@ -4,8 +4,7 @@ from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
-from Model.Monster import Monster
-from Model.healthPotion import HealthPotion
+from Model.Potion import HealthPotion
 from View import Battle_View as View
 
 # Initialize pygame
@@ -102,7 +101,6 @@ def run(screen, monster):
                     return update(hero, f"{monster.get_name()} dealt {result[1]} damage!", -result[1])
                 else:
                     return update(hero, f"{monster.get_name()} missed!", 0)
-
             return update(hero, f" {monster.get_name()} healed!", 0)
 
     def hero_turn(action):
@@ -126,11 +124,8 @@ def run(screen, monster):
                 return update(monster, f"{hero.get_name()} missed!", 0)
 
         elif action == "potion":
-            if inventory.has_health_potion() and hero.get_hp() + 10 <= hero.get_max_hp():
-                inventory.drink_health_potion()
-                return update(monster, f"{hero.get_name()} used a health potion!", 10)
-            else:
-                View.draw_result("You can't use that", 40, 500)
+            inventory.drink_health_potion()
+            return update(monster, f"{hero.get_name()} used a health potion!", 10)
         elif action == "skip":
             return False
 
@@ -165,10 +160,12 @@ def run(screen, monster):
                         in_battle = monsters_turn()
 
                 elif 410 <= mx <= 595 and 700 <= my <= 775:
-                    in_battle = hero_turn("potion")
-                    if in_battle:
+                    if inventory.has_health_potion() and hero.get_hp() + 10 <= hero.get_max_hp():
+                        in_battle = hero_turn("potion")
                         clock.tick(10)
                         in_battle = monsters_turn()
+                    else:
+                        View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     in_battle = hero_turn("skip")
@@ -184,7 +181,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((810, 810))
     monster = CharacterFactory.create_monster(Element.EARTH)
     inventory = Inventory()
-    inventory.add(HealthPotion)
-    inventory.add(HealthPotion)
-    inventory.add(HealthPotion)
+    inventory.add(HealthPotion())
+    inventory.add(HealthPotion())
+    print(f"Inventory has health potions: {inventory.has_health_potion()}")
     run(screen, monster)

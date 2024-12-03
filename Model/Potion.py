@@ -15,7 +15,6 @@ class Potion(ABC):
 
     def __init__(self, name):
         self.name = name
-        self.image = None
 
     """
     return name of potion i.e health or vision
@@ -27,8 +26,6 @@ class Potion(ABC):
     gets image for the potion
     @return image returns the image
     """
-    def get_image(self):
-        return self.image
 
     """
     the drink method used to determine when to remove the potion 
