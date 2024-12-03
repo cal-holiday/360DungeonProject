@@ -1,7 +1,7 @@
 import pygame
 
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
-from Model.Potion import HealthPotion
+from Model.Potion import HealthPotion, VisionPotion
 from View import maze_view
 from Model.Direction import Direction
 from Model.Element import Element
@@ -9,12 +9,14 @@ from Model.CharacterFactory import CharacterFactory
 from Model.Room import Room
 from Model.Hero import Hero
 from Model.Inventory import Inventory
+from View.maze_view import draw_inventory
 
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
 EXIT_DUNGEON = pygame.USEREVENT + 3
 POTION_REMOVED = False
 MONSTER_DEFEATED = False
+INVENTORY_CLICKED = False
 RUN = True
 
 
@@ -24,19 +26,23 @@ def run(screen):
     fps = 60
 
     monster = CharacterFactory.create_monster(Element.EARTH)
-    current_room = Room(False, False, False, False, (1, 1), None, monster)
+    current_room = Room(False, False, False, False, (1, 1), HealthPotion(), None)
     current_room.set_has_exit(True)
 
     inventory = Inventory()
     inventory.add(AbstractionPillar())
     inventory.add(PolymorphismPillar())
     inventory.add(InheritancePillar())
+    inventory.add(HealthPotion())
+    inventory.add(HealthPotion())
+    inventory.add(VisionPotion())
 
     Hero.get_instance().set_x(10)
     Hero.get_instance().set_y(10)
     player = ControllerHero(maze_view.draw_hero(screen))
     controller_room = ControllerRoom(screen, current_room)
     while RUN:
+        global INVENTORY_CLICKED
         clock.tick(fps)
         screen.fill(0)
         maze_view.draw_room(screen, current_room)
@@ -45,13 +51,15 @@ def run(screen):
         maze_view.draw_exit(screen, current_room)
         maze_view.draw_hero(screen)
         maze_view.draw_toolbar(screen)
+        if INVENTORY_CLICKED:
+            maze_view.draw_inventory(screen)
 
         player.move(controller_room)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(player, event, controller_room)
+            handle_event(player, event, current_room, controller_room)
         pygame.display.update()
     pygame.quit()
 class ControllerHero(pygame.sprite.Sprite):
@@ -119,13 +127,15 @@ class ControllerRoom():
         self.monster_rect = maze_view.draw_monster(screen, room)
         self.toolbar_rects = maze_view.draw_toolbar(screen)
         self.exit_rect = maze_view.draw_exit(screen, room)
+        self.health_potion_rect, self.vision_potion_rect = maze_view.draw_inventory(screen)
 
 
 
-def handle_event(player, event, room):
+def handle_event(player, event, room, controller_room):
     global POTION_REMOVED
     global MONSTER_DEFEATED
     global RUN
+    global INVENTORY_CLICKED
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             player.down = True
@@ -156,10 +166,14 @@ def handle_event(player, event, room):
         print("END Game")
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
-        for i in range(len(room.toolbar_rects)):
-            if room.toolbar_rects[i].collidepoint(event.pos):
+        for i in range(len(controller_room.toolbar_rects)):
+            if controller_room.toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
-                    print("Inventory")
+                    if INVENTORY_CLICKED:
+                        INVENTORY_CLICKED = False
+                    else:
+                        INVENTORY_CLICKED = True
+                        print("Inventory")
                 elif i == 1:
                     print("Map")
                 elif i == 2:
@@ -168,3 +182,9 @@ def handle_event(player, event, room):
                     print("Help")
                 else:
                     RUN = False
+        for i in range(len(controller_room.health_potion_rect)):
+            if controller_room.health_potion_rect[i].collidepoint(event.pos):
+                Inventory.get_instance().drink_potion(Inventory.get_instance().get_health_potions()[0])
+        for i in range(len(controller_room.vision_potion_rect)):
+            if controller_room.vision_potion_rect[i].collidepoint(event.pos):
+                Inventory.get_instance().drink_potion(Inventory.get_instance().get_vision_potions()[0])
