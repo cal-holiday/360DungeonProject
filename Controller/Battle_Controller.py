@@ -10,8 +10,8 @@ from View import Battle_View as View
 # Initialize pygame
 pygame.init()
 
-def run(screen, monster):
-    View.pass_screen(screen)
+def run(monster):
+    screen = pygame.display.set_mode((810, 810))
     isRunning = True
     clock = pygame.time.Clock()
     hero = Hero.get_instance()
@@ -186,4 +186,4 @@ if __name__ == '__main__':
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
     print(f"Inventory has health potions: {inventory.has_health_potion()}")
-    run(screen, monster)
+    run(monster)
