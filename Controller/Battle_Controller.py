@@ -32,15 +32,14 @@ def run(screen, monster):
 
     def update(character, text, damage):
         """Update health bars and display results."""
-        pygame.draw.rect(screen, (0, 0, 0), black_rect)
         result = character.get_hp() + damage
-        redraw_screen()
-        display_health_bars()
-        if result < 0:
+        if result <= 0:
             character.set_hp(0)
         else:
             character.set_hp(result)
-
+        pygame.draw.rect(screen, (0, 0, 0), black_rect)
+        redraw_screen()
+        display_health_bars()
         if result > 0:
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
@@ -61,18 +60,21 @@ def run(screen, monster):
     def display_health_bars():
         """Draw health bars for the hero and monster."""
         # Hero health bar
-        hero_health_width = (hero.get_hp() / hero.get_max_hp()) * 150
+
         if hero.get_hp() == 0:
-            hero_health_width = 0  # If hero is defeated, set width to 0
+            hero_health_width = 0 # If hero is defeated, set width to 0
+        else:
+            hero_health_width = (hero.get_hp() / hero.get_max_hp()) * 150
         pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(80, 20, hero_health_width, 25))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(80, 20, 150, 25), 3)
         View.draw_text("HP", 20, 15)
         View.draw_text(f"{hero.get_hp()}/{hero.get_max_hp()}", 250, 15)
 
         # Monster health bar
-        monster_health_width = (monster.get_hp() / monster.get_max_hp()) * 150
         if monster.get_hp() == 0:
             monster_health_width = 0  # If monster is defeated, set width to 0
+        else:
+            monster_health_width = (monster.get_hp() / monster.get_max_hp()) * 150
         pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(370, 280, monster_health_width, 25))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(370, 280, 150, 25), 3)
         View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 400, 300)
