@@ -51,3 +51,9 @@ class Inventory:
 
     def get_pillars(self):
         return self.pillars
+
+    def get_health_potions(self):
+        return self.health_potions
+
+    def get_vision_potions(self):
+        return self.vision_potions

@@ -4,7 +4,7 @@ from Model.Inventory import Inventory
 pygame.init()
 
 SCREEN_WIDTH = 810
-SCREEN_HEIGHT = 810
+SCREEN_HEIGHT = 820
 ROOM_SIZE = SCREEN_WIDTH//6
 DEFAULT_SIZE = SCREEN_WIDTH // 36
 

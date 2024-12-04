@@ -27,8 +27,8 @@ def draw_hero(screen):
 
 def draw_room(screen, room):
     width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
-    default_size = width // 18
+    room_size = width // 6
+    default_size = width // 36
 
     rect_list = []
     x = room.get_location()[0] * room_size
@@ -141,7 +141,6 @@ def draw_monster(screen, room):
 
 def draw_toolbar(screen):
     width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
     default_size = width // 18
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
@@ -171,3 +170,57 @@ def draw_toolbar(screen):
 
     # Return the button rectangle for external use
     return rect_list
+def draw_inventory(screen):
+    width, height = pygame.display.get_surface().get_size()
+    default_size = width // 18
+    row_height = 4*default_size
+    font = pygame.font.Font("8-bit-pusab.ttf", 15)
+
+    image = pygame.Surface((width, row_height))
+    image.fill((255,0, 255))
+    rect = image.get_rect()
+    rect.topleft = (0, default_size/1.5)
+    screen.blit(image, rect)
+    potion_label = pygame.Rect(5, default_size/1.5 + default_size, default_size*2, default_size)
+    pillar_label = pygame.Rect(5, default_size/1.5 + 3*default_size, default_size * 2, default_size)
+
+    potion_surface = font.render("Potions:", True, (255,255,255))
+    pillar_surface = font.render("Pillars:", True, (255, 255, 255))
+
+
+    screen.blit(potion_surface, potion_label)
+    screen.blit(pillar_surface, pillar_label)
+    current_pillars = Inventory.get_instance().get_pillars()
+    i = 3
+    for pillar in current_pillars:
+        img = pygame.image.load(pillar.get_image())
+        scaled_img = pygame.transform.scale(img, (30, 30))
+        screen.blit(scaled_img, (default_size*i, default_size/1.5 + 3*default_size))
+        i += 2
+
+    health_rects = []
+    current_health_potions = Inventory.get_instance().get_health_potions()
+    i = 3
+    for potion in current_health_potions:
+        img = pygame.image.load(potion.get_image())
+        scaled_img = pygame.transform.scale(img, (30, 30))
+        rect = scaled_img.get_rect()
+        rect.topleft = (default_size * i, default_size / 1.5 + default_size)
+        screen.blit(scaled_img, (default_size * i, default_size / 1.5 + default_size))
+        i += 2
+        health_rects.append(rect)
+
+    vision_rects = []
+    current_vision_potions = Inventory.get_instance().get_vision_potions()
+    i = 3
+    for potion in current_vision_potions:
+        img = pygame.image.load(potion.get_image())
+        scaled_img = pygame.transform.scale(img, (30, 30))
+        rect = scaled_img.get_rect()
+        rect.topleft = (default_size * i, default_size / 1.5 + 2*default_size)
+        screen.blit(scaled_img, (default_size * i, default_size / 1.5 + 2*default_size))
+        i += 2
+        vision_rects.append(rect)
+
+    # Return the button rectangle for external use
+    return health_rects, vision_rects
