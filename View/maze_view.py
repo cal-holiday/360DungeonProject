@@ -169,7 +169,7 @@ def draw_toolbar(screen):
     screen.blit(quit_surface, quit_button)
 
     # Return the button rectangle for external use
-    return rect_list
+    return rect_listII
 def draw_inventory(screen):
     width, height = pygame.display.get_surface().get_size()
     default_size = width // 18
