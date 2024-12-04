@@ -29,6 +29,7 @@ def run(monster):
         View.draw_image(hero.get_image(), 75, 330, 90, 90)
         View.draw_image(monster.get_image(), 400, 330, 90, 90)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
+        View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
 
     def update(character, text, damage):
         """Update health bars and display results."""
@@ -128,8 +129,6 @@ def run(monster):
         elif action == "potion":
             inventory.drink_health_potion()
             return update(monster, f"{hero.get_name()} used a health potion!", 10)
-        elif action == "skip":
-            return False
 
     while isRunning and in_battle:
         redraw_screen()
@@ -170,11 +169,7 @@ def run(monster):
                         View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
-                    in_battle = hero_turn("skip")
-                    if in_battle:
-                        isRunning = False
-
-
+                    isRunning = False
         pygame.display.update()
         clock.tick(60)
 

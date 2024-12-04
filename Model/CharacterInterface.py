@@ -62,7 +62,7 @@ class CharacterInterface(ABC):
             print("Max HP must be an int and cannot be 0 or negative")
 
     def set_hp(self, hp):
-        if isinstance(hp,int) and 0 < hp <= self.max_hp:
+        if isinstance(hp,int) and 0 <= hp <= self.max_hp:
             self.hp = hp
         else:
             print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
