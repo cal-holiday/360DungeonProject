@@ -34,9 +34,12 @@ def run(screen, monster):
         """Update health bars and display results."""
         pygame.draw.rect(screen, (0, 0, 0), black_rect)
         result = character.get_hp() + damage
-        character.set_hp(result)
         redraw_screen()
-        display_health_bars(hero, monster)
+        display_health_bars()
+        if result < 0:
+            character.set_hp(0)
+        else:
+            character.set_hp(result)
 
         if result > 0:
             if character.get_name() == hero.get_name():
@@ -47,7 +50,6 @@ def run(screen, monster):
             pygame.time.wait(action_delay)
             return True
         else:
-            display_health_bars(hero, monster)
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
             else:
@@ -56,26 +58,24 @@ def run(screen, monster):
             pygame.time.wait(2000)
             return False
 
-    def display_health_bars(hero, monster):
+    def display_health_bars():
         """Draw health bars for the hero and monster."""
         # Hero health bar
-        hero_current_hp = max(0, hero.get_hp())  # Ensure hero's HP doesn't go below 0
-        hero_health_width = (hero_current_hp / hero.get_max_hp()) * 150
-        if hero_current_hp == 0:
+        hero_health_width = (hero.get_hp() / hero.get_max_hp()) * 150
+        if hero.get_hp() == 0:
             hero_health_width = 0  # If hero is defeated, set width to 0
         pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(80, 20, hero_health_width, 25))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(80, 20, 150, 25), 3)
         View.draw_text("HP", 20, 15)
-        View.draw_text(f"{hero_current_hp}/{hero.get_max_hp()}", 250, 15)
+        View.draw_text(f"{hero.get_hp()}/{hero.get_max_hp()}", 250, 15)
 
         # Monster health bar
-        monster_current_hp = max(0, monster.get_hp())  # Ensure monster's HP doesn't go below 0
-        monster_health_width = (monster_current_hp / monster.get_max_hp()) * 150
-        if monster_current_hp == 0:
+        monster_health_width = (monster.get_hp() / monster.get_max_hp()) * 150
+        if monster.get_hp() == 0:
             monster_health_width = 0  # If monster is defeated, set width to 0
         pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(370, 280, monster_health_width, 25))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(370, 280, 150, 25), 3)
-        View.draw_text(f"{monster_current_hp}/{monster.get_max_hp()}", 400, 300)
+        View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 400, 300)
 
     def monsters_turn():
         """Monster's actions during its turn."""
@@ -131,7 +131,7 @@ def run(screen, monster):
 
     while isRunning and in_battle:
         redraw_screen()
-        display_health_bars(hero, monster)
+        display_health_bars()
 
         View.draw_button("battle_button.png", "Attack", 20, 700, 185, 75)
         View.draw_button("battle_button.png", "Special", 215, 700, 185, 75)
