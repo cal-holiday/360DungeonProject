@@ -201,7 +201,7 @@ while RUN:
     toolbar_rects = View.draw_toolbar()
     if INVENTORY_CLICKED:
       View.draw_inventory()
-    #exit_rect = View.draw_exit(room)ssssss
+    #exit_rect = View.draw_exit(room)
     player.move()
     View.draw_hero()
 

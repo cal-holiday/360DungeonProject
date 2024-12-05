@@ -12,7 +12,15 @@ default_size = width // 18
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Dungeon Adventure')
 
-
+def get_camera_offset():
+    camera_offset_x = Hero.get_instance().get_x() - width // 2
+    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    if Hero.get_instance().get_x() < 270:
+        camera_offset_x = 0
+    if Hero.get_instance().get_y() < 270:
+        camera_offset_y = 0
+    camera_offset_x = Hero.get_instance().get_x() - width // 2
+    camera_offset_y = Hero.get_instance().get_y() - height // 2
 
 
 def draw_hero():
