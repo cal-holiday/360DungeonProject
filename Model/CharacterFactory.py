@@ -32,7 +32,7 @@ class CharacterFactory:
             image, max_hp, agility = result
             element = element
             con.close()
-            return Hero(name, image, max_hp, agility, element)
+            return Hero(name, image, hit_image, dead_image, max_hp, agility, element)
         else:
             con.close()
             raise ValueError(f"No hero found for element {element_val}")

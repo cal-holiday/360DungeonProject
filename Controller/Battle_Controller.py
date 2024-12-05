@@ -22,17 +22,22 @@ def run(monster):
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
 
-    def redraw_screen():
+    def redraw_screen(character, action):
         """Redraw the screen elements."""
         screen.fill((0, 0, 0))
         View.draw_image("battle_background.jpg", 0, 0, 810, 450)
-        if hero.get_hp() == 0:
-            View.draw_image(hero.get_dead_image(), 75, 330, 90, 90)
+        if action == "dead":
+            if isinstance(character, Hero):
+                View.draw_image(hero.get_dead_image(), 75, 330, 90, 90)
+            else:
+                View.draw_image(monster.get_dead_image(), 400, 330, 90, 90)
+        elif action == "hit":
+            if isinstance(character, Hero):
+                View.draw_image(hero.get_hit_image(), 75, 330, 90, 90)
+            else:
+                View.draw_image(monster.get_hit_image(), 400, 330, 90, 90)
         else:
             View.draw_image(hero.get_image(), 75, 330, 90, 90)
-        if monster.get_hp() == 0:
-            View.draw_image(monster.get_dead_image(), 400, 330, 90, 90)
-        else:
             View.draw_image(monster.get_image(), 400, 330, 90, 90)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
         View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
@@ -45,9 +50,9 @@ def run(monster):
         else:
             character.set_hp(result)
         pygame.draw.rect(screen, (0, 0, 0), black_rect)
-        redraw_screen()
         display_health_bars()
         if result > 0:
+            redraw_screen(character, "hit")
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
             else:
@@ -56,6 +61,7 @@ def run(monster):
             pygame.time.wait(action_delay)
             return True
         else:
+            redraw_screen(character, "dead")
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
             else:
