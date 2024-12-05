@@ -26,8 +26,14 @@ def run(monster):
         """Redraw the screen elements."""
         screen.fill((0, 0, 0))
         View.draw_image("battle_background.jpg", 0, 0, 810, 450)
-        View.draw_image(hero.get_image(), 75, 330, 90, 90)
-        View.draw_image(monster.get_image(), 400, 330, 90, 90)
+        if hero.get_hp() == 0:
+            View.draw_image(hero.get_dead_image(), 75, 330, 90, 90)
+        else:
+            View.draw_image(hero.get_image(), 75, 330, 90, 90)
+        if monster.get_hp() == 0:
+            View.draw_image(monster.get_dead_image(), 400, 330, 90, 90)
+        else:
+            View.draw_image(monster.get_image(), 400, 330, 90, 90)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
         View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
 
