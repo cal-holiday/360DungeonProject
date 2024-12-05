@@ -2,10 +2,12 @@ import pygame
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 pygame.init()
+width, height = pygame.display.get_surface().get_size()
+default_size = width // 18
+room_size = width // 3
 
 def draw_hero(screen):
-    width, height = pygame.display.get_surface().get_size()
-    default_size = width // 18
+
 
     hero_img = pygame.image.load(Hero.get_instance().get_image())
     scaled_hero = pygame.transform.scale(hero_img, (default_size, default_size))
@@ -26,16 +28,14 @@ def draw_hero(screen):
     return scaled_hero.get_rect()
 
 def draw_room(screen, room):
-    width, height = pygame.display.get_surface().get_size()
-    room_size = width // 6
-    default_size = width // 36
-
+    camera_offset = Hero.get_instance().get_x() - width // 2
     rect_list = []
-    x = room.get_location()[0] * room_size
-    y = room.get_location()[1] * room_size + default_size
+    x = room.get_location()[0] * room_size - camera_offset
+    y = room.get_location()[1] * room_size + default_size - camera_offset
 
     floor = pygame.image.load('floor.png')
-    floor_img = pygame.transform.scale(floor, (room_size - 5, room_size - 5))
+    floor_img = pygame.transform.scale(floor, (room_size, room_size))
+    floor_rect = floor_img.get_rect()
     screen.blit(floor_img, (x, y))
     corner = pygame.image.load('corner.png')
     corner = pygame.transform.scale(corner, (default_size, default_size))
@@ -89,15 +89,13 @@ def draw_room(screen, room):
         screen.blit(horz_wall, (x + room_size - 3*default_size, y + room_size - default_size))
         s_wall = pygame.Rect(x + default_size, y + room_size - default_size, room_size - 2*default_size, default_size)
         rect_list.append(s_wall)
-    return rect_list
+    return floor_rect, rect_list
 
 def draw_exit(screen,room):
-    width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
-    default_size = width // 18
+    camera_offset = Hero.get_instance().get_x() - width // 2
     if room.has_exit and Inventory.get_instance().has_all_pillars():
-        x = room.get_location()[0] * room_size
-        y = room.get_location()[1] * room_size +default_size
+        x = room.get_location()[0] * room_size - camera_offset
+        y = room.get_location()[1] * room_size +default_size -camera_offset
         door = pygame.image.load("exit_door.png")
         door_img = pygame.transform.scale(door, (default_size*2, default_size*2))
         door_rect = door_img.get_rect()
@@ -108,11 +106,9 @@ def draw_exit(screen,room):
         return None
 
 def draw_potion(screen, room):
-    width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
-    default_size = width // 18
-    x = room.get_location()[0] * room_size
-    y = room.get_location()[1] * room_size +default_size
+    camera_offset = Hero.get_instance().get_x() - width // 2
+    x = room.get_location()[0] * room_size - camera_offset
+    y = room.get_location()[1] * room_size +default_size -camera_offset
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
         potion_img = pygame.image.load(potion)
@@ -124,11 +120,9 @@ def draw_potion(screen, room):
         return None
 
 def draw_monster(screen, room):
-    width, height = pygame.display.get_surface().get_size()
-    room_size = width // 3
-    default_size = width // 18
-    x = room.get_location()[0] * room_size
-    y = room.get_location()[1] * room_size + default_size
+    camera_offset = Hero.get_instance().get_x() - width // 2
+    x = room.get_location()[0] * room_size - camera_offset
+    y = room.get_location()[1] * room_size + default_size - camera_offset
     if room.get_monster() is not None:
         monster = room.get_monster()
         monster_img = monster.get_image()
@@ -140,8 +134,7 @@ def draw_monster(screen, room):
         return None
 
 def draw_toolbar(screen):
-    width, height = pygame.display.get_surface().get_size()
-    default_size = width // 18
+
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
     image = pygame.Surface((width, default_size/1.5))
@@ -171,8 +164,7 @@ def draw_toolbar(screen):
     # Return the button rectangle for external use
     return rect_list
 def draw_inventory(screen):
-    width, height = pygame.display.get_surface().get_size()
-    default_size = width // 18
+
     row_height = 4*default_size
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
@@ -224,3 +216,4 @@ def draw_inventory(screen):
 
     # Return the button rectangle for external use
     return health_rects, vision_rects
+
