@@ -122,7 +122,7 @@ class ControllerHero(pygame.sprite.Sprite):
 class ControllerRoom():
     def __init__(self, screen, room):
         self.room = room
-        self.room_rects = maze_view.draw_room(screen, self.room)
+        self.floor_rect, self.room_rects = maze_view.draw_room(screen, self.room)
         self.potion_rect = maze_view.draw_potion(screen, self.room)
         self.monster_rect = maze_view.draw_monster(screen, room)
         self.toolbar_rects = maze_view.draw_toolbar(screen)

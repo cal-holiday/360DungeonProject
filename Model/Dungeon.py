@@ -2,8 +2,9 @@ import pygame
 
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
+from Model.Hero import Hero
 from Model.Potion import HealthPotion
-from Room import Room
+from Model.Room import Room
 from random import choice
 from View import View
 class Dungeon:
@@ -57,25 +58,25 @@ class Dungeon:
         d_row = curr_row - next_row
         if d_row == 1:
             self.room_array[curr_col][curr_row].set_nwall(False)
-            print("Breaking north Wall")
+
             self.room_array[curr_col][curr_row-1].set_swall(False)
-            print("Breaking next south Wall")
+
         elif d_row == -1:
             self.room_array[curr_col][curr_row].set_swall(False)
-            print("Breaking south Wall")
+
             self.room_array[curr_col][curr_row+1].set_nwall(False)
-            print("Breaking next north Wall")
+
         d_col = curr_col - next_col
         if d_col == 1:
             self.room_array[curr_col][curr_row].set_wwall(False)
-            print("Breaking west Wall")
+
             self.room_array[curr_col-1][curr_row].set_ewall(False)
-            print("Breaking next east Wall")
+
         elif d_col == -1:
             self.room_array[curr_col][curr_row].set_ewall(False)
-            print("Breaking east Wall")
+
             self.room_array[curr_col+1][curr_row].set_wwall(False)
-            print("Breaking next west Wall")
+
 
 
     def generate_maze(self):
@@ -83,10 +84,6 @@ class Dungeon:
         stack = [current_room]
         while stack:
             next_room = self.check_neighbors(current_room)
-            if current_room:
-                print("Visiting ", current_room.get_location())
-            if next_room:
-                print(next_room.get_location(), " is next")
             if next_room:
                 self.remove_walls(current_room, next_room)
                 if not current_room.get_has_visited():
@@ -116,8 +113,10 @@ class Dungeon:
             row = choice(col)
             row.set_potion(potion)
 
-
-
+"""
+CharacterFactory.create_hero("TEST", Element.AIR)
+Hero.get_instance().set_x(258)
+Hero.get_instance().set_y(258)
 thing = Dungeon(6)
 array = thing.generate_maze()
 thing.add_exit()
@@ -133,3 +132,4 @@ while run:
             View.draw_monster(array[i][j])
             #View.draw_potion(array[i][j])
     pygame.display.update()
+"""
