@@ -163,11 +163,11 @@ inventory.add(AbstractionPillar())
 inventory.add(PolymorphismPillar())
 inventory.add(InheritancePillar())
 
-Hero.get_instance().set_x(270)
-Hero.get_instance().set_y(270)
+Hero.get_instance().set_x(405)
+Hero.get_instance().set_y(405)
 player = ControllerHero(View.draw_hero())
 POTION_REMOVED = False
-MONSTER_DEFEATED = False
+MONSTER_DEFEATED = Falseaaaa
 INVENTORY_CLICKED = False
 
 dungeon = Dungeon(6)
