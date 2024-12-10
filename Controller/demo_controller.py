@@ -110,7 +110,10 @@ def handle_event(event):
         print(room.get_location())
         print(room.get_monster())
         Battle_Controller.run(room.get_monster())
-        pygame.event.clear()
+        player.down = False
+        player.up = False
+        player.right = False
+        player.left = False
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")

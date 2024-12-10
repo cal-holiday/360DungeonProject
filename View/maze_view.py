@@ -171,7 +171,7 @@ def draw_toolbar(screen):
     screen.blit(quit_surface, quit_button)
 
     # Return the button rectangle for external use
-    return rect_listII
+    return rect_list
 def draw_inventory(screen):
 
     row_height = 4*default_size
