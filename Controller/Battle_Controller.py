@@ -4,6 +4,7 @@ from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
+from Model.Monster import Monster
 from Model.Potion import HealthPotion
 from View import Battle_View as View
 
@@ -22,25 +23,32 @@ def run(monster):
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
 
-    def redraw_screen(character, action):
+    def redraw_screen():
         """Redraw the screen elements."""
         screen.fill((0, 0, 0))
         View.draw_image("battle_background.jpg", 0, 0, 810, 450)
-        if action == "dead":
-            if isinstance(character, Hero):
-                View.draw_image(hero.get_dead_image(), 75, 330, 90, 90)
-            else:
-                View.draw_image(monster.get_dead_image(), 400, 330, 90, 90)
-        elif action == "hit":
-            if isinstance(character, Hero):
-                View.draw_image(hero.get_hit_image(), 75, 330, 90, 90)
-            else:
-                View.draw_image(monster.get_hit_image(), 400, 330, 90, 90)
-        else:
-            View.draw_image(hero.get_image(), 75, 330, 90, 90)
-            View.draw_image(monster.get_image(), 400, 330, 90, 90)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
         View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
+        display_health_bars()
+
+    def redraw_sprites(character, action):
+        if action == "hit":
+            if isinstance(character, Monster):
+                View.draw_image(monster.get_hit_image(), 400, 330, 90, 90)
+                View.draw_image(hero.get_image(), 75, 330, 90, 90)
+            else:
+                View.draw_image(hero.get_hit_image(), 75, 330, 90, 90)
+                View.draw_image(monster.get_image(), 400, 330, 90, 90)
+        elif action == "dead":
+            if isinstance(character, Monster):
+                View.draw_rotated_image(monster.get_dead_image(), 400, 350, 90, 90,90)
+                View.draw_image(hero.get_image(), 75, 330, 90, 90)
+            else:
+                View.draw_rotated_image(hero.get_dead_image(), 75, 350, 90, 90, 270)
+                View.draw_image(monster.get_image(), 400, 330, 90, 90)
+        elif action == "idle":
+            View.draw_image(hero.get_image(), 75, 330, 90, 90)
+            View.draw_image(monster.get_image(), 400, 330, 90, 90)
 
     def update(character, text, damage):
         """Update health bars and display results."""
@@ -50,22 +58,27 @@ def run(monster):
         else:
             character.set_hp(result)
         pygame.draw.rect(screen, (0, 0, 0), black_rect)
+        redraw_screen()
+        redraw_sprites(character, "idle")
         display_health_bars()
         if result > 0:
-            redraw_screen(character, "hit")
+            redraw_screen()
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
+                redraw_sprites(hero, "hit")
             else:
                 View.draw_result(text, 40, 500)
+                redraw_sprites(monster,"hit")
             pygame.display.update()
             pygame.time.wait(action_delay)
             return True
         else:
-            redraw_screen(character, "dead")
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
+                redraw_screen()
+            redraw_sprites(character, "dead")
             pygame.display.update()
             pygame.time.wait(2000)
             return False
@@ -73,7 +86,6 @@ def run(monster):
     def display_health_bars():
         """Draw health bars for the hero and monster."""
         # Hero health bar
-
         if hero.get_hp() == 0:
             hero_health_width = 0 # If hero is defeated, set width to 0
         else:
@@ -145,6 +157,7 @@ def run(monster):
     while isRunning and in_battle:
         redraw_screen()
         display_health_bars()
+        redraw_sprites(hero, "idle")
 
         View.draw_button("battle_button.png", "Attack", 20, 700, 185, 75)
         View.draw_button("battle_button.png", "Special", 215, 700, 185, 75)
