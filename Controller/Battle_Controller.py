@@ -231,7 +231,7 @@ def run(monster):
 
         pygame.display.update()
         clock.tick(60)
-
+"""
 if __name__ == '__main__':
     hero = CharacterFactory.create_hero("hero", Element.WATER)
     screen = pygame.display.set_mode((810, 810))
@@ -240,3 +240,4 @@ if __name__ == '__main__':
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
     run(monster)
+"""
