@@ -21,12 +21,14 @@ def run(monster):
     action_delay = 400  # Delay in milliseconds between turns
 
     black_rect = pygame.Rect(25, 475, 760, 190)
+    previous_text = ""
     white_rect = pygame.Rect(20, 470, 770, 200)
 
     def redraw_screen():
         """Redraw the screen elements."""
         screen.fill((0, 0, 0))
         View.draw_image("battle_background.jpg", 0, 0, 810, 450)
+        pygame.draw.rect(screen, (0, 0, 0), black_rect)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
         View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
         display_health_bars()
@@ -41,10 +43,10 @@ def run(monster):
                 View.draw_image(monster.get_image(), 400, 330, 90, 90)
         elif action == "dead":
             if isinstance(character, Monster):
-                View.draw_rotated_image(monster.get_dead_image(), 400, 350, 90, 90,90)
+                View.draw_rotated_image(monster.get_dead_image(), 400, 350, 90, 90,270)
                 View.draw_image(hero.get_image(), 75, 330, 90, 90)
             else:
-                View.draw_rotated_image(hero.get_dead_image(), 75, 350, 90, 90, 270)
+                View.draw_rotated_image(hero.get_dead_image(), 75, 350, 90, 90, 90)
                 View.draw_image(monster.get_image(), 400, 330, 90, 90)
         elif action == "idle":
             View.draw_image(hero.get_image(), 75, 330, 90, 90)
@@ -53,35 +55,44 @@ def run(monster):
     def update(character, text, damage):
         """Update health bars and display results."""
         result = character.get_hp() + damage
-        if result <= 0:
-            character.set_hp(0)
-        else:
-            character.set_hp(result)
-        pygame.draw.rect(screen, (0, 0, 0), black_rect)
         redraw_screen()
         redraw_sprites(character, "idle")
-        display_health_bars()
-        if result > 0:
+        if damage == 0:
+            if character.get_name() == hero.get_name():
+                View.draw_monster_result(text, 40, 500)
+            else:
+                View.draw_result(text,40,500)
+        elif result <= 0:
+            character.set_hp(0)
+            display_health_bars()
+            redraw_screen()
+            if character.get_name() == hero.get_name():
+                View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
+                redraw_sprites(hero, "dead")
+            else:
+                View.draw_result(hero.get_name() + " won!", 40, 500)
+                redraw_sprites(monster, "dead")
+            pygame.display.update()
+            pygame.time.wait(3000)
+            return False
+        else:
+            character.set_hp(result)
             redraw_screen()
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
-                redraw_sprites(hero, "hit")
+                if damage < 0:
+                    redraw_sprites(hero, "hit")
+                else:
+                    redraw_sprites(hero, "idle")
             else:
                 View.draw_result(text, 40, 500)
-                redraw_sprites(monster,"hit")
-            pygame.display.update()
-            pygame.time.wait(action_delay)
-            return True
-        else:
-            if character.get_name() == hero.get_name():
-                View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
-            else:
-                View.draw_result(hero.get_name() + " won!", 40, 500)
-                redraw_screen()
-            redraw_sprites(character, "dead")
-            pygame.display.update()
-            pygame.time.wait(2000)
-            return False
+                if damage < 0:
+                    redraw_sprites(monster, "hit")
+                else:
+                    redraw_sprites(hero, "idle")
+        pygame.display.update()
+        pygame.time.wait(action_delay)
+        return True
 
     def display_health_bars():
         """Draw health bars for the hero and monster."""
@@ -100,9 +111,9 @@ def run(monster):
             monster_health_width = 0  # If monster is defeated, set width to 0
         else:
             monster_health_width = (monster.get_hp() / monster.get_max_hp()) * 150
-        pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(370, 280, monster_health_width, 25))
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(370, 280, 150, 25), 3)
-        View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 400, 300)
+        pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(370, 270, monster_health_width, 25))
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(370, 270, 150, 25), 3)
+        View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 400, 290)
 
     def monsters_turn():
         """Monster's actions during its turn."""
@@ -133,7 +144,6 @@ def run(monster):
     def hero_turn(action):
         """Handle hero's actions based on input."""
         monster_agility = monster.get_agility()
-
         if action == "attack":
             result = hero.attack()
             if result[0] > monster_agility:
@@ -149,10 +159,9 @@ def run(monster):
                 return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
-
         elif action == "potion":
             inventory.drink_health_potion()
-            return update(monster, f"{hero.get_name()} used a health potion!", 10)
+            return update(monster, f"{hero.get_name()} used a health potion!", 0)
 
     while isRunning and in_battle:
         redraw_screen()
@@ -205,5 +214,4 @@ if __name__ == '__main__':
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
-    print(f"Inventory has health potions: {inventory.has_health_potion()}")
     run(monster)
