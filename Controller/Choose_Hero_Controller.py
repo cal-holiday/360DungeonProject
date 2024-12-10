@@ -142,7 +142,8 @@ def run(screen):
                         elif selected_stats["element"] == "Air":
                             CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
-                            maze_controller.run(screen)
+                            CharacterFactory.create_hero(hero_name, Element.EARTH)
+                        maze_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
