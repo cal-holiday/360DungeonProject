@@ -13,6 +13,7 @@ def run(theScreen):
         you_win.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
         you_win.draw_scaled_image("banner.png", 155, 200, 500, 150)
         you_win.draw_text("You Win!",260,230)
+        you_win.draw_scaled_image("treasure_chest.jpg",367,375,75,75)
         new_game = you_win.draw_button("button.png","Play Again",300,500,200,75)
         quit_game = you_win.draw_button("button.png","Quit",300,600,200,75)
 

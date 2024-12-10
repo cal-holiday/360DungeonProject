@@ -1,5 +1,7 @@
 import pygame
 import random
+
+from Controller import you_died_controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
@@ -71,6 +73,7 @@ def run(monster):
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
+                you_died_controller.run(screen)
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
@@ -207,6 +210,7 @@ def run(monster):
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
+
         pygame.display.update()
         clock.tick(60)
 
