@@ -74,6 +74,16 @@ def run(monster):
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
+
+                """
+                if monster.has_vision_potion():
+                    inventory.add(monster.get_health_potion())
+                if monster.has_vision_potion():
+                    inventory.add(monster.get_vision_potion())
+                if monster.has_pillar():
+                    inventory.add(monster.get_pillar())
+                """
+
             pygame.display.update()
             pygame.time.wait(3000)
             return False
@@ -170,6 +180,8 @@ def run(monster):
         display_health_bars()
         redraw_sprites(hero, "idle")
 
+        View.draw_rewards(monster)
+
         View.draw_button("battle_button.png", "Attack", 20, 700, 185, 75)
         View.draw_button("battle_button.png", "Special", 215, 700, 185, 75)
         View.draw_button("battle_button.png", "Potion", 410, 700, 185, 75)
@@ -214,6 +226,9 @@ if __name__ == '__main__':
     hero = CharacterFactory.create_hero("hero", Element.WATER)
     screen = pygame.display.set_mode((810, 810))
     monster = CharacterFactory.create_monster(Element.EARTH)
+    print(f"monster has health potion: {monster.has_health_potion()}")
+    print(f"monster has vision potion: {monster.has_vision_potion()}")
+    print(f"monster has pillar: {monster.has_pillar()}")
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())

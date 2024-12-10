@@ -11,6 +11,8 @@ screen = pygame.display.set_mode((10,4))
 font = pygame.font.Font(FONT, 20)
 button_font = pygame.font.Font(FONT, 18)
 text_font = pygame.font.Font(FONT, 25)
+reward_font = pygame.font.Font(FONT, 20)
+reward_header_font = pygame.font.Font(FONT, 30)
 pygame.display.set_caption("Battle")
 
 def pass_screen(passed_screen):
@@ -53,3 +55,48 @@ def draw_button(img_path, text, x, y, width, height):
 
     # Return the button rectangle for external use
     return button_rect
+
+def reward_text(text, x, y):
+    img = reward_font.render(text, True, (101, 67, 33))
+    screen.blit(img, (x, y))
+
+def reward_header(text, x, y):
+    img = reward_header_font.render(text, True, (101, 67, 33))
+    screen.blit(img, (x, y))
+
+def draw_rewards(monster):
+    #dim_surface = pygame.Surface((screen.get_width(), screen.get_height()))
+    #dim_surface.set_alpha(200)  # Set transparency
+    #dim_surface.fill((0, 0, 0))  # Black
+    # Blit the dim surface over the screen
+    #screen.blit(dim_surface, (0, 0))
+    rect = pygame.Rect(205, 205, 400, 400)
+    pygame.draw.rect(screen, (245, 222, 179), rect)
+    reward_header("Rewards", 293, 220)
+    three_items: [(205, 205), (255, 205), (305, 205)]
+    two_items = [(205, 205), (305, 205)]
+    one_item = (250, 250)
+    """
+    if monster.has_health_potion() and monster.has_vision_potion() and monster.has_pillar():
+        draw_image("health_potion.png", three_items[0][0], three_items[0][1], 100, 100)
+        draw_image("vision_potion.png", three_items[1][0], three_items[1][1], 100, 100)
+        draw_image(monster.get_pillar().get_image(), three_items[2][0], three_items[2][1], 100, 100)
+    elif monster.has_health_potion() and monster.has_vision_potion():
+        draw_image("health_potion.png", two_items[0][0], two_items[0][1], 100, 100)
+        draw_image("vision_potion.png", two_items[1][0], two_items[1][1], 100, 100)
+    elif monster.has_health_potion() and monster.has_pillar():
+        draw_image("health_potion.png", two_items[0][0], two_items[0][1], 100, 100)
+        draw_image(monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
+    elif monster.has_vision_potion() and monster.has_pillar():
+        draw_image("vision_potion.png", two_items[0][0], two_items[0][1], 100, 100)
+        draw_image(monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
+    elif monster.has_health_potion():
+        draw_image("health_potion.png", one_item[0], one_item[1], 100, 100)
+    elif monster.has_vision_potion():
+        draw_image("vision_potion.png", one_item[0], one_item[1], 100, 100)
+    elif monster.has_pillar():
+        draw_image(monster.get_pillar().get_image(), one_item[0], one_item[1], 100, 100)
+    """
+
+    draw_button("button.png", "claim", 315, 500, 175, 70)
+
