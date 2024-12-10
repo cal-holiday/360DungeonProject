@@ -28,6 +28,7 @@ vision_potion_rects = []
 exit_rect = None
 player = None
 array = []
+potion_time = 0
 
 def run(screen):
     global room_rects
@@ -44,6 +45,7 @@ def run(screen):
     global health_potion_rects
     global vision_potion_rects
     global INVENTORY_CLICKED
+    global potion_time
     clock = pygame.time.Clock()
     fps = 60
     GET_POTION = pygame.USEREVENT + 1
@@ -87,14 +89,18 @@ def run(screen):
                 possible_exit = maze_view.draw_exit(screen, array[i][j])
                 if not possible_exit is None:
                     exit_rect = possible_exit
+
+        player.move()
+        maze_view.draw_hero(screen)
+        if potion_time == 0:
+            maze_view.draw_vision(screen)
         toolbar_rects = maze_view.draw_toolbar(screen)
 
         if INVENTORY_CLICKED:
             maze_view.draw_inventory(screen)
             health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
         # exit_rect = maze_view.draw_exit(room)
-        player.move()
-        maze_view.draw_hero(screen)
+
         # maze_view.draw_vision()
 
         for event in pygame.event.get():
@@ -240,4 +246,5 @@ def get_current_room():
     y = Hero.get_instance().get_y()
     room_x = x//maze_view.room_size
     room_y = y//maze_view.room_size
+    print(room_x, room_y)
     return array[room_x][room_y]

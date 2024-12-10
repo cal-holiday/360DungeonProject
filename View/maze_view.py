@@ -136,7 +136,7 @@ def draw_monster(screen, room):
         monster = room.get_monster()
         monster_img = monster.get_image()
         img = pygame.image.load(monster_img)
-        monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , room_size - (room_size/9), room_size - (room_size/9))
+        monster_rect = pygame.Rect((x + (room_size/2) -30), (y + (room_size/2) -30),default_size*2, default_size*2)
         screen.blit(img, (x + (room_size/2) -30, y + (room_size/2) -30))
         return monster_rect
     else:
@@ -228,4 +228,4 @@ def draw_inventory(screen):
 
 def draw_vision(screen):
     img = pygame.image.load("vision.png")
-    screen.blit(img, (0,30))
+    screen.blit(img, (-270,-240))
