@@ -70,6 +70,7 @@ def run(screen):
     dungeon = Dungeon(6)
     array = dungeon.room_array
     while RUN:
+        camera_offset_x, camera_offset_y = maze_view.get_camera_offset()
         clock.tick(fps)
         screen.fill(0)
         room_rects = []
@@ -92,18 +93,20 @@ def run(screen):
         player.move()
         maze_view.draw_hero(screen)
         if potion_time == 0:
-            Hero.get_instance().set_vision_status(False)
             maze_view.draw_vision(screen)
-        else:
-            potion_time -= 1
         toolbar_rects = maze_view.draw_toolbar(screen)
+
         if INVENTORY_CLICKED:
             maze_view.draw_inventory(screen)
             health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
+        # exit_rect = maze_view.draw_exit(room)
+
+        # maze_view.draw_vision()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(event)
+            handle_event(event, )
         pygame.display.update()
     pygame.quit()
 class ControllerHero(pygame.sprite.Sprite):
@@ -179,7 +182,6 @@ def handle_event(event):
     global RUN
     global INVENTORY_CLICKED
     global toolbar_rects
-    global potion_time
     room = get_current_room()
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
@@ -205,11 +207,11 @@ def handle_event(event):
     if event.type == MONSTER_BATTLE:
         print(room.get_location())
         print(room.get_monster())
-        Battle_Controller.run(room.get_monster())
         player.down = False
         player.up = False
         player.right = False
         player.left = False
+        Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")
@@ -222,6 +224,7 @@ def handle_event(event):
                         INVENTORY_CLICKED = False
                     else:
                         INVENTORY_CLICKED = True
+                        print("Inventory")
                         print(Inventory.get_instance().get_health_potions())
                 elif i == 1:
                     print("Map")
@@ -237,12 +240,11 @@ def handle_event(event):
             for i in range(len(vision_potion_rects)):
                 if vision_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_vision_potion()
-                    Hero.get_instance().set_vision_status(True)
-                    potion_time = 600
 
 def get_current_room():
     x = Hero.get_instance().get_x()
     y = Hero.get_instance().get_y()
     room_x = x//maze_view.room_size
     room_y = y//maze_view.room_size
+    print(room_x, room_y)
     return array[room_x][room_y]

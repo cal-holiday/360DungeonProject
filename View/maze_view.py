@@ -1,6 +1,4 @@
 import pygame
-
-from Controller.demo_controller import camera_offset_x, camera_offset_y
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 pygame.init()
@@ -138,7 +136,7 @@ def draw_monster(screen, room):
         monster = room.get_monster()
         monster_img = monster.get_image()
         img = pygame.image.load(monster_img)
-        monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , room_size - (room_size/9), room_size - (room_size/9))
+        monster_rect = pygame.Rect((x + (room_size/2) -30), (y + (room_size/2) -30),default_size*2, default_size*2)
         screen.blit(img, (x + (room_size/2) -30, y + (room_size/2) -30))
         return monster_rect
     else:
@@ -229,16 +227,5 @@ def draw_inventory(screen):
     return health_rects, vision_rects
 
 def draw_vision(screen):
-    camera_offset_x, camera_offset_y = get_camera_offset()
     img = pygame.image.load("vision.png")
-    x = -270
-    y = -240
-    if camera_offset_x == 0:
-        x -= Hero.get_instance().get_x
-    elif camera_offset_x == room_size*3:
-        x += Hero.get_instance().get_x - width//2
-    elif camera_offset_y == 0:
-        y -= Hero.get_instance().get_y
-    elif camera_offset_y == room_size*3:
-        y += Hero.get_instance().get_y - height//2
-    screen.blit(img, (x, y))
+    screen.blit(img, (-270,-240))
