@@ -144,7 +144,7 @@ def draw_monster(room):
         monster_img = monster.get_image()
         img = pygame.image.load(monster_img)
         img = pygame.transform.scale(img, (1.5*default_size, 1.5*default_size))
-        monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , room_size - (room_size/9), room_size - (room_size/9))
+        monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , 2*default_size, 2*default_size)
         monster_rect.center = (x + (room_size/2) -30, y + (room_size/2) -30)
         screen.blit(img, (x + (room_size/2) -30, y + (room_size/2) -30))
         return monster_rect

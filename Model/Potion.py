@@ -50,6 +50,8 @@ class HealthPotion(Potion):
             Hero.get_instance().set_hp(Hero.get_instance().get_max_hp())
         else:
             Hero.get_instance().set_hp(Hero.get_instance().get_hp() + 10)
+    def get_image(self):
+        return self.image
 
 """
 the vision potion child class of the Potion ABC
@@ -62,3 +64,5 @@ class VisionPotion(Potion):
         self.image = "vision_potion.png"
     def drink(self):
         Hero.get_instance().set_vision_status(True)
+    def get_image(self):
+        return self.image
