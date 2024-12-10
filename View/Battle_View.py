@@ -72,7 +72,7 @@ def draw_rewards(monster):
     rect = pygame.Rect(205, 205, 400, 400)
     pygame.draw.rect(screen, (245, 222, 179), rect)
     reward_header("Rewards", 293, 220)
-    three_items: [(230, 350), (350, 350), (470, 350)]
+    three_items = [(230, 350), (350, 350), (470, 350)]
     two_items = [(300, 350), (400, 350)]
     one_item = (350, 350)
     if monster.has_health_potion() and monster.has_vision_potion() and monster.has_pillar():
