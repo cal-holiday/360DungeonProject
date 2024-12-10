@@ -201,6 +201,10 @@ def handle_event(event):
     if event.type == MONSTER_BATTLE:
         print(room.get_location())
         print(room.get_monster())
+        player.down = False
+        player.up = False
+        player.right = False
+        player.left = False
         Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
