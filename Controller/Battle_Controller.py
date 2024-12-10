@@ -22,6 +22,7 @@ def run(monster):
     inventory = Inventory.get_instance()
     in_battle = True
     action_delay = 400  # Delay in milliseconds between turns
+    reward_button = False
 
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
@@ -74,19 +75,10 @@ def run(monster):
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
-
-                """
-                if monster.has_vision_potion():
-                    inventory.add(monster.get_health_potion())
-                if monster.has_vision_potion():
-                    inventory.add(monster.get_vision_potion())
-                if monster.has_pillar():
-                    inventory.add(monster.get_pillar())
-                """
-
-            pygame.display.update()
-            pygame.time.wait(3000)
-            return False
+                pygame.display.update()
+                pygame.time.wait(2000)
+                reward_button = True
+                View.draw_rewards(monster)
         else:
             character.set_hp(result)
             redraw_screen()
@@ -180,8 +172,6 @@ def run(monster):
         display_health_bars()
         redraw_sprites(hero, "idle")
 
-        View.draw_rewards(monster)
-
         View.draw_button("battle_button.png", "Attack", 20, 700, 185, 75)
         View.draw_button("battle_button.png", "Special", 215, 700, 185, 75)
         View.draw_button("battle_button.png", "Potion", 410, 700, 185, 75)
@@ -218,6 +208,10 @@ def run(monster):
                         View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
+                    isRunning = False
+
+                elif 315 <= mx <= 500 and 175 <= my <= 70 and reward_button == True:
+                    print("clicked claim")
                     isRunning = False
         pygame.display.update()
         clock.tick(60)

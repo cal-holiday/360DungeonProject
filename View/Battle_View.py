@@ -65,18 +65,16 @@ def reward_header(text, x, y):
     screen.blit(img, (x, y))
 
 def draw_rewards(monster):
-    #dim_surface = pygame.Surface((screen.get_width(), screen.get_height()))
-    #dim_surface.set_alpha(200)  # Set transparency
-    #dim_surface.fill((0, 0, 0))  # Black
-    # Blit the dim surface over the screen
-    #screen.blit(dim_surface, (0, 0))
+    dim_surface = pygame.Surface((screen.get_width(), screen.get_height()))
+    dim_surface.set_alpha(200)  # Set transparency
+    dim_surface.fill((0, 0, 0))  # Black
+    screen.blit(dim_surface, (0, 0))
     rect = pygame.Rect(205, 205, 400, 400)
     pygame.draw.rect(screen, (245, 222, 179), rect)
     reward_header("Rewards", 293, 220)
-    three_items: [(205, 205), (255, 205), (305, 205)]
-    two_items = [(205, 205), (305, 205)]
-    one_item = (250, 250)
-    """
+    three_items: [(230, 350), (350, 350), (470, 350)]
+    two_items = [(300, 350), (400, 350)]
+    one_item = (350, 350)
     if monster.has_health_potion() and monster.has_vision_potion() and monster.has_pillar():
         draw_image("health_potion.png", three_items[0][0], three_items[0][1], 100, 100)
         draw_image("vision_potion.png", three_items[1][0], three_items[1][1], 100, 100)
@@ -96,7 +94,6 @@ def draw_rewards(monster):
         draw_image("vision_potion.png", one_item[0], one_item[1], 100, 100)
     elif monster.has_pillar():
         draw_image(monster.get_pillar().get_image(), one_item[0], one_item[1], 100, 100)
-    """
 
     draw_button("button.png", "claim", 315, 500, 175, 70)
 
