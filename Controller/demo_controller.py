@@ -1,6 +1,6 @@
 import pygame
 
-
+from Controller import Battle_Controller
 from Model.Dungeon import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion
@@ -107,8 +107,9 @@ def handle_event(event):
         Inventory.get_instance().add(room.get_potion())
         room.set_potion(None)
     if event.type == MONSTER_BATTLE:
-        MONSTER_DEFEATED = True
-        #jump to battle here
+        print(room.get_location())
+        print(room.get_monster())
+        Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")
