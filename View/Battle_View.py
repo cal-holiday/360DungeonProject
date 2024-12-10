@@ -104,5 +104,5 @@ def draw_rewards(monster):
     elif monster.has_pillar():
         draw_image(monster.get_pillar().get_image(), one_item[0], one_item[1], 100, 100)
 
-
+    draw_button("button.png", "claim", 315, 500, 175, 70)
 

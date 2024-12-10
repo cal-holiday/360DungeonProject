@@ -79,16 +79,15 @@ def run(monster):
                 pygame.display.update()
                 pygame.time.wait(2000)
                 View.draw_rewards(monster)
-                View.draw_button("button.png", "claim", 315, 500, 175, 70)  # Initialize claim flag as False
                 clicked = False  # Initialize claim flag as False
-                while clicked == False:  # Keep checking for the claim button click
+                while not clicked:  # Keep checking for the claim button click
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             return False
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                             mx, my = event.pos
                             claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
-                            if clicked:
+                            if claim:  # If the claim button was clicked
                                 print("Claim button clicked")
                                 if monster.has_health_potion():
                                     inventory.add(monster.health_potion)
@@ -96,6 +95,7 @@ def run(monster):
                                     inventory.add(monster.vision_potion)
                                 if monster.has_pillar():
                                     inventory.add(monster.get_pillar())
+                                clicked = True  # Set clicked to True to exit the loop
                     pygame.display.update()
             return False
         else:
@@ -115,7 +115,7 @@ def run(monster):
                     redraw_sprites(monster, "idle")
             pygame.display.update()
             pygame.time.wait(action_delay)
-            return True
+        return True
 
     def display_health_bars():
         """Draw health bars for the hero and monster."""
@@ -241,5 +241,4 @@ if __name__ == '__main__':
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
-    monster.set_hp(5)
     run(monster)
