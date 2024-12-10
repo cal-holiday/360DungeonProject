@@ -26,7 +26,8 @@ def run(theScreen):
             Choose_Hero_Controller.run(screen)
 
         if(rules):
-            how_to_play_controller.run()
+            #how_to_play_controller.run()
+            you_died_controller.run(theScreen)
 
         if(load_game):
             pass

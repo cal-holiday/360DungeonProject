@@ -2,11 +2,13 @@ import pygame
 pygame.init()
 
 FONT = "8-bit-pusab.ttf"
-COLOR = (255,0,0)
+RED = (255,0,0)
+BLACK = (0,0,0)
 
 
 screen = pygame.display.set_mode((10,4))
-font = pygame.font.Font(FONT, 50)
+bigfont = pygame.font.Font(FONT, 50)
+font = pygame.font.Font(FONT, 20)
 
 
 Clock = pygame.time.Clock()
@@ -16,7 +18,7 @@ def setScreen(the_screen):
 
 
 def draw_text(text, x, y):
-    img = font.render(text, True, COLOR)
+    img = bigfont.render(text, True, RED)
     screen.blit(img, (x,y))
 
 
@@ -35,7 +37,7 @@ def draw_button(img, text, x, y, width, height):
     button_rect = scaled_img.get_rect(topleft=(x, y))
 
     # Render the text
-    text_surface = font.render(text, True, COLOR)
+    text_surface = font.render(text, True, BLACK)
     text_rect = text_surface.get_rect(center=button_rect.center)
 
     # Draw the button
