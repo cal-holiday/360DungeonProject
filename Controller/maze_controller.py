@@ -201,11 +201,11 @@ def handle_event(event):
     if event.type == MONSTER_BATTLE:
         print(room.get_location())
         print(room.get_monster())
+        Battle_Controller.run(room.get_monster())
         player.down = False
         player.up = False
         player.right = False
         player.left = False
-        Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")
@@ -218,7 +218,6 @@ def handle_event(event):
                         INVENTORY_CLICKED = False
                     else:
                         INVENTORY_CLICKED = True
-                        print("Inventory")
                         print(Inventory.get_instance().get_health_potions())
                 elif i == 1:
                     print("Map")
