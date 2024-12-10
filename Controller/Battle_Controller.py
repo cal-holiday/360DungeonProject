@@ -55,6 +55,10 @@ def run(monster):
             View.draw_image(hero.get_image(), 75, 330, 90, 90)
             View.draw_image(monster.get_image(), 400, 330, 90, 90)
 
+    def claim_rewards():
+        reward_button = True
+        View.draw_rewards(monster)
+
     def update(character, text, damage):
         """Update health bars and display results."""
         result = character.get_hp() + damage
@@ -77,8 +81,7 @@ def run(monster):
                 redraw_sprites(monster, "dead")
                 pygame.display.update()
                 pygame.time.wait(2000)
-                reward_button = True
-                View.draw_rewards(monster)
+                claim_rewards()
         else:
             character.set_hp(result)
             redraw_screen()
