@@ -13,28 +13,27 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Dungeon Adventure')
 
 def get_camera_offset():
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
-    if Hero.get_instance().get_x() < 270:
-        camera_offset_x = 0
-    if Hero.get_instance().get_y() < 270:
-        camera_offset_y = 0
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    x_min = max(0, Hero.get_instance().get_x() - width // 2)
+    y_min = max(30, Hero.get_instance().get_y() - height // 2)
+    camera_offset_x = min(room_size*3, x_min)
+    camera_offset_y = min(room_size*3 + 30, y_min)
+    return camera_offset_x, camera_offset_y
 
 
 def draw_hero():
-
+    camera_offset_x, camera_offset_y = get_camera_offset()
 
     hero_img = pygame.image.load(Hero.get_instance().get_image())
     scaled_hero = pygame.transform.scale(hero_img, (default_size, default_size))
-    screen.blit(scaled_hero, (Hero.get_instance().get_x(), Hero.get_instance().get_y()))
+    img_x = Hero.get_instance().get_x() - camera_offset_x
+    img_y = Hero.get_instance().get_y() - camera_offset_y
+    screen.blit(scaled_hero, (img_x, img_y))
     current_pillars = Inventory.get_instance().get_pillars()
     if len(current_pillars) > 0:
-        locations = [(Hero.get_instance().get_x() -8, Hero.get_instance().get_y() - 30),
-                     (Hero.get_instance().get_x() + 27, Hero.get_instance().get_y() -30),
-                     (Hero.get_instance().get_x() - 30, Hero.get_instance().get_y()),
-                     (Hero.get_instance().get_x() + 50, Hero.get_instance().get_y())
+        locations = [(img_x -8, img_y - 30),
+                     (img_x + 27, img_y -30),
+                     (img_x - 30, img_y),
+                     (img_x + 50, img_y)
                      ]
         i = 0
         for pillar in current_pillars:
@@ -45,8 +44,7 @@ def draw_hero():
     return scaled_hero.get_rect()
 
 def draw_room(room):
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     rect_list = []
     x = room.get_location()[0] * room_size - camera_offset_x
     y = room.get_location()[1] * room_size + default_size - camera_offset_y
@@ -110,8 +108,7 @@ def draw_room(room):
     return rect_list
 
 def draw_exit(room):
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     if room.has_exit and Inventory.get_instance().has_all_pillars():
         x = room.get_location()[0] * room_size - camera_offset_x
         y = room.get_location()[1] * room_size +default_size -camera_offset_y
@@ -125,8 +122,7 @@ def draw_exit(room):
         return None
 
 def draw_potion(room):
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     x = room.get_location()[0] * room_size - camera_offset_x
     y = room.get_location()[1] * room_size +default_size -camera_offset_y
     if room.get_potion() is not None:
@@ -140,8 +136,7 @@ def draw_potion(room):
         return None
 
 def draw_monster(room):
-    camera_offset_x = Hero.get_instance().get_x() - width // 2
-    camera_offset_y = Hero.get_instance().get_y() - height // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     x = room.get_location()[0] * room_size - camera_offset_x
     y = room.get_location()[1] * room_size + default_size - camera_offset_y
     if room.get_monster() is not None:
