@@ -1,11 +1,12 @@
-import random
 import pygame
+import random
+
+from Controller import you_died_controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Monster import Monster
-from Model.Pillar import AbstractionPillar
 from Model.Potion import HealthPotion
 from View import Battle_View as View
 
@@ -17,12 +18,12 @@ pygame.mixer.music.play(loops=-1)
 
 def run(monster):
     screen = pygame.display.set_mode((810, 810))
+    isRunning = True
     clock = pygame.time.Clock()
     hero = Hero.get_instance()
     inventory = Inventory.get_instance()
     in_battle = True
     action_delay = 400  # Delay in milliseconds between turns
-    reward_button = False
 
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
@@ -60,21 +61,21 @@ def run(monster):
         result = character.get_hp() + damage
         redraw_screen()
         redraw_sprites(character, "idle")
-
         if damage == 0:
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
             else:
-                View.draw_result(text, 40, 500)
-        elif result <= 0:  # Character defeated
+                View.draw_result(text,40,500)
+        elif result <= 0:
             character.set_hp(0)
             display_health_bars()
             redraw_screen()
-            if character.get_name() == hero.get_name():  # Hero defeated
-                View.draw_monster_result(f"{hero.get_name()} was defeated", 40, 500)
+            if character.get_name() == hero.get_name():
+                View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
-            else:  # Monster defeated
-                View.draw_result(f"{hero.get_name()} won!", 40, 500)
+                you_died_controller.run(screen)
+            else:
+                View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
                 pygame.display.update()
                 pygame.time.wait(2000)
@@ -85,7 +86,6 @@ def run(monster):
                         if event.type == pygame.QUIT:
                             return False
                         elif event.type == pygame.MOUSEBUTTONDOWN:
-                            mx, my = event.pos
                             claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
                             if claim:  # If the claim button was clicked
                                 print("Claim button clicked")
@@ -112,9 +112,9 @@ def run(monster):
                 if damage < 0:
                     redraw_sprites(monster, "hit")
                 else:
-                    redraw_sprites(monster, "idle")
-            pygame.display.update()
-            pygame.time.wait(action_delay)
+                    redraw_sprites(hero, "idle")
+        pygame.display.update()
+        pygame.time.wait(action_delay)
         return True
 
     def display_health_bars():
@@ -173,6 +173,7 @@ def run(monster):
                 return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
+
         elif action == "special":
             result = hero.special_attack()
             if result[0] > monster.get_agility() and monster.get_element() == hero.get_opposite_element():
@@ -185,7 +186,7 @@ def run(monster):
             inventory.drink_health_potion()
             return update(monster, f"{hero.get_name()} used a health potion!", 0)
 
-    while in_battle:
+    while isRunning and in_battle:
         redraw_screen()
         display_health_bars()
         redraw_sprites(hero, "idle")
@@ -197,7 +198,7 @@ def run(monster):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                in_battle = False
+                isRunning = False
                 pygame.mixer.music.stop()
                 pygame.quit()
                 exit()
@@ -226,7 +227,8 @@ def run(monster):
                         View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
-                    in_battle = False
+                    isRunning = False
+
         pygame.display.update()
         clock.tick(60)
 
@@ -234,10 +236,6 @@ if __name__ == '__main__':
     hero = CharacterFactory.create_hero("hero", Element.WATER)
     screen = pygame.display.set_mode((810, 810))
     monster = CharacterFactory.create_monster(Element.EARTH)
-    monster.set_pillar(AbstractionPillar())
-    print(f"monster has health potion: {monster.has_health_potion()}")
-    print(f"monster has vision potion: {monster.has_vision_potion()}")
-    print(f"monster has pillar: {monster.has_pillar()}")
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
