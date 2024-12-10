@@ -1,5 +1,7 @@
 import pygame
 
+from Controller import Battle_Controller
+from Model.Dungeon import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
 from View import maze_view
@@ -9,7 +11,6 @@ from Model.CharacterFactory import CharacterFactory
 from Model.Room import Room
 from Model.Hero import Hero
 from Model.Inventory import Inventory
-from View.maze_view import draw_inventory
 
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
@@ -18,48 +19,88 @@ POTION_REMOVED = False
 MONSTER_DEFEATED = False
 INVENTORY_CLICKED = False
 RUN = True
-
+room_rects = []
+monster_rect = []
+potion_rect = []
+toolbar_rects = []
+health_potion_rects = []
+vision_potion_rects = []
+exit_rect = None
+player = None
+array = []
 
 def run(screen):
+    global room_rects
+    global monster_rect
+    global exit_rect
+    global player
+    global array
+    global toolbar_rects
+    global GET_POTION
+    global MONSTER_BATTLE
+    global EXIT_DUNGEON
     global RUN
+    global potion_rect
+    global health_potion_rects
+    global vision_potion_rects
+    global INVENTORY_CLICKED
     clock = pygame.time.Clock()
     fps = 60
+    GET_POTION = pygame.USEREVENT + 1
+    MONSTER_BATTLE = pygame.USEREVENT + 2
+    EXIT_DUNGEON = pygame.USEREVENT + 3
 
-    monster = CharacterFactory.create_monster(Element.EARTH)
-    current_room = Room(False, False, False, False, (1, 1), HealthPotion(), None)
-    current_room.set_has_exit(True)
+    toolbar_rects = maze_view.draw_toolbar(screen)
 
     inventory = Inventory()
     inventory.add(AbstractionPillar())
     inventory.add(PolymorphismPillar())
     inventory.add(InheritancePillar())
-    inventory.add(HealthPotion())
-    inventory.add(HealthPotion())
-    inventory.add(VisionPotion())
+    inventory.add(EncapsulationPillar())
 
-    Hero.get_instance().set_x(10)
-    Hero.get_instance().set_y(10)
+    health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
+
+    Hero.get_instance().set_x(405)
+    Hero.get_instance().set_y(405)
     player = ControllerHero(maze_view.draw_hero(screen))
-    controller_room = ControllerRoom(screen, current_room)
+    INVENTORY_CLICKED = False
+
+    dungeon = Dungeon(6)
+    array = dungeon.room_array
     while RUN:
-        global INVENTORY_CLICKED
+        camera_offset_x, camera_offset_y = maze_view.get_camera_offset()
         clock.tick(fps)
         screen.fill(0)
-        maze_view.draw_room(screen, current_room)
-        maze_view.draw_potion(screen, current_room)
-        maze_view.draw_monster(screen, current_room)
-        maze_view.draw_exit(screen, current_room)
-        maze_view.draw_hero(screen)
-        maze_view.draw_toolbar(screen)
+        room_rects = []
+        monster_rect = []
+        potion_rect = []
+        exit_rect = None
+        for i in range(len(array)):
+            for j in range(len(array[i])):
+                room_rects.append(maze_view.draw_room(screen,array[i][j]))
+                possible_monster = maze_view.draw_monster(screen, array[i][j])
+                if not possible_monster is None:
+                    monster_rect.append(possible_monster)
+                possible_potion = maze_view.draw_potion(screen, array[i][j])
+                if not possible_potion is None:
+                    potion_rect.append(possible_potion)
+                possible_exit = maze_view.draw_exit(screen, array[i][j])
+                if not possible_exit is None:
+                    exit_rect = possible_exit
+        toolbar_rects = maze_view.draw_toolbar(screen)
+
         if INVENTORY_CLICKED:
             maze_view.draw_inventory(screen)
-
-        player.move(controller_room)
+            health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
+        # exit_rect = maze_view.draw_exit(room)
+        player.move()
+        maze_view.draw_hero(screen)
+        # maze_view.draw_vision()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(player, event, current_room, controller_room)
+            handle_event(event, )
         pygame.display.update()
     pygame.quit()
 class ControllerHero(pygame.sprite.Sprite):
@@ -73,69 +114,69 @@ class ControllerHero(pygame.sprite.Sprite):
         self.rect = rect
         self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
 
-    def move(self, room):
+
+    def move(self):
         hero_x = Hero.get_instance().get_x()
         hero_y = Hero.get_instance().get_y()
-        if room.potion_rect is not None and self.rect.colliderect(room.potion_rect):
-            pygame.event.post(pygame.event.Event(GET_POTION))
-        if room.monster_rect is not None and self.rect.colliderect(room.monster_rect):
-            pygame.event.post(pygame.event.Event(MONSTER_BATTLE))
-        if room.exit_rect is not None and self.rect.colliderect(room.exit_rect):
+
+        for rect in potion_rect:
+            if self.rect.colliderect(rect):
+                pygame.event.post(pygame.event.Event(GET_POTION))
+                break
+        for rect in monster_rect:
+            if self.rect.colliderect(rect):
+                pygame.event.post(pygame.event.Event(MONSTER_BATTLE))
+                break
+        if exit_rect is not None and self.rect.colliderect(exit_rect):
             pygame.event.post(pygame.event.Event(EXIT_DUNGEON))
-        if self.down and not self.collide_down(room):
+        if self.down and not self.collide_down():
             Hero.get_instance().set_direction(Direction.SOUTH)
             Hero.get_instance().set_y(hero_y + 5)
-        if self.up and not self.collide_up(room):
+        if self.up and not self.collide_up():
             Hero.get_instance().set_direction(Direction.NORTH)
             Hero.get_instance().set_y(hero_y - 5)
-        if self.right and not self.collide_right(room):
+        if self.right and not self.collide_right():
             Hero.get_instance().set_direction(Direction.EAST)
             Hero.get_instance().set_x(hero_x + 5)
-        if self.left and not self.collide_left(room):
+        if self.left and not self.collide_left():
             Hero.get_instance().set_direction(Direction.WEST)
             Hero.get_instance().set_x(hero_x - 5)
-        self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
+        self.rect.topleft = (Hero.get_instance().get_x() - maze_view.get_camera_offset()[0], Hero.get_instance().get_y() - maze_view.get_camera_offset()[1])
 
-    def collide_down(self, room):
-        for rect in room.room_rects:
-            if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
-                return True
+    def collide_down(self):
+        for rect_list in room_rects:
+            for rect in rect_list:
+                if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
+                    return True
         return False
 
-    def collide_up(self, room):
-        for rect in room.room_rects:
-            if self.rect.colliderect(rect) and self.rect.top >= rect.bottom - 5:
-                return True
+    def collide_up(self):
+        for rect_list in room_rects:
+            for rect in rect_list:
+                if self.rect.colliderect(rect) and self.rect.top >= rect.bottom - 5:
+                    return True
         return False
 
-    def collide_right(self, room):
-        for rect in room.room_rects:
-            if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
-                return True
+    def collide_right(self):
+        for rect_list in room_rects:
+            for rect in rect_list:
+                if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
+                    return True
         return False
 
-    def collide_left(self, room):
-        for rect in room.room_rects:
-            if self.rect.colliderect(rect) and self.rect.left >= rect.right - 5:
-                return True
+    def collide_left(self):
+        for rect_list in room_rects:
+            for rect in rect_list:
+                if self.rect.colliderect(rect) and self.rect.left >= rect.right - 5:
+                    return True
         return False
-class ControllerRoom():
-    def __init__(self, screen, room):
-        self.room = room
-        self.floor_rect, self.room_rects = maze_view.draw_room(screen, self.room)
-        self.potion_rect = maze_view.draw_potion(screen, self.room)
-        self.monster_rect = maze_view.draw_monster(screen, room)
-        self.toolbar_rects = maze_view.draw_toolbar(screen)
-        self.exit_rect = maze_view.draw_exit(screen, room)
-        self.health_potion_rect, self.vision_potion_rect = maze_view.draw_inventory(screen)
 
 
-
-def handle_event(player, event, room, controller_room):
-    global POTION_REMOVED
-    global MONSTER_DEFEATED
+def handle_event(event):
     global RUN
     global INVENTORY_CLICKED
+    global toolbar_rects
+    room = get_current_room()
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             player.down = True
@@ -154,26 +195,31 @@ def handle_event(player, event, room, controller_room):
             player.right = False
         if event.key == pygame.K_a:
             player.left = False
-    if event.type == GET_POTION and not POTION_REMOVED:
-        POTION_REMOVED = True
+    if event.type == GET_POTION:
         Inventory.get_instance().add(room.get_potion())
         room.set_potion(None)
-    if event.type == MONSTER_BATTLE and not MONSTER_DEFEATED:
-        MONSTER_DEFEATED = True
-        #jump to battle here
+    if event.type == MONSTER_BATTLE:
+        print(room.get_location())
+        print(room.get_monster())
+        player.down = False
+        player.up = False
+        player.right = False
+        player.left = False
+        Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         print("END Game")
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
-        for i in range(len(controller_room.toolbar_rects)):
-            if controller_room.toolbar_rects[i].collidepoint(event.pos):
+        for i in range(len(toolbar_rects)):
+            if toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
                     if INVENTORY_CLICKED:
                         INVENTORY_CLICKED = False
                     else:
                         INVENTORY_CLICKED = True
                         print("Inventory")
+                        print(Inventory.get_instance().get_health_potions())
                 elif i == 1:
                     print("Map")
                 elif i == 2:
@@ -182,9 +228,16 @@ def handle_event(player, event, room, controller_room):
                     print("Help")
                 else:
                     RUN = False
-        for i in range(len(controller_room.health_potion_rect)):
-            if controller_room.health_potion_rect[i].collidepoint(event.pos):
-                Inventory.get_instance().drink_potion(Inventory.get_instance().get_health_potions()[0])
-        for i in range(len(controller_room.vision_potion_rect)):
-            if controller_room.vision_potion_rect[i].collidepoint(event.pos):
-                Inventory.get_instance().drink_potion(Inventory.get_instance().get_vision_potions()[0])
+            for i in range(len(health_potion_rects)):
+                if health_potion_rects[i].collidepoint(event.pos):
+                    Inventory.get_instance().drink_health_potion()
+            for i in range(len(vision_potion_rects)):
+                if vision_potion_rects[i].collidepoint(event.pos):
+                    Inventory.get_instance().drink_vision_potion()
+
+def get_current_room():
+    x = Hero.get_instance().get_x()
+    y = Hero.get_instance().get_y()
+    room_x = x//maze_view.room_size
+    room_y = y//maze_view.room_size
+    return array[room_x][room_y]

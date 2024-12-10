@@ -1,30 +1,22 @@
 from random import randint
 
 from Model.CharacterInterface import CharacterInterface
-from Model.Pillar import AbstractionPillar
-from Model.Potion import HealthPotion
+from Model.Potion import HealthPotion, VisionPotion
 
 
 class Monster(CharacterInterface):
     def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
         super().__init__(name, image, hit_image, dead_image, max_hp, agility, element)
         self.hp = max_hp
-        self.has_items()
-
-    def has_items(self):
-        num1 = randint(1, 10)
-        num2 = randint(1, 10)
-        num3 = randint(1, 10)
-
+        self.pillar = None
+        self.health_potion = None
+        self.vision_potion = None
+        num1 = randint(1,10)
+        num2 = randint(1,10)
         if num1 > 4:
-            self.has_health_potion = True
-            #in battle at the end, checks if this is true and creates and adds a potion into inventory
+            self.health_potion = HealthPotion()
         if num2 > 4:
-            self.has_vision_potion = True
-        if num3 > 4:
-            if AbstractionPillar.__instance
-            #check if pillars are made and add one if possible to inventory at end of battle
-
+            self.vision_potion = VisionPotion()
 
     def attack(self):
         return super().attack()
@@ -44,3 +36,25 @@ class Monster(CharacterInterface):
         return self.image
     def get_hp(self):
         return self.hp
+    def get_pillar(self):
+        return self.pillar
+    def get_health_potion(self):
+        if self.has_health_potion():
+            return self.health_potion
+        else:
+            raise ValueError("Monster has no health potion!")
+    def get_vision_potion(self):
+        if self.has_vision_potion():
+            return self.vision_potion
+        else:
+            raise ValueError("Monster has no vision potion!")
+
+    def has_health_potion(self):
+        return self.health_potion is not None
+    def has_vision_potion(self):
+        return self.vision_potion is not None
+    def has_pillar(self):
+        return self.pillar is not None
+
+    def set_pillar(self, pillar):
+        self.pillar = pillar
