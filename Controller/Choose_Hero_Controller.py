@@ -1,9 +1,8 @@
 import pygame
 
-from Controller import maze_controller
+from Controller import maze_controller, Battle_Controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
-from Model.Hero import Hero
 from View import Choose_Hero_View as View
 
 def run(screen):
@@ -22,6 +21,7 @@ def run(screen):
     }
     # Default stats (updated on hover or selection)
     current_stats = {"element": "---", "health": "---", "agility": "---"}
+    selected_stats = {"element": "---", "health": "---", "agility": "---"}
     selected_hero = None
     confirm_button_visible = False
     confirmation_prompt = False
@@ -30,8 +30,8 @@ def run(screen):
     while isRunning:
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI
-        View.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
-        View.draw_scaled_image("banner.png", 45, 20, 700, 150)
+        View.draw_image("dungeonBackground.png", 0, 0, 810, 810)
+        View.draw_image("banner.png", 45, 20, 700, 150)
         View.draw_header("Choose Your Hero", 90, 50)
 
         # Draw elements only if the confirmation prompt is NOT active
@@ -63,7 +63,7 @@ def run(screen):
                         pygame.display.get_surface(),
                         (255, 255, 0),
                         data["rect"].inflate(10, 10),
-                        3
+                        2
                     )
                 if selected_hero == hero:
                     # Highlight the selected hero
@@ -71,7 +71,7 @@ def run(screen):
                         pygame.display.get_surface(),
                         (0, 255, 0),
                         data["rect"].inflate(10, 10),
-                        3
+                        2
                     )
                 View.draw_button(f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
                                  data["rect"].height)
@@ -100,14 +100,15 @@ def run(screen):
                     # Check if a hero is clicked
                     for hero, data in heroes.items():
                         if data["rect"].collidepoint(event.pos):
-                            selected_hero = hero
-                            current_stats = {
+                            selected_hero = hero  # Set selected hero only on click
+                            selected_stats = {  # Use selected_stats to store selected hero's stats
                                 "element": data["element"],
                                 "health": data["health"],
                                 "agility": data["agility"],
                             }
-                            confirm_button_visible = bool(hero_name)
-                            break
+                            confirm_button_visible = bool(hero_name)  # Show confirm button only if a hero is selected
+                            break  # Break after the first hero is clicked
+
                     # Activate or deactivate text field
                     if text_field_rect.collidepoint(event.pos):
                         text_field_active = True
@@ -134,21 +135,77 @@ def run(screen):
                     # Check for Yes button click
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
-                        if current_stats["element"] == "Fire":
+                        if selected_stats["element"] == "Fire":
                             CharacterFactory.create_hero(hero_name, Element.FIRE)
-                        elif current_stats["element"] == "Water":
+                        elif selected_stats["element"] == "Water":
                             CharacterFactory.create_hero(hero_name, Element.WATER)
-                        elif current_stats["element"] == "Air":
+                        elif selected_stats["element"] == "Air":
                             CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
-                            CharacterFactory.create_hero(hero_name, Element.EARTH)
-                        maze_controller.run(screen)
+                            maze_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
                         confirm_button_visible = True
-        # Update the display
-        pygame.display.update()
-        clock.tick(60)
+
+            # Draw the background and UI
+            View.draw_image("dungeonBackground.png", 0, 0, 810, 810)
+            View.draw_image("banner.png", 45, 20, 700, 150)
+            View.draw_header("Choose Your Hero", 90, 50)
+
+            # Draw elements only if the confirmation prompt is NOT active
+            if not confirmation_prompt:
+                # Draw the text field with active indicator
+                border_color = (0, 255, 0) if text_field_active else (255, 255, 255)
+                pygame.draw.rect(pygame.display.get_surface(), border_color, text_field_rect, 2)
+                View.draw_text_field(
+                    text_field_rect.x, text_field_rect.y,
+                    text_field_rect.width, text_field_rect.height,
+                    "Name Your Hero", text_field_active, hero_name
+                )
+
+                # Draw current stats
+                View.draw_text(f"Element: {current_stats['element']}", 283, 260)
+                View.draw_text(f"Health: {current_stats['health']}", 305, 320)
+                View.draw_text(f"Agility: {current_stats['agility']}", 297, 380)
+
+                # Draw hero buttons
+                for hero, data in heroes.items():
+                    if selected_hero == hero:
+                        # Highlight the selected hero with a green border
+                        pygame.draw.rect(
+                            pygame.display.get_surface(),
+                            (0, 255, 0),
+                            data["rect"].inflate(10, 10),
+                            2
+                        )
+                    else:
+                        # Highlight hovered hero with yellow border (only during hover, not on click)
+                        if data["rect"].collidepoint(mouse_pos):
+                            pygame.draw.rect(
+                                pygame.display.get_surface(),
+                                (255, 255, 0),
+                                data["rect"].inflate(10, 10),
+                                2
+                            )
+                    View.draw_button(f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
+                                     data["rect"].height)
+
+                # Draw the Confirm button (at new position)
+                if confirm_button_visible:
+                    View.draw_button("button.png", "confirm", 302, 450, 200, 50)
+
+            # Draw the confirmation prompt
+            if confirmation_prompt:
+                pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
+                View.draw_text("Are you sure?", 280, 325)
+                # Ensure confirmation prompt buttons have the correct positions
+                View.draw_button("button.png", "Yes", 250, 400, 100, 50)
+                View.draw_button("button.png", "No", 450, 400, 100, 50)
+
+            # Update the display
+            pygame.display.update()
+            clock.tick(60)
+
 
 

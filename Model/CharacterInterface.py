@@ -26,9 +26,11 @@ class CharacterInterface(ABC):
     @param agility score of the character, determines if an attack hits
     @param element of the character, enumerated element type
     """
-    def __init__(self, name, image, max_hp, agility, element):
+    def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
         self.set_name(name)
         self.set_image(image)
+        self.set_hit_image(hit_image)
+        self.set_dead_image(dead_image)
         self.set_max_hp(max_hp)
         self.set_agility(agility)
         self.set_element(element)
@@ -54,6 +56,18 @@ class CharacterInterface(ABC):
         else:
             print("Image string is null")
 
+    def set_hit_image(self, image):
+        if image is not None:
+            self.hit_image = image
+        else:
+            print("Image string is null")
+
+    def set_dead_image(self, image):
+        if image is not None:
+            self.dead_image = image
+        else:
+            print("Image string is null")
+
     def set_max_hp(self, max_hp):
         if isinstance(max_hp,int) and max_hp > 0:
             self.max_hp = max_hp
@@ -62,7 +76,7 @@ class CharacterInterface(ABC):
             print("Max HP must be an int and cannot be 0 or negative")
 
     def set_hp(self, hp):
-        if isinstance(hp,int) and 0 < hp <= self.max_hp:
+        if isinstance(hp,int) and 0 <= hp <= self.max_hp:
             self.hp = hp
         else:
             print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
@@ -89,6 +103,12 @@ class CharacterInterface(ABC):
 
     def get_image(self):
         return self.image
+
+    def get_hit_image(self):
+        return self.hit_image
+
+    def get_dead_image(self):
+        return self.dead_image
 
     def get_max_hp(self):
         return self.max_hp

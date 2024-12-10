@@ -16,11 +16,11 @@ class Hero(CharacterInterface):
         else:
             raise Exception("Hero does not exist yet!")
 
-    def __init__(self, name, image, max_hp, agility, element):
+    def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
         if Hero.__instance is not None:
             raise Exception("Hero already exists!")
         else:
-            super().__init__(name, image, max_hp, agility, element)
+            super().__init__(name, image, hit_image, dead_image, max_hp, agility, element)
             Hero.__instance = self
 
     def attack(self):
