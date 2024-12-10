@@ -23,9 +23,9 @@ def draw_hero(screen):
     screen.blit(scaled_hero, (img_x, img_y))
     current_pillars = Inventory.get_instance().get_pillars()
     if len(current_pillars) > 0:
-        locations = [(img_x -8, img_y - 30),
+        locations = [(img_x -8, img_y- 30),
                      (img_x + 27, img_y -30),
-                     (img_x- 30, img_y),
+                     (img_x - 30, img_y),
                      (img_x + 50, img_y)
                      ]
         i = 0

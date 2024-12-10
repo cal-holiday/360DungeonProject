@@ -1,12 +1,11 @@
-import pygame
 import random
-
-from Controller import you_died_controller
+import pygame
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Monster import Monster
+from Model.Pillar import AbstractionPillar
 from Model.Potion import HealthPotion
 from View import Battle_View as View
 
@@ -24,6 +23,7 @@ def run(monster):
     inventory = Inventory.get_instance()
     in_battle = True
     action_delay = 400  # Delay in milliseconds between turns
+    reward_button = False
 
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
@@ -56,30 +56,46 @@ def run(monster):
             View.draw_image(hero.get_image(), 75, 330, 90, 90)
             View.draw_image(monster.get_image(), 400, 330, 90, 90)
 
+    def claim_rewards():
+        """Display the rewards screen and handle claim button click."""
+        running_rewards = True
+        while running_rewards:
+            View.draw_rewards(monster)  # Draw the reward popup UI
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    mx, my = event.pos
+                    if 315 <= mx <= 500 and 175 <= my <= 70:
+                        print("Clicked claim")
+                        running_rewards = False  # Exit the reward screen
+
     def update(character, text, damage):
         """Update health bars and display results."""
         result = character.get_hp() + damage
         redraw_screen()
         redraw_sprites(character, "idle")
+
         if damage == 0:
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(text, 40, 500)
             else:
-                View.draw_result(text,40,500)
-        elif result <= 0:
+                View.draw_result(text, 40, 500)
+        elif result <= 0:  # Character defeated
             character.set_hp(0)
             display_health_bars()
             redraw_screen()
-            if character.get_name() == hero.get_name():
-                View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
+            if character.get_name() == hero.get_name():  # Hero defeated
+                View.draw_monster_result(f"{hero.get_name()} was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
-                you_died_controller.run(screen)
-            else:
-                View.draw_result(hero.get_name() + " won!", 40, 500)
+            else:  # Monster defeated
+                View.draw_result(f"{hero.get_name()} won!", 40, 500)
                 redraw_sprites(monster, "dead")
-            pygame.display.update()
-            pygame.time.wait(3000)
-            return False
+                pygame.display.update()
+                pygame.time.wait(2000)
+                claim_rewards()  # Call the reward screen
         else:
             character.set_hp(result)
             redraw_screen()
@@ -94,7 +110,8 @@ def run(monster):
                 if damage < 0:
                     redraw_sprites(monster, "hit")
                 else:
-                    redraw_sprites(hero, "idle")
+                    redraw_sprites(monster, "idle")
+
         pygame.display.update()
         pygame.time.wait(action_delay)
         return True
@@ -210,7 +227,6 @@ def run(monster):
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
-
         pygame.display.update()
         clock.tick(60)
 
@@ -218,6 +234,10 @@ if __name__ == '__main__':
     hero = CharacterFactory.create_hero("hero", Element.WATER)
     screen = pygame.display.set_mode((810, 810))
     monster = CharacterFactory.create_monster(Element.EARTH)
+    monster.set_pillar(AbstractionPillar())
+    print(f"monster has health potion: {monster.has_health_potion()}")
+    print(f"monster has vision potion: {monster.has_vision_potion()}")
+    print(f"monster has pillar: {monster.has_pillar()}")
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
