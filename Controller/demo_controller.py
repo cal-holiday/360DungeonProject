@@ -167,7 +167,7 @@ Hero.get_instance().set_x(405)
 Hero.get_instance().set_y(405)
 player = ControllerHero(View.draw_hero())
 POTION_REMOVED = False
-MONSTER_DEFEATED = Falseaaaa
+MONSTER_DEFEATED = False
 INVENTORY_CLICKED = False
 
 dungeon = Dungeon(6)

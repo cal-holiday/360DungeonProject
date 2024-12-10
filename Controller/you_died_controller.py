@@ -11,9 +11,9 @@ def run(theScreen):
         you_died.setScreen(screen)
         you_died.screen.fill((0, 0, 0))
         you_died.draw_text("You Died :(",175,100)
-        new_game = you_died.draw_button("button.png","New Game",300,400,200,75)
-        quit_game = you_died.draw_button("button.png","Quit",300,500,200,75)
-        you_died.draw_image("air_hero_dead.png",390,300) #change to hero get instance once its all plugged together
+        new_game = you_died.draw_button("button.png","New Game",300,500,200,75)
+        quit_game = you_died.draw_button("button.png","Quit",300,600,200,75)
+        you_died.draw_rotated_image("air_hero_dead.png",350,300,100,100,90) #change to hero get instance once its all plugged together
 
         if (quit_game):
             is_running = False

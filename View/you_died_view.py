@@ -25,6 +25,12 @@ def draw_text(text, x, y):
 def draw_image(img, x, y):
     screen.blit((pygame.image.load(img).convert()), (x,y))
 
+def draw_rotated_image(img, x, y, width, height, degree):
+    original_img = pygame.image.load(img).convert()
+    scaled_img = pygame.transform.scale(original_img, (width, height))
+    new_img = pygame.transform.rotate(scaled_img, degree)
+    screen.blit(new_img, (x, y))
+
 def draw_scaled_image(img, x, y, width, height):
     original_img = pygame.image.load(img).convert()
     scaled_img = pygame.transform.scale(original_img, (width, height))
