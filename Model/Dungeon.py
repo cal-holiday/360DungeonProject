@@ -3,7 +3,8 @@ import pygame
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
-from Model.Potion import HealthPotion
+from Model.Pillar import PolymorphismPillar, AbstractionPillar, EncapsulationPillar, InheritancePillar
+from Model.Potion import HealthPotion, VisionPotion
 from Model.Room import Room
 from random import choice
 from View import View
@@ -102,16 +103,38 @@ class Dungeon:
         number = 4 + self.size//4
         for i in range(number):
             monster = CharacterFactory.create_monster(Element(i%4 +1))
+            if i == 0:
+                monster.set_pillar(PolymorphismPillar)
+            elif i == 1:
+                monster.set_pillar(AbstractionPillar)
+            elif i == 2:
+                monster.set_pillar(EncapsulationPillar)
+            elif i == 3:
+                monster.set_pillar(InheritancePillar)
             col = choice(self.room_array)
             row = choice(col)
             row.set_monster(monster)
-    def add_potions(self):
+    def add_health_potions(self):
         number = 2 + self.size//8
+        potion = HealthPotion()
         for i in range(number):
-            potion = HealthPotion()
             col = choice(self.room_array)
             row = choice(col)
-            row.set_potion(potion)
+            if row.get_monster() is None:
+                row.set_potion(potion)
+            else:
+                i -= i
+    def add_vision_potions(self):
+        number = 2 + self.size//8
+        potion = VisionPotion()
+        for i in range(number):
+            col = choice(self.room_array)
+            row = choice(col)
+            if row.get_potion() is None and row.get_monster() is None:
+                row.set_potion(potion)
+            else:
+                i -= 1
+
 
 """
 CharacterFactory.create_hero("TEST", Element.AIR)

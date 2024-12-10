@@ -5,6 +5,7 @@ class Monster(CharacterInterface):
     def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
         super().__init__(name, image, hit_image, dead_image, max_hp, agility, element)
         self.hp = max_hp
+        self.pillar = None
 
     def attack(self):
         return super().attack()
@@ -24,3 +25,7 @@ class Monster(CharacterInterface):
         return self.image
     def get_hp(self):
         return self.hp
+    def get_pillar(self):
+        return self.pillar
+    def set_pillar(self, pillar):
+        self.pillar = pillar
