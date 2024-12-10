@@ -23,10 +23,10 @@ def draw_hero(screen):
     screen.blit(scaled_hero, (img_x, img_y))
     current_pillars = Inventory.get_instance().get_pillars()
     if len(current_pillars) > 0:
-        locations = [(Hero.get_instance().get_x() -8, Hero.get_instance().get_y() - 30),
-                     (Hero.get_instance().get_x() + 27, Hero.get_instance().get_y() -30),
-                     (Hero.get_instance().get_x() - 30, Hero.get_instance().get_y()),
-                     (Hero.get_instance().get_x() + 50, Hero.get_instance().get_y())
+        locations = [(img_x -8, img_y - 30),
+                     (img_x + 27, img_y -30),
+                     (img_x- 30, img_y),
+                     (img_x + 50, img_y)
                      ]
         i = 0
         for pillar in current_pillars:
@@ -98,7 +98,7 @@ def draw_room(screen, room):
         screen.blit(horz_wall, (x + room_size - 3*default_size, y + room_size - default_size))
         s_wall = pygame.Rect(x + default_size, y + room_size - default_size, room_size - 2*default_size, default_size)
         rect_list.append(s_wall)
-    return floor_rect, rect_list
+    return rect_list
 
 def draw_exit(screen,room):
     camera_offset_x, camera_offset_y = get_camera_offset()
