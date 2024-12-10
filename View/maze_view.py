@@ -6,12 +6,21 @@ width, height = pygame.display.get_surface().get_size()
 default_size = width // 18
 room_size = width // 3
 
-def draw_hero(screen):
+def get_camera_offset():
+    x_min = max(0, Hero.get_instance().get_x() - width // 2)
+    y_min = max(30, Hero.get_instance().get_y() - height // 2)
+    camera_offset_x = min(room_size*3, x_min)
+    camera_offset_y = min(room_size*3 + 30, y_min)
+    return camera_offset_x, camera_offset_y
 
+def draw_hero(screen):
+    camera_offset_x, camera_offset_y = get_camera_offset()
 
     hero_img = pygame.image.load(Hero.get_instance().get_image())
     scaled_hero = pygame.transform.scale(hero_img, (default_size, default_size))
-    screen.blit(scaled_hero, (Hero.get_instance().get_x(), Hero.get_instance().get_y()))
+    img_x = Hero.get_instance().get_x() - camera_offset_x
+    img_y = Hero.get_instance().get_y() - camera_offset_y
+    screen.blit(scaled_hero, (img_x, img_y))
     current_pillars = Inventory.get_instance().get_pillars()
     if len(current_pillars) > 0:
         locations = [(Hero.get_instance().get_x() -8, Hero.get_instance().get_y() - 30),
@@ -28,10 +37,10 @@ def draw_hero(screen):
     return scaled_hero.get_rect()
 
 def draw_room(screen, room):
-    camera_offset = Hero.get_instance().get_x() - width // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     rect_list = []
-    x = room.get_location()[0] * room_size - camera_offset
-    y = room.get_location()[1] * room_size + default_size - camera_offset
+    x = room.get_location()[0] * room_size - camera_offset_x
+    y = room.get_location()[1] * room_size + default_size - camera_offset_y
 
     floor = pygame.image.load('floor.png')
     floor_img = pygame.transform.scale(floor, (room_size, room_size))
@@ -92,10 +101,10 @@ def draw_room(screen, room):
     return floor_rect, rect_list
 
 def draw_exit(screen,room):
-    camera_offset = Hero.get_instance().get_x() - width // 2
+    camera_offset_x, camera_offset_y = get_camera_offset()
     if room.has_exit and Inventory.get_instance().has_all_pillars():
-        x = room.get_location()[0] * room_size - camera_offset
-        y = room.get_location()[1] * room_size +default_size -camera_offset
+        x = room.get_location()[0] * room_size - camera_offset_x
+        y = room.get_location()[1] * room_size +default_size -camera_offset_y
         door = pygame.image.load("exit_door.png")
         door_img = pygame.transform.scale(door, (default_size*2, default_size*2))
         door_rect = door_img.get_rect()
@@ -106,9 +115,9 @@ def draw_exit(screen,room):
         return None
 
 def draw_potion(screen, room):
-    camera_offset = Hero.get_instance().get_x() - width // 2
-    x = room.get_location()[0] * room_size - camera_offset
-    y = room.get_location()[1] * room_size +default_size -camera_offset
+    camera_offset_x, camera_offset_y = get_camera_offset()
+    x = room.get_location()[0] * room_size - camera_offset_x
+    y = room.get_location()[1] * room_size +default_size -camera_offset_y
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
         potion_img = pygame.image.load(potion)
@@ -120,9 +129,9 @@ def draw_potion(screen, room):
         return None
 
 def draw_monster(screen, room):
-    camera_offset = Hero.get_instance().get_x() - width // 2
-    x = room.get_location()[0] * room_size - camera_offset
-    y = room.get_location()[1] * room_size + default_size - camera_offset
+    camera_offset_x, camera_offset_y = get_camera_offset()
+    x = room.get_location()[0] * room_size - camera_offset_x
+    y = room.get_location()[1] * room_size + default_size - camera_offset_y
     if room.get_monster() is not None:
         monster = room.get_monster()
         monster_img = monster.get_image()
@@ -138,7 +147,7 @@ def draw_toolbar(screen):
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
     image = pygame.Surface((width, default_size/1.5))
-    image.fill((0,255,255))
+    image.fill((118,59,54))
     rect = image.get_rect()
     rect.topleft = (0, 0)
     screen.blit(image, rect)
@@ -169,7 +178,7 @@ def draw_inventory(screen):
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
     image = pygame.Surface((width, row_height))
-    image.fill((255,0, 255))
+    image.fill((250,197,143))
     rect = image.get_rect()
     rect.topleft = (0, default_size/1.5)
     screen.blit(image, rect)
@@ -217,3 +226,6 @@ def draw_inventory(screen):
     # Return the button rectangle for external use
     return health_rects, vision_rects
 
+def draw_vision(screen):
+    img = pygame.image.load("vision.png")
+    screen.blit(img, (0,30))

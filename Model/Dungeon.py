@@ -24,6 +24,11 @@ class Dungeon:
             self.size = size
             rows, cols =(size, size)
             self.room_array = [[Room(True, True, True, True, (x, y), None, None)for y in range(cols)] for x in range(rows)]
+            self.room_array = self.generate_maze()
+            self.add_exit()
+            self.add_monsters()
+            self.add_health_potions()
+            self.add_vision_potions()
             Dungeon.__instance = self
     def check_neighbors(self, room):
         location = room.get_location()
