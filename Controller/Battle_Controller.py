@@ -1,5 +1,7 @@
 import pygame
 import random
+
+from Controller import you_died_controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
@@ -10,6 +12,9 @@ from View import Battle_View as View
 
 # Initialize pygame
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+pygame.mixer.music.play(loops=-1)
 
 def run(monster):
     screen = pygame.display.set_mode((810, 810))
@@ -21,7 +26,6 @@ def run(monster):
     action_delay = 400  # Delay in milliseconds between turns
 
     black_rect = pygame.Rect(25, 475, 760, 190)
-    previous_text = ""
     white_rect = pygame.Rect(20, 470, 770, 200)
 
     def redraw_screen():
@@ -69,6 +73,7 @@ def run(monster):
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
+                you_died_controller.run(screen)
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
@@ -176,6 +181,7 @@ def run(monster):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 isRunning = False
+                pygame.mixer.music.stop()
                 pygame.quit()
                 exit()
 
@@ -204,6 +210,7 @@ def run(monster):
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
+
         pygame.display.update()
         clock.tick(60)
 

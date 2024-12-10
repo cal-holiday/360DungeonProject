@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 FONT = "8-bit-pusab.ttf"
-BLACK = (0,0,0)
+COLOR = (211,191,143)
 
 
 screen = pygame.display.set_mode((10,4))
@@ -16,11 +16,11 @@ def setScreen(the_screen):
     screen = the_screen
 
 def draw_header(text, x,y):
-    img = header_font.render(text, True, BLACK)
+    img = header_font.render(text, True, COLOR)
     screen.blit(img,(x,y))
 
 def draw_text(text, x, y):
-    img = font.render(text, True, BLACK)
+    img = font.render(text, True, COLOR)
     screen.blit(img, (x,y))
 
 
@@ -39,7 +39,7 @@ def draw_button(img, text, x, y, width, height):
     button_rect = scaled_img.get_rect(topleft=(x, y))
 
     # Render the text
-    text_surface = font.render(text, True, BLACK)
+    text_surface = font.render(text, True, COLOR)
     text_rect = text_surface.get_rect(center=button_rect.center)
 
     # Draw the button
