@@ -42,6 +42,7 @@ class Inventory:
 
     def number_of_health_potions(self):
         return len(self.health_potions)
+
     def has_vision_potion(self):
         return len(self.vision_potions) > 0
 
@@ -50,7 +51,7 @@ class Inventory:
             self.health_potions[0].drink()
             del self.health_potions[0]
 
-    def drink_vision_potion(self, potion):
+    def drink_vision_potion(self):
         if len(self.vision_potions) > 0:
             self.vision_potions[0].drink()
             del self.vision_potions[0]
