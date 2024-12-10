@@ -55,11 +55,6 @@ def run(screen):
     toolbar_rects = maze_view.draw_toolbar(screen)
 
     inventory = Inventory()
-    inventory.add(AbstractionPillar())
-    inventory.add(PolymorphismPillar())
-    inventory.add(InheritancePillar())
-    inventory.add(EncapsulationPillar())
-
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
     Hero.get_instance().set_x(405)
