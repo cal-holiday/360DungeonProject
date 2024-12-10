@@ -55,6 +55,7 @@ def run(screen):
     toolbar_rects = maze_view.draw_toolbar(screen)
 
     inventory = Inventory()
+    inventory.add(VisionPotion())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
     Hero.get_instance().set_x(405)
@@ -89,6 +90,8 @@ def run(screen):
         maze_view.draw_hero(screen)
         if potion_time == 0:
             maze_view.draw_vision(screen)
+        else:
+            potion_time -= 1
         toolbar_rects = maze_view.draw_toolbar(screen)
 
         if INVENTORY_CLICKED:
@@ -177,6 +180,7 @@ def handle_event(event):
     global RUN
     global INVENTORY_CLICKED
     global toolbar_rects
+    global potion_time
     room = get_current_room()
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
@@ -235,6 +239,7 @@ def handle_event(event):
             for i in range(len(vision_potion_rects)):
                 if vision_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_vision_potion()
+                    potion_time = 600
 
 def get_current_room():
     x = Hero.get_instance().get_x()
