@@ -10,6 +10,9 @@ from View import Battle_View as View
 
 # Initialize pygame
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+pygame.mixer.music.play(loops=-1)
 
 def run(monster):
     screen = pygame.display.set_mode((810, 810))
@@ -21,7 +24,6 @@ def run(monster):
     action_delay = 400  # Delay in milliseconds between turns
 
     black_rect = pygame.Rect(25, 475, 760, 190)
-    previous_text = ""
     white_rect = pygame.Rect(20, 470, 770, 200)
 
     def redraw_screen():
@@ -176,6 +178,7 @@ def run(monster):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 isRunning = False
+                pygame.mixer.music.stop()
                 pygame.quit()
                 exit()
 
