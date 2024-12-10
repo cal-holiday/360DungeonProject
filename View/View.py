@@ -129,7 +129,7 @@ def draw_potion(room):
         potion = room.get_potion().get_image()
         potion_img = pygame.image.load(potion)
         potion_rect = (potion_img.get_rect())
-        potion_rect.topleft = (x + (room_size/2) -30, y + (room_size/2) -30)
+        potion_rect.center = (x + (room_size/2) -30, y + (room_size/2) -30)
         screen.blit(potion_img, (x + (room_size/2) -30, y + (room_size/2) -30))
         return potion_rect
     else:
@@ -143,9 +143,9 @@ def draw_monster(room):
         monster = room.get_monster()
         monster_img = monster.get_image()
         img = pygame.image.load(monster_img)
-        monster_rect = img.get_rect()
-        monster_rect.topleft = (x + (room_size/2) -30, y + (room_size/2) -30)
-        #monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , room_size - (room_size/9), room_size - (room_size/9))
+        img = pygame.transform.scale(img, (1.5*default_size, 1.5*default_size))
+        monster_rect = pygame.Rect(x + room_size/18, y + room_size/18 , room_size - (room_size/9), room_size - (room_size/9))
+        monster_rect.center = (x + (room_size/2) -30, y + (room_size/2) -30)
         screen.blit(img, (x + (room_size/2) -30, y + (room_size/2) -30))
         return monster_rect
     else:
@@ -156,7 +156,7 @@ def draw_toolbar():
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
     image = pygame.Surface((width, default_size/1.5))
-    image.fill((0,255,255))
+    image.fill((118,59,54))
     rect = image.get_rect()
     rect.topleft = (0, 0)
     screen.blit(image, rect)
@@ -187,7 +187,7 @@ def draw_inventory():
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
     image = pygame.Surface((width, row_height))
-    image.fill((255,0, 255))
+    image.fill((250,197,143))
     rect = image.get_rect()
     rect.topleft = (0, default_size/1.5)
     screen.blit(image, rect)
@@ -234,3 +234,6 @@ def draw_inventory():
 
     # Return the button rectangle for external use
     return health_rects, vision_rects
+def draw_vision():
+    img = pygame.image.load("vision.png")
+    screen.blit(img, (0,30))

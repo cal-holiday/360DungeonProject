@@ -17,14 +17,12 @@ class ControllerHero(pygame.sprite.Sprite):
     right = False
     up = False
     down = False
-    x = 0
-    y = 0
+
     def __init__(self, rect):
         pygame.sprite.Sprite.__init__(self)
         self.rect = rect
         self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
-        self.x = Hero.get_instance().get_x()
-        self.y = Hero.get_instance().get_y()
+
 
     def move(self):
         hero_x = Hero.get_instance().get_x()
@@ -135,10 +133,10 @@ def handle_event(event):
                     RUN = False
             for i in range(len(health_potion_rects)):
                 if health_potion_rects[i].collidepoint(event.pos):
-                    Inventory.get_instance().drink_potion(Inventory.get_instance().get_health_potions()[0])
+                    Inventory.get_instance().drink_health_potion()
             for i in range(len(vision_potion_rects)):
                 if vision_potion_rects[i].collidepoint(event.pos):
-                    Inventory.get_instance().drink_potion(Inventory.get_instance().get_vision_potions()[0])
+                    Inventory.get_instance().drink_vision_potion()
 
 def get_current_room():
     x = Hero.get_instance().get_x()
@@ -172,6 +170,7 @@ inventory = Inventory()
 inventory.add(AbstractionPillar())
 inventory.add(PolymorphismPillar())
 inventory.add(InheritancePillar())
+inventory.add(EncapsulationPillar())
 
 health_potion_rects, vision_potion_rects = View.draw_inventory()
 
@@ -185,7 +184,8 @@ dungeon = Dungeon(6)
 array = dungeon.generate_maze()
 dungeon.add_exit()
 dungeon.add_monsters()
-dungeon.add_potions()
+dungeon.add_health_potions()
+dungeon.add_vision_potions()
 while RUN:
     camera_offset_x, camera_offset_y = View.get_camera_offset()
     clock.tick(FPS)
@@ -197,7 +197,6 @@ while RUN:
     for i in range(len(array)):
         for j in range(len(array[i])):
             room_rects.append(View.draw_room(array[i][j]))
-            #View.draw_exit(array[i][j])
             possible_monster = View.draw_monster(array[i][j])
             if not possible_monster is None:
                 monster_rect.append(possible_monster)
@@ -211,12 +210,15 @@ while RUN:
     potion_rect = View.draw_potion(room)
     monster_rect = View.draw_monster(room)'''
     toolbar_rects = View.draw_toolbar()
+
     if INVENTORY_CLICKED:
       View.draw_inventory()
       health_potion_rects, vision_potion_rects = View.draw_inventory()
     #exit_rect = View.draw_exit(room)
     player.move()
     View.draw_hero()
+    #View.draw_vision()
+
 
 
 
