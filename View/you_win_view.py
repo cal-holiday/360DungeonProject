@@ -6,7 +6,7 @@ COLOR = (211,191,143)
 
 
 screen = pygame.display.set_mode((10,4))
-header_font = pygame.font.Font(FONT, 25)
+bigfont = pygame.font.Font(FONT, 40)
 font = pygame.font.Font(FONT, 20)
 
 
@@ -15,17 +15,20 @@ Clock = pygame.time.Clock()
 def setScreen(the_screen):
     screen = the_screen
 
-def draw_header(text, x,y):
-    img = header_font.render(text, True, COLOR)
-    screen.blit(img,(x,y))
 
 def draw_text(text, x, y):
-    img = font.render(text, True, COLOR)
+    img = bigfont.render(text, True, COLOR)
     screen.blit(img, (x,y))
 
 
 def draw_image(img, x, y):
     screen.blit((pygame.image.load(img).convert()), (x,y))
+
+def draw_rotated_image(img, x, y, width, height, degree):
+    original_img = pygame.image.load(img).convert()
+    scaled_img = pygame.transform.scale(original_img, (width, height))
+    new_img = pygame.transform.rotate(scaled_img, degree)
+    screen.blit(new_img, (x, y))
 
 def draw_scaled_image(img, x, y, width, height):
     original_img = pygame.image.load(img).convert()

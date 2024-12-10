@@ -1,5 +1,5 @@
 from View import main_menu_view
-from Controller import Choose_Hero_Controller
+from Controller import Choose_Hero_Controller, you_win_controller
 from Controller import how_to_play_controller
 from Controller import you_died_controller
 import pygame
@@ -26,7 +26,8 @@ def run(theScreen):
             Choose_Hero_Controller.run(screen)
 
         if(rules):
-            how_to_play_controller.run()
+            #how_to_play_controller.run()
+            you_win_controller.run(theScreen)
 
         if(load_game):
             pass
