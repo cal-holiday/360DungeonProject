@@ -2,8 +2,8 @@ from random import randint
 
 from Model.CharacterInterface import CharacterInterface
 class Monster(CharacterInterface):
-    def __init__(self, name, image, max_hp, agility, element):
-        super().__init__(name, image, max_hp, agility, element)
+    def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
+        super().__init__(name, image, hit_image, dead_image, max_hp, agility, element)
         self.hp = max_hp
 
     def attack(self):
