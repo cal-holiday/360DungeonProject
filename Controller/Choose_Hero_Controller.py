@@ -2,10 +2,19 @@ import pygame
 
 from Controller import maze_controller, Battle_Controller
 from Model.CharacterFactory import CharacterFactory
+from Model.Dungeon import Dungeon
 from Model.Element import Element
+from Model.Hero import Hero
+from Model.Inventory import Inventory
 from View import Choose_Hero_View as View
 
 def run(screen):
+    if not Hero.get_instance() is None:
+        Hero.get_instance().delete_hero()
+    if not Inventory.get_instance() is None:
+        Inventory.get_instance().delete_inventory()
+    if not Dungeon.get_instance() is None:
+        Dungeon.get_instance().delete_dungeon()
     View.pass_screen(screen)
     isRunning = True
     clock = pygame.time.Clock()

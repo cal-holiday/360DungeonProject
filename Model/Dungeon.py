@@ -12,10 +12,11 @@ class Dungeon:
     __instance = None
     @staticmethod
     def get_instance():
-        if Dungeon.__instance is not None:
+        """if Dungeon.__instance is not None:
             return Dungeon.__instance
         else:
-            raise Exception("Dungeon does not exist yet!")
+            raise Exception("Dungeon does not exist yet!")"""
+        return Dungeon.__instance
 
     def __init__(self, size):
         if Dungeon.__instance is not None:
@@ -143,7 +144,12 @@ class Dungeon:
             else:
                 i -= 1
 
-
+    def delete_dungeon(self):
+        if not Dungeon.__instance is None:
+            Dungeon.__instance = None
+        else:
+            pass
+        #del self
 """
 CharacterFactory.create_hero("TEST", Element.AIR)
 Hero.get_instance().set_x(258)
