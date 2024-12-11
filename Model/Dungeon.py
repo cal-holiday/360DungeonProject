@@ -105,11 +105,12 @@ class Dungeon:
         row = choice(col)
         row.set_has_exit(True)
     def add_monsters(self):
-        number = 4 + self.size//4
+        #number = 4 + self.size//4
+        number = 1
         for i in range(number):
             monster = CharacterFactory.create_monster(Element(i%4 +1))
-            monster.set_max_hp(1000)
-            monster.set_hp(1000)
+            monster.set_max_hp(10)
+            monster.set_hp(10)
             if i == 0:
                 monster.set_pillar(PolymorphismPillar())
             elif i == 1:
