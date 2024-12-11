@@ -1,4 +1,6 @@
 import pygame
+
+from Model.Dungeon import Dungeon
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 pygame.init()
@@ -233,3 +235,69 @@ def draw_vision(screen):
     img = pygame.image.load("vision.png")
 
     screen.blit(img, (x_center - room_size*2.92,y_center - room_size*2.92))
+
+def draw_mini_map(screen):
+
+    mini_room_size = width//Dungeon.get_instance().size
+    mini_default_size = mini_room_size//6
+    hero_room_x= Hero.get_instance().get_x()//room_size
+    hero_room_y = Hero.get_instance().get_y()//room_size
+
+    for i in range(len(Dungeon.get_instance().room_array)):
+        for j in range(len(Dungeon.get_instance().room_array[i])):
+            room = Dungeon.get_instance().room_array[i][j]
+            x = room.get_location()[0] * mini_room_size
+            y = room.get_location()[1] * mini_room_size + 15
+
+
+            floor = pygame.image.load('floor.png')
+            floor_img = pygame.transform.scale(floor, (mini_room_size, mini_room_size))
+            screen.blit(floor_img, (x, y))
+
+            corner = pygame.image.load('corner.png')
+            corner = pygame.transform.scale(corner, (mini_default_size, mini_default_size))
+
+            screen.blit(corner, (x, y))
+            screen.blit(corner, (x + mini_room_size - mini_default_size, y))
+            screen.blit(corner, (x, y + mini_room_size - mini_default_size))
+            screen.blit(corner, (x + mini_room_size - mini_default_size, y + mini_room_size - mini_default_size))
+
+            wall = pygame.image.load('wall.png')
+            vert_wall = pygame.transform.scale(wall, (mini_default_size, mini_default_size))
+            horz_wall = pygame.transform.rotate(vert_wall, 90)
+            default_vert_walls = [(x, y + mini_default_size),  # top left corner bottom
+                                  (x, y + mini_room_size - 2 * mini_default_size),  # bottom left corner top
+                                  (x + mini_room_size - mini_default_size, y + mini_default_size),  # top right corner bottom
+                                  (x + mini_room_size - mini_default_size, y + mini_room_size - 2 * mini_default_size),  # bottom right corner top
+                                  ]
+            default_horz_walls = [(x + mini_default_size, y),  # top left corner right
+                                  (x + mini_room_size - 2 * mini_default_size, y),  # top right corner left
+                                  (x + mini_default_size, y + mini_room_size - mini_default_size),  # bottom left corner right
+                                  (x + mini_room_size - 2 * mini_default_size, y + mini_room_size - mini_default_size)  # bottom right corner left
+                                  ]
+            for location in default_vert_walls:
+                screen.blit(vert_wall, location)
+            for location in default_horz_walls:
+                screen.blit(horz_wall, location)
+
+            if room.get_nwall():
+                screen.blit(horz_wall, (x + 2 * mini_default_size, y))
+                screen.blit(horz_wall, (x + mini_room_size - 3 * mini_default_size, y))
+
+
+            if room.get_wwall():
+                screen.blit(vert_wall, (x, y + 2 * mini_default_size))
+                screen.blit(vert_wall, (x, y + mini_room_size - 3 * mini_default_size))
+
+            if room.get_ewall():
+                screen.blit(vert_wall, (x + mini_room_size - mini_default_size, y + 2 * mini_default_size))
+                screen.blit(vert_wall, (x + mini_room_size - mini_default_size, y + mini_room_size - 3 * mini_default_size))
+
+
+            if room.get_swall():
+                screen.blit(horz_wall, (x + 2 * mini_default_size, y + mini_room_size - mini_default_size))
+                screen.blit(horz_wall, (x + mini_room_size - 3 * mini_default_size, y + mini_room_size - mini_default_size))
+
+    hero_img = pygame.image.load(Hero.get_instance().get_image())
+    scaled_hero = pygame.transform.scale(hero_img, (mini_default_size, mini_default_size))
+    screen.blit(scaled_hero, (hero_room_x*mini_room_size + mini_room_size * .5, hero_room_y*mini_room_size + mini_room_size * .5 + 30))

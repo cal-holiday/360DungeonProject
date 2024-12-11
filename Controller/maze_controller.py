@@ -18,6 +18,7 @@ EXIT_DUNGEON = pygame.USEREVENT + 3
 POTION_REMOVED = False
 MONSTER_DEFEATED = False
 INVENTORY_CLICKED = False
+MAP_CLICKED = False
 RUN = True
 room_rects = []
 monster_rect = []
@@ -45,6 +46,7 @@ def run(screen):
     global health_potion_rects
     global vision_potion_rects
     global INVENTORY_CLICKED
+    global MAP_CLICKED
     global potion_time
     clock = pygame.time.Clock()
     fps = 60
@@ -94,19 +96,20 @@ def run(screen):
             maze_view.draw_vision(screen)
         else:
             potion_time -= 1
-        toolbar_rects = maze_view.draw_toolbar(screen)
+
 
         if INVENTORY_CLICKED:
             maze_view.draw_inventory(screen)
             health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
-        # exit_rect = maze_view.draw_exit(room)
+        if MAP_CLICKED:
+            maze_view.draw_mini_map(screen)
 
-        # maze_view.draw_vision()
-
+        toolbar_rects = maze_view.draw_toolbar(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
             handle_event(event, )
+
         pygame.display.update()
     pygame.quit()
 class ControllerHero(pygame.sprite.Sprite):
@@ -181,6 +184,7 @@ class ControllerHero(pygame.sprite.Sprite):
 def handle_event(event):
     global RUN
     global INVENTORY_CLICKED
+    global MAP_CLICKED
     global toolbar_rects
     global potion_time
     room = get_current_room()
@@ -223,9 +227,16 @@ def handle_event(event):
                         INVENTORY_CLICKED = False
                     else:
                         INVENTORY_CLICKED = True
-                        print(Inventory.get_instance().get_health_potions())
+
                 elif i == 1:
-                    print("Map")
+                    if MAP_CLICKED:
+                        MAP_CLICKED = False
+                    else:
+                        MAP_CLICKED = True
+                        player.down = False
+                        player.up = False
+                        player.right = False
+                        player.left = False
                 elif i == 2:
                     print("Save")
                 elif i == 3:
