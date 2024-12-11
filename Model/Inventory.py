@@ -6,10 +6,11 @@ class Inventory:
     __instance = None
     @staticmethod
     def get_instance():
-        if Inventory.__instance is not None:
+        """if Inventory.__instance is not None:
             return Inventory.__instance
         else:
-            raise Exception("Inventory does not exist yet!")
+            raise Exception("Inventory does not exist yet!")"""
+        return Inventory.__instance
 
     def __init__(self):
         if Inventory.__instance is not None:
@@ -36,6 +37,12 @@ class Inventory:
                     self.vision_potions.append(object)
         else:
             raise ValueError("Cannot add null object to inventory")
+    def delete_inventory(self):
+        if not Inventory.__instance is None:
+            Inventory.__instance = None
+        else:
+            pass
+        #del self
 
     def has_health_potion(self):
         return len(self.health_potions) > 0
