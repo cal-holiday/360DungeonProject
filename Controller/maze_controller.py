@@ -60,6 +60,10 @@ def run(screen):
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
+    inventory.add(HealthPotion())
+    inventory.add(HealthPotion())
+    inventory.add(HealthPotion())
+    inventory.add(HealthPotion())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
     Hero.get_instance().set_x(405)
