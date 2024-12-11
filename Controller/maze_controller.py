@@ -2,7 +2,7 @@ from random import choice
 
 import pygame
 
-from Controller import Battle_Controller, you_win_controller
+from Controller import Battle_Controller, you_win_controller, how_to_play_controller
 from Model.Dungeon import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
@@ -266,7 +266,7 @@ def handle_event(event, screen):
                 elif i == 2:
                     print("Save")
                 elif i == 3:
-                    print("Help")
+                    how_to_play_controller.run()
                 else:
                     RUN = False
             for i in range(len(health_potion_rects)):
