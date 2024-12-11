@@ -56,6 +56,8 @@ def run(screen):
 
     inventory = Inventory()
     inventory.add(VisionPotion())
+    inventory.add(VisionPotion())
+    inventory.add(VisionPotion())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
     Hero.get_instance().set_x(405)
@@ -221,7 +223,6 @@ def handle_event(event):
                         INVENTORY_CLICKED = False
                     else:
                         INVENTORY_CLICKED = True
-                        print("Inventory")
                         print(Inventory.get_instance().get_health_potions())
                 elif i == 1:
                     print("Map")
@@ -234,10 +235,14 @@ def handle_event(event):
             for i in range(len(health_potion_rects)):
                 if health_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_health_potion()
+                    health_potion_rects.pop(i)
+                    break
             for i in range(len(vision_potion_rects)):
                 if vision_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_vision_potion()
                     potion_time = 600
+                    vision_potion_rects.pop(i)
+                    break
 
 def get_current_room():
     x = Hero.get_instance().get_x()
