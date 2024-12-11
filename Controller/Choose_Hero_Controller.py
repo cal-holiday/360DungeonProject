@@ -9,9 +9,6 @@ from Model.Inventory import Inventory
 from View import Choose_Hero_View as View
 
 def run(screen):
-    pygame.mixer.init()
-    pygame.mixer.music.load("buddy holly 10 12 24.wav")
-    pygame.mixer.music.play(loops=-1)
     if not Hero.get_instance() is None:
         Hero.get_instance().delete_hero()
     if not Inventory.get_instance() is None:

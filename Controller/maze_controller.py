@@ -50,6 +50,8 @@ def run(screen):
     global INVENTORY_CLICKED
     global MAP_CLICKED
     global potion_time
+
+    potion_time = 0
     pygame.mixer.init()
     pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
     pygame.mixer.music.play(loops=-1)
