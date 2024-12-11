@@ -63,7 +63,7 @@ def run(screen):
     player = ControllerHero(maze_view.draw_hero(screen))
     INVENTORY_CLICKED = False
 
-    dungeon = Dungeon(6)
+    dungeon = Dungeon(3)
     array = dungeon.room_array
     while RUN:
         camera_offset_x, camera_offset_y = maze_view.get_camera_offset()

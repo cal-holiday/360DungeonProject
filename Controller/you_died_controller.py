@@ -1,5 +1,6 @@
 import pygame
 
+from Controller import Choose_Hero_Controller
 from Model.Hero import Hero
 from View import you_died_view as you_died
 
@@ -15,7 +16,11 @@ def run(theScreen):
         quit_game = you_died.draw_button("button.png","Quit",300,600,200,75)
         you_died.draw_rotated_image(hero.get_dead_image(),350,300,100,100,90) #change to hero get instance once its all plugged together
 
-        if (quit_game):
+        if new_game:
+            Choose_Hero_Controller.run(screen)
+            is_running = False
+
+        if quit_game:
             is_running = False
 
         for event in pygame.event.get():
