@@ -2,7 +2,7 @@ from random import choice
 
 import pygame
 
-from Controller import Battle_Controller
+from Controller import Battle_Controller, you_win_controller
 from Model.Dungeon import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
@@ -132,7 +132,7 @@ def run(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(event)
+            handle_event(event, screen)
 
         pygame.display.update()
     pygame.quit()
@@ -205,7 +205,7 @@ class ControllerHero(pygame.sprite.Sprite):
         return False
 
 
-def handle_event(event):
+def handle_event(event, screen):
     global RUN
     global INVENTORY_CLICKED
     global MAP_CLICKED
@@ -241,6 +241,7 @@ def handle_event(event):
         Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
+        you_win_controller.run(screen)
         print("END Game")
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
