@@ -3,10 +3,10 @@ import pygame
 from Model.Hero import Hero
 from View import you_win_view as you_win
 
-def run(theScreen):
+def run(screen):
     #hero = Hero.get_instance()
     is_running = True
-    screen = theScreen
+    screen = screen
     while is_running:
         you_win.setScreen(screen)
         you_win.screen.fill((0, 0, 0))
