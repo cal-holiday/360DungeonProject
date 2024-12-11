@@ -73,7 +73,7 @@ def run(screen):
 
 
 
-    dungeon = Dungeon(6)
+    dungeon = Dungeon(3)
     array = dungeon.room_array
 
     empty_rooms = []
