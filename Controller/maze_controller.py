@@ -204,8 +204,6 @@ def handle_event(event):
         Inventory.get_instance().add(room.get_potion())
         room.set_potion(None)
     if event.type == MONSTER_BATTLE:
-        print(room.get_location())
-        print(room.get_monster())
         player.down = False
         player.up = False
         player.right = False
@@ -246,5 +244,4 @@ def get_current_room():
     y = Hero.get_instance().get_y()
     room_x = x//maze_view.room_size
     room_y = y//maze_view.room_size
-    print(room_x, room_y)
     return array[room_x][room_y]

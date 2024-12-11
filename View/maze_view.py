@@ -227,5 +227,9 @@ def draw_inventory(screen):
     return health_rects, vision_rects
 
 def draw_vision(screen):
+    camera_offset_x, camera_offset_y = get_camera_offset()
+    x_center = Hero.get_instance().get_x() - camera_offset_x
+    y_center = Hero.get_instance().get_y() - camera_offset_y
     img = pygame.image.load("vision.png")
-    screen.blit(img, (-270,-240))
+
+    screen.blit(img, (x_center - room_size*2.92,y_center - room_size*2.92))

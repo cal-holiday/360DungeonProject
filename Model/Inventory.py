@@ -48,13 +48,13 @@ class Inventory:
 
     def drink_health_potion(self):
         if self.has_health_potion():
-            self.health_potions[0].drink()
-            del self.health_potions[0]
+            self.health_potions[-1].drink()
+            del self.health_potions[-1]
 
     def drink_vision_potion(self):
         if len(self.vision_potions) > 0:
-            self.vision_potions[0].drink()
-            del self.vision_potions[0]
+            self.vision_potions[-1].drink()
+            del self.vision_potions[-1]
 
     def has_all_pillars(self):
         return len(self.pillars) == 4
