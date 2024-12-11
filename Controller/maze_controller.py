@@ -1,3 +1,5 @@
+from random import choice
+
 import pygame
 
 from Controller import Battle_Controller
@@ -73,6 +75,20 @@ def run(screen):
 
     Hero.get_instance().set_x(405)
     Hero.get_instance().set_y(405)
+
+    hero_set = False
+    while not hero_set:
+        row = choice(array)
+        col = choice(row)
+        if col.get_monster() is None and col.get_potion is None:
+            x = col.get_location()[0]*maze_view.room_size + maze_view.room_size*.5
+            y = col.get_location()[1]*maze_view.room_size+ maze_view.room_size*.5
+            Hero.get_instance().set_x(x)
+            Hero.get_instance().set_y(y)
+            hero_set = True
+
+
+
     player = ControllerHero(maze_view.draw_hero(screen))
     INVENTORY_CLICKED = False
 
