@@ -22,6 +22,8 @@ def run(screen):
 
         if quit_game:
             is_running = False
+            pygame.quit()
+            exit()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
