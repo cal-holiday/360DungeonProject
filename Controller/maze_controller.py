@@ -73,19 +73,16 @@ def run(screen):
     dungeon = Dungeon(6)
     array = dungeon.room_array
 
-    Hero.get_instance().set_x(405)
-    Hero.get_instance().set_y(405)
-
-    hero_set = False
-    while not hero_set:
-        row = choice(array)
-        col = choice(row)
-        if col.get_monster() is None and col.get_potion is None:
-            x = col.get_location()[0]*maze_view.room_size + maze_view.room_size*.5
-            y = col.get_location()[1]*maze_view.room_size+ maze_view.room_size*.5
-            Hero.get_instance().set_x(x)
-            Hero.get_instance().set_y(y)
-            hero_set = True
+    empty_rooms = []
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            if array[i][j].get_monster() is None and array[i][j].get_potion() is None:
+                    empty_rooms.append(array[i][j])
+    hero_room = choice(empty_rooms)
+    x = hero_room.get_location()[0] * maze_view.room_size + maze_view.room_size * .5
+    y = hero_room.get_location()[1] * maze_view.room_size + maze_view.room_size * .5
+    Hero.get_instance().set_x(int(x))
+    Hero.get_instance().set_y(int(y))
 
 
 
