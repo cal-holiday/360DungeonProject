@@ -65,9 +65,6 @@ def run(screen):
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
-    inventory.add(EncapsulationPillar())
-    inventory.add(InheritancePillar())
-    inventory.add(AbstractionPillar())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
 
