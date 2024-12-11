@@ -85,8 +85,7 @@ def run(screen):
     y = hero_room.get_location()[1] * maze_view.room_size + maze_view.room_size * .5
     Hero.get_instance().set_x(int(x))
     Hero.get_instance().set_y(int(y))
-
-
+    Hero.get_instance().set_hp(20)
 
     player = ControllerHero(maze_view.draw_hero(screen))
     INVENTORY_CLICKED = False
