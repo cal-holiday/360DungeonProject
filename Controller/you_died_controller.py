@@ -17,8 +17,12 @@ def run(screen):
         you_died.draw_rotated_image(hero.get_dead_image(),350,300,100,100,90) #change to hero get instance once its all plugged together
 
         if new_game:
+            pygame.mixer.init()
+            pygame.mixer.music.load("buddy holly 10 12 24.wav")
+            pygame.mixer.music.play(loops=-1)
             Choose_Hero_Controller.run(screen)
             is_running = False
+
 
         if quit_game:
             is_running = False
