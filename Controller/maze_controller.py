@@ -66,11 +66,14 @@ def run(screen):
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
     inventory.add(EncapsulationPillar())
-    inventory.add(AbstractionPillar())
     inventory.add(InheritancePillar())
+    inventory.add(AbstractionPillar())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
-    dungeon = Dungeon(3)
+
+
+
+    dungeon = Dungeon(6)
     array = dungeon.room_array
 
     empty_rooms = []
@@ -83,6 +86,8 @@ def run(screen):
     y = hero_room.get_location()[1] * maze_view.room_size + maze_view.room_size * .5
     Hero.get_instance().set_x(int(x))
     Hero.get_instance().set_y(int(y))
+
+
 
     player = ControllerHero(maze_view.draw_hero(screen))
     INVENTORY_CLICKED = False
