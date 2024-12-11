@@ -3,10 +3,10 @@ import pygame
 from Model.Hero import Hero
 from View import you_died_view as you_died
 
-def run(theScreen):
+def run(screen):
     hero = Hero.get_instance()
     is_running = True
-    screen = theScreen
+    screen = screen
     while is_running:
         you_died.setScreen(screen)
         you_died.screen.fill((0, 0, 0))

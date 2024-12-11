@@ -12,11 +12,11 @@ from View import Battle_View as View
 
 # Initialize pygame
 pygame.init()
-pygame.mixer.init()
-pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
-pygame.mixer.music.play(loops=-1)
 
 def run(monster):
+    pygame.mixer.init()
+    pygame.mixer.music.load("dean town 10 12 24.wav")
+    pygame.mixer.music.play(loops=-1)
     screen = pygame.display.set_mode((810, 810))
     isRunning = True
     clock = pygame.time.Clock()

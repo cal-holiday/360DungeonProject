@@ -3,7 +3,9 @@ from Controller import Choose_Hero_Controller, you_win_controller
 from Controller import how_to_play_controller
 from Controller import you_died_controller
 import pygame
-
+pygame.mixer.init()
+pygame.mixer.music.load("buddy holly 10 12 24.wav")
+pygame.mixer.music.play(loops=-1)
 def run(theScreen):
     is_running = True
     screen = theScreen

@@ -108,7 +108,7 @@ def run(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(event, )
+            handle_event(event)
 
         pygame.display.update()
     pygame.quit()
