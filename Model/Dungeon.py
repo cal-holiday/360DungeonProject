@@ -110,8 +110,6 @@ class Dungeon:
         number = 5
         for i in range(number):
             monster = CharacterFactory.create_monster(Element(i%4 +1))
-            monster.set_max_hp(1000)
-            monster.set_hp(1000)
             if i == 0:
                 monster.set_pillar(PolymorphismPillar())
             elif i == 1:
