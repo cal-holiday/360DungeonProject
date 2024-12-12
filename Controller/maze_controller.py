@@ -1,3 +1,5 @@
+from random import choice
+
 import pygame
 
 from Controller import Battle_Controller
@@ -48,6 +50,9 @@ def run(screen):
     global INVENTORY_CLICKED
     global MAP_CLICKED
     global potion_time
+    pygame.mixer.init()
+    pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+    pygame.mixer.music.play(loops=-1)
     clock = pygame.time.Clock()
     fps = 60
     GET_POTION = pygame.USEREVENT + 1
@@ -60,16 +65,35 @@ def run(screen):
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
+    inventory.add(EncapsulationPillar())
+    inventory.add(InheritancePillar())
+    inventory.add(AbstractionPillar())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
-    Hero.get_instance().set_x(405)
-    Hero.get_instance().set_y(405)
-    player = ControllerHero(maze_view.draw_hero(screen))
-    INVENTORY_CLICKED = False
+
+
 
     dungeon = Dungeon(6)
     array = dungeon.room_array
+
+    empty_rooms = []
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            if array[i][j].get_monster() is None and array[i][j].get_potion() is None:
+                    empty_rooms.append(array[i][j])
+    hero_room = choice(empty_rooms)
+    x = hero_room.get_location()[0] * maze_view.room_size + maze_view.room_size * .5
+    y = hero_room.get_location()[1] * maze_view.room_size + maze_view.room_size * .5
+    Hero.get_instance().set_x(int(x))
+    Hero.get_instance().set_y(int(y))
+
+
+
+    player = ControllerHero(maze_view.draw_hero(screen))
+    INVENTORY_CLICKED = False
+
     while RUN:
+        pygame.mixer.unpause()
         camera_offset_x, camera_offset_y = maze_view.get_camera_offset()
         clock.tick(fps)
         screen.fill(0)

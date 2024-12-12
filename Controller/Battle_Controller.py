@@ -96,6 +96,9 @@ def run(monster):
                                 if monster.has_pillar():
                                     inventory.add(monster.get_pillar())
                                 clicked = True  # Set clicked to True to exit the loop
+                                pygame.mixer.init()
+                                pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+                                pygame.mixer.music.play(loops=-1)
                     pygame.display.update()
             return False
         else:
@@ -228,6 +231,9 @@ def run(monster):
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
+                    pygame.mixer.init()
+                    pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+                    pygame.mixer.music.play(loops=-1)
 
         pygame.display.update()
         clock.tick(60)
