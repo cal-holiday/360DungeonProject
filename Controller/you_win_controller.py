@@ -1,5 +1,6 @@
 import pygame
 
+from Controller import Choose_Hero_Controller
 from Model.Hero import Hero
 from View import you_win_view as you_win
 
@@ -18,6 +19,14 @@ def run(screen):
         quit_game = you_win.draw_button("button.png","Quit",300,600,200,75)
 
         if (quit_game):
+            is_running = False
+            pygame.quit()
+            exit()
+        if new_game:
+            pygame.mixer.init()
+            pygame.mixer.music.load("buddy holly 10 12 24.wav")
+            pygame.mixer.music.play(loops=-1)
+            Choose_Hero_Controller.run(screen)
             is_running = False
 
         for event in pygame.event.get():
