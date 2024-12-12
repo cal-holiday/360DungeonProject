@@ -139,7 +139,7 @@ def run(monster):
             monster_health_width = (monster.get_hp() / monster.get_max_hp()) * 150
         pygame.draw.rect(screen, (34, 139, 34), pygame.Rect(370, 270, monster_health_width, 25))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(370, 270, 150, 25), 3)
-        View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 400, 290)
+        View.draw_text(f"{monster.get_hp()}/{monster.get_max_hp()}", 530, 263)
 
     def monsters_turn():
         """Monster's actions during its turn."""
