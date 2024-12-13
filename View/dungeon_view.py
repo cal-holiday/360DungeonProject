@@ -1,25 +1,36 @@
 import pygame
 
-from Model.Dungeon import Dungeon
+from Model.Maze import Maze
 from Model.Hero import Hero
 from Model.Inventory import Inventory
+from View.demo_view import width
+
 pygame.init()
-width, height = pygame.display.get_surface().get_size()
-default_size = width // 18
-room_size = width // 3
+WIDTH, HEIGHT = 0, 0
+DEFAULT_SIZE = 0
+ROOM_SIZE = 0
+def set_up(screen):
+    global WIDTH
+    global HEIGHT
+    global DEFAULT_SIZE
+    global ROOM_SIZE
+
+    WIDTH, HEIGHT = screen.get_size()
+    DEFAULT_SIZE = WIDTH // 18
+    ROOM_SIZE = WIDTH // 3
 
 def get_camera_offset():
-    x_min = max(0, Hero.get_instance().get_x() - width // 2)
-    y_min = max(30, Hero.get_instance().get_y() - height // 2)
-    camera_offset_x = min(room_size*3, x_min)
-    camera_offset_y = min(room_size*3 + 30, y_min)
+    x_min = max(0, Hero.get_instance().get_x() - WIDTH // 2)
+    y_min = max(30, Hero.get_instance().get_y() - HEIGHT // 2)
+    camera_offset_x = min(ROOM_SIZE*3, x_min)
+    camera_offset_y = min(ROOM_SIZE*3 + 30, y_min)
     return camera_offset_x, camera_offset_y
 
 def draw_hero(screen):
     camera_offset_x, camera_offset_y = get_camera_offset()
 
     hero_img = pygame.image.load(Hero.get_instance().get_image())
-    scaled_hero = pygame.transform.scale(hero_img, (default_size, default_size))
+    scaled_hero = pygame.transform.scale(hero_img, (DEFAULT_SIZE, DEFAULT_SIZE))
     img_x = Hero.get_instance().get_x() - camera_offset_x
     img_y = Hero.get_instance().get_y() - camera_offset_y
     screen.blit(scaled_hero, (img_x, img_y))
@@ -41,105 +52,105 @@ def draw_hero(screen):
 def draw_room(screen, room):
     camera_offset_x, camera_offset_y = get_camera_offset()
     rect_list = []
-    x = room.get_location()[0] * room_size - camera_offset_x
-    y = room.get_location()[1] * room_size + default_size - camera_offset_y
+    x = room.get_location()[0] * ROOM_SIZE - camera_offset_x
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE - camera_offset_y
 
     floor = pygame.image.load('floor.png')
-    floor_img = pygame.transform.scale(floor, (room_size, room_size))
+    floor_img = pygame.transform.scale(floor, (ROOM_SIZE, ROOM_SIZE))
     floor_rect = floor_img.get_rect()
     screen.blit(floor_img, (x, y))
     corner = pygame.image.load('corner.png')
-    corner = pygame.transform.scale(corner, (default_size, default_size))
+    corner = pygame.transform.scale(corner, (DEFAULT_SIZE, DEFAULT_SIZE))
     screen.blit(corner, (x, y))
-    screen.blit(corner, (x + room_size - default_size, y))
-    screen.blit(corner, (x, y + room_size - default_size))
-    screen.blit(corner, (x + room_size - default_size, y + room_size -default_size))
+    screen.blit(corner, (x + ROOM_SIZE - DEFAULT_SIZE, y))
+    screen.blit(corner, (x, y + ROOM_SIZE - DEFAULT_SIZE))
+    screen.blit(corner, (x + ROOM_SIZE - DEFAULT_SIZE, y + ROOM_SIZE -DEFAULT_SIZE))
 
     wall = pygame.image.load('wall.png')
-    vert_wall = pygame.transform.scale(wall, (default_size, default_size))
+    vert_wall = pygame.transform.scale(wall, (DEFAULT_SIZE, DEFAULT_SIZE))
     horz_wall = pygame.transform.rotate(vert_wall, 90)
-    default_vert_walls = [(x, y + default_size), #top left corner bottom
-                     (x, y + room_size - 2*default_size), #bottom left corner top
-                     (x + room_size - default_size, y + default_size),#top right corner bottom
-                     (x + room_size - default_size, y + room_size- 2*default_size), #bottom right corner top
+    default_vert_walls = [(x, y + DEFAULT_SIZE), #top left corner bottom
+                     (x, y + ROOM_SIZE - 2*DEFAULT_SIZE), #bottom left corner top
+                     (x + ROOM_SIZE - DEFAULT_SIZE, y + DEFAULT_SIZE),#top right corner bottom
+                     (x + ROOM_SIZE - DEFAULT_SIZE, y + ROOM_SIZE- 2*DEFAULT_SIZE), #bottom right corner top
                      ]
-    default_horz_walls = [(x + default_size, y), #top left corner right
-                     (x + room_size - 2*default_size, y), #top right corner left
-                     (x + default_size, y + room_size- default_size), #bottom left corner right
-                     (x + room_size- 2*default_size, y + room_size - default_size) #bottom right corner left
+    default_horz_walls = [(x + DEFAULT_SIZE, y), #top left corner right
+                     (x + ROOM_SIZE - 2*DEFAULT_SIZE, y), #top right corner left
+                     (x + DEFAULT_SIZE, y + ROOM_SIZE- DEFAULT_SIZE), #bottom left corner right
+                     (x + ROOM_SIZE- 2*DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE) #bottom right corner left
                      ]
     for location in default_vert_walls:
-        rect = pygame.Rect(location[0], location[1], default_size, default_size)
+        rect = pygame.Rect(location[0], location[1], DEFAULT_SIZE, DEFAULT_SIZE)
         screen.blit(vert_wall, location)
         rect_list.append(rect)
     for location in default_horz_walls:
-        rect = pygame.Rect(location[0], location[1], default_size, default_size)
+        rect = pygame.Rect(location[0], location[1], DEFAULT_SIZE, DEFAULT_SIZE)
         screen.blit(horz_wall, location)
         rect_list.append(rect)
 
     if room.get_nwall():
-        screen.blit(horz_wall, (x + 2*default_size, y))
-        screen.blit(horz_wall, (x + room_size - 3*default_size, y))
-        n_wall = pygame.Rect(x + default_size, y, room_size- 2*default_size, default_size)
+        screen.blit(horz_wall, (x + 2*DEFAULT_SIZE, y))
+        screen.blit(horz_wall, (x + ROOM_SIZE - 3*DEFAULT_SIZE, y))
+        n_wall = pygame.Rect(x + DEFAULT_SIZE, y, ROOM_SIZE- 2*DEFAULT_SIZE, DEFAULT_SIZE)
         rect_list.append(n_wall)
 
     if room.get_wwall():
-        screen.blit(vert_wall, (x, y + 2*default_size))
-        screen.blit(vert_wall, (x, y + room_size - 3*default_size))
-        w_wall = pygame.Rect(x, y + default_size, default_size, room_size - 2*default_size)
+        screen.blit(vert_wall, (x, y + 2*DEFAULT_SIZE))
+        screen.blit(vert_wall, (x, y + ROOM_SIZE - 3*DEFAULT_SIZE))
+        w_wall = pygame.Rect(x, y + DEFAULT_SIZE, DEFAULT_SIZE, ROOM_SIZE - 2*DEFAULT_SIZE)
         rect_list.append(w_wall)
 
     if room.get_ewall():
-        screen.blit(vert_wall, (x + room_size - default_size, y + 2*default_size))
-        screen.blit(vert_wall, (x + room_size - default_size, y + room_size - 3*default_size))
-        e_wall = pygame.Rect(x + room_size - default_size, y + default_size, default_size, room_size - 2*default_size)
+        screen.blit(vert_wall, (x + ROOM_SIZE - DEFAULT_SIZE, y + 2*DEFAULT_SIZE))
+        screen.blit(vert_wall, (x + ROOM_SIZE - DEFAULT_SIZE, y + ROOM_SIZE - 3*DEFAULT_SIZE))
+        e_wall = pygame.Rect(x + ROOM_SIZE - DEFAULT_SIZE, y + DEFAULT_SIZE, DEFAULT_SIZE, ROOM_SIZE - 2*DEFAULT_SIZE)
         rect_list.append(e_wall)
 
     if room.get_swall():
-        screen.blit(horz_wall, (x + 2*default_size, y + room_size - default_size))
-        screen.blit(horz_wall, (x + room_size - 3*default_size, y + room_size - default_size))
-        s_wall = pygame.Rect(x + default_size, y + room_size - default_size, room_size - 2*default_size, default_size)
+        screen.blit(horz_wall, (x + 2*DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE))
+        screen.blit(horz_wall, (x + ROOM_SIZE - 3*DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE))
+        s_wall = pygame.Rect(x + DEFAULT_SIZE, y + ROOM_SIZE - DEFAULT_SIZE, ROOM_SIZE - 2*DEFAULT_SIZE, DEFAULT_SIZE)
         rect_list.append(s_wall)
     return rect_list
 
 def draw_exit(screen,room):
     camera_offset_x, camera_offset_y = get_camera_offset()
     if room.has_exit and Inventory.get_instance().has_all_pillars():
-        x = room.get_location()[0] * room_size - camera_offset_x
-        y = room.get_location()[1] * room_size +default_size -camera_offset_y
+        x = room.get_location()[0] * ROOM_SIZE - camera_offset_x
+        y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE -camera_offset_y
         door = pygame.image.load("exit_door.png")
-        door_img = pygame.transform.scale(door, (default_size*2, default_size*2))
+        door_img = pygame.transform.scale(door, (DEFAULT_SIZE*2, DEFAULT_SIZE*2))
         door_rect = door_img.get_rect()
-        door_rect.topleft = (x + (room_size/2) -45, y + (room_size/2)-45)
-        screen.blit(door_img, (x + (room_size / 2) -45, y + (room_size / 2)-45))
+        door_rect.topleft = (x + (ROOM_SIZE/2) -45, y + (ROOM_SIZE/2)-45)
+        screen.blit(door_img, (x + (ROOM_SIZE / 2) -45, y + (ROOM_SIZE / 2)-45))
         return door_rect
     else:
         return None
 
 def draw_potion(screen, room):
     camera_offset_x, camera_offset_y = get_camera_offset()
-    x = room.get_location()[0] * room_size - camera_offset_x
-    y = room.get_location()[1] * room_size +default_size -camera_offset_y
+    x = room.get_location()[0] * ROOM_SIZE - camera_offset_x
+    y = room.get_location()[1] * ROOM_SIZE +DEFAULT_SIZE -camera_offset_y
     if room.get_potion() is not None:
         potion = room.get_potion().get_image()
         potion_img = pygame.image.load(potion)
         potion_rect = (potion_img.get_rect())
-        potion_rect.topleft = (x + (room_size/2) -30, y + (room_size/2) -30)
-        screen.blit(potion_img, (x + (room_size/2) -30, y + (room_size/2) -30))
+        potion_rect.topleft = (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30)
+        screen.blit(potion_img, (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30))
         return potion_rect
     else:
         return None
 
 def draw_monster(screen, room):
     camera_offset_x, camera_offset_y = get_camera_offset()
-    x = room.get_location()[0] * room_size - camera_offset_x
-    y = room.get_location()[1] * room_size + default_size - camera_offset_y
+    x = room.get_location()[0] * ROOM_SIZE - camera_offset_x
+    y = room.get_location()[1] * ROOM_SIZE + DEFAULT_SIZE - camera_offset_y
     if room.get_monster() is not None:
         monster = room.get_monster()
         monster_img = monster.get_image()
         img = pygame.image.load(monster_img)
-        monster_rect = pygame.Rect((x + (room_size/2) -30), (y + (room_size/2) -30),default_size*2, default_size*2)
-        screen.blit(img, (x + (room_size/2) -30, y + (room_size/2) -30))
+        monster_rect = pygame.Rect((x + (ROOM_SIZE/2) -30), (y + (ROOM_SIZE/2) -30),DEFAULT_SIZE*2, DEFAULT_SIZE*2)
+        screen.blit(img, (x + (ROOM_SIZE/2) -30, y + (ROOM_SIZE/2) -30))
         return monster_rect
     else:
         return None
@@ -148,16 +159,16 @@ def draw_toolbar(screen):
 
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
-    image = pygame.Surface((width, default_size/1.5))
+    image = pygame.Surface((WIDTH, DEFAULT_SIZE / 1.5))
     image.fill((118,59,54))
     rect = image.get_rect()
     rect.topleft = (0, 0)
     screen.blit(image, rect)
-    inventory_button = pygame.Rect(5,0,default_size*2, default_size)
-    map_button = pygame.Rect(default_size * 4, 0, default_size * 2, default_size)
-    save_button = pygame.Rect(default_size * 6, 0, default_size * 2, default_size)
-    help_button = pygame.Rect(default_size * 8, 0, default_size * 2, default_size)
-    quit_button = pygame.Rect(default_size * 10, 0, default_size * 2, default_size)
+    inventory_button = pygame.Rect(5,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
+    map_button = pygame.Rect(DEFAULT_SIZE * 4, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    save_button = pygame.Rect(DEFAULT_SIZE * 6, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    help_button = pygame.Rect(DEFAULT_SIZE * 8, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
+    quit_button = pygame.Rect(DEFAULT_SIZE * 10, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
     rect_list = [inventory_button, map_button, save_button, help_button, quit_button]
 
     inventory_surface = font.render("Inventory", True, (255,255,255))
@@ -176,16 +187,16 @@ def draw_toolbar(screen):
     return rect_list
 def draw_inventory(screen):
 
-    row_height = 4*default_size
+    row_height = 4*DEFAULT_SIZE
     font = pygame.font.Font("8-bit-pusab.ttf", 15)
 
-    image = pygame.Surface((width, row_height))
+    image = pygame.Surface((WIDTH, row_height))
     image.fill((250,197,143))
     rect = image.get_rect()
-    rect.topleft = (0, default_size/1.5)
+    rect.topleft = (0, DEFAULT_SIZE/1.5)
     screen.blit(image, rect)
-    potion_label = pygame.Rect(5, default_size/1.5 + default_size, default_size*2, default_size)
-    pillar_label = pygame.Rect(5, default_size/1.5 + 3*default_size, default_size * 2, default_size)
+    potion_label = pygame.Rect(5, DEFAULT_SIZE/1.5 + DEFAULT_SIZE, DEFAULT_SIZE*2, DEFAULT_SIZE)
+    pillar_label = pygame.Rect(5, DEFAULT_SIZE/1.5 + 3*DEFAULT_SIZE, DEFAULT_SIZE * 2, DEFAULT_SIZE)
 
     potion_surface = font.render("Potions:", True, (255,255,255))
     pillar_surface = font.render("Pillars:", True, (255, 255, 255))
@@ -198,7 +209,7 @@ def draw_inventory(screen):
     for pillar in current_pillars:
         img = pygame.image.load(pillar.get_image())
         scaled_img = pygame.transform.scale(img, (30, 30))
-        screen.blit(scaled_img, (default_size*i, default_size/1.5 + 3*default_size))
+        screen.blit(scaled_img, (DEFAULT_SIZE*i, DEFAULT_SIZE/1.5 + 3*DEFAULT_SIZE))
         i += 2
 
     health_rects = []
@@ -208,8 +219,8 @@ def draw_inventory(screen):
         img = pygame.image.load(potion.get_image())
         scaled_img = pygame.transform.scale(img, (30, 30))
         rect = scaled_img.get_rect()
-        rect.topleft = (default_size * i, default_size / 1.5 + default_size)
-        screen.blit(scaled_img, (default_size * i, default_size / 1.5 + default_size))
+        rect.topleft = (DEFAULT_SIZE * i, DEFAULT_SIZE / 1.5 + DEFAULT_SIZE)
+        screen.blit(scaled_img, (DEFAULT_SIZE * i, DEFAULT_SIZE / 1.5 + DEFAULT_SIZE))
         i += 2
         health_rects.append(rect)
 
@@ -220,8 +231,8 @@ def draw_inventory(screen):
         img = pygame.image.load(potion.get_image())
         scaled_img = pygame.transform.scale(img, (30, 30))
         rect = scaled_img.get_rect()
-        rect.topleft = (default_size * i, default_size / 1.5 + 2*default_size)
-        screen.blit(scaled_img, (default_size * i, default_size / 1.5 + 2*default_size))
+        rect.topleft = (DEFAULT_SIZE * i, DEFAULT_SIZE / 1.5 + 2*DEFAULT_SIZE)
+        screen.blit(scaled_img, (DEFAULT_SIZE * i, DEFAULT_SIZE / 1.5 + 2*DEFAULT_SIZE))
         i += 2
         vision_rects.append(rect)
 
@@ -234,18 +245,18 @@ def draw_vision(screen):
     y_center = Hero.get_instance().get_y() - camera_offset_y
     img = pygame.image.load("vision.png")
 
-    screen.blit(img, (x_center - room_size*2.92,y_center - room_size*2.92))
+    screen.blit(img, (x_center - ROOM_SIZE*2.92,y_center - ROOM_SIZE*2.92))
 
 def draw_mini_map(screen):
 
-    mini_room_size = width//Dungeon.get_instance().size
+    mini_room_size = WIDTH // Maze.get_instance().size
     mini_default_size = mini_room_size//6
-    hero_room_x= Hero.get_instance().get_x()//room_size
-    hero_room_y = Hero.get_instance().get_y()//room_size
+    hero_room_x= Hero.get_instance().get_x()//ROOM_SIZE
+    hero_room_y = Hero.get_instance().get_y()//ROOM_SIZE
 
-    for i in range(len(Dungeon.get_instance().room_array)):
-        for j in range(len(Dungeon.get_instance().room_array[i])):
-            room = Dungeon.get_instance().room_array[i][j]
+    for i in range(len(Maze.get_instance().room_array)):
+        for j in range(len(Maze.get_instance().room_array[i])):
+            room = Maze.get_instance().room_array[i][j]
             x = room.get_location()[0] * mini_room_size
             y = room.get_location()[1] * mini_room_size + 15
 

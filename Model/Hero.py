@@ -1,5 +1,4 @@
 from Model.CharacterInterface import CharacterInterface
-from Model.Direction import Direction
 from abc import ABCMeta, abstractstaticmethod
 
 class Hero(CharacterInterface):
@@ -9,13 +8,14 @@ class Hero(CharacterInterface):
     x = 0
     y = 0
     drank_vision_potion = False
+
     @staticmethod
     def get_instance():
-        """if Hero.__instance is not None:
-            return Hero.__instance
-        else:
-            raise Exception("Hero does not exist yet!")"""
         return Hero.__instance
+
+    @staticmethod
+    def delete_instance():
+        Hero.__instance = None
 
     def __init__(self, name, image, hit_image, dead_image, max_hp, agility, element):
         if Hero.__instance is not None:
@@ -34,13 +34,6 @@ class Hero(CharacterInterface):
         mod = (pre_mod[0] + self.attack_mod, pre_mod[1] + self.damage_mod)
         return mod
 
-    def delete_hero(self):
-        if not Hero.__instance is None:
-            Hero.__instance = None
-        else:
-            pass
-        #del self
-
     def set_attack_mod(self, attack_mod):
         if isinstance(attack_mod, int) and attack_mod > 0:
             self.attack_mod = attack_mod
@@ -52,12 +45,6 @@ class Hero(CharacterInterface):
             self.damage_mod = damage_mod
         else:
             raise ValueError("Damage modifier must be an int and cannot be 0 or negative")
-
-    def set_direction(self, direction):
-        if isinstance(direction, Direction):
-            self.direction = direction
-        else:
-            raise ValueError(f"{direction} is not an Direction.")
 
     def set_x(self, x):
         if isinstance(x, int):

@@ -3,23 +3,22 @@ from Controller import Choose_Hero_Controller, you_win_controller
 from Controller import how_to_play_controller
 from Controller import you_died_controller
 import pygame
-def run(theScreen):
-    pygame.mixer.init()
-    pygame.mixer.music.load("buddy holly 10 12 24.wav")
-    pygame.mixer.music.play(loops=-1)
+pygame.mixer.init()
+pygame.mixer.music.load("buddy holly 10 12 24.wav")
+pygame.mixer.music.play(loops=-1)
+
+
+def run(screen):
     is_running = True
-    screen = theScreen
     while is_running:
-        main_menu_view.setScreen(screen)
-        main_menu_view.screen.fill((234, 165, 108))
-        main_menu_view.draw_scaled_image("dungeonBackground.png", 0, 0, 810, 810)
-        main_menu_view.draw_scaled_image("banner.png", 155, 80, 500, 150)
-        main_menu_view.draw_header("Dungeon Adventure", 197, 120)
-        pygame.display.set_caption("Main Menu")
-        new_game = main_menu_view.draw_button("button.png", "New Game", 300, 300, 210, 50)
-        load_game = main_menu_view.draw_button("button.png", "Load Game", 300, 370, 210, 50)
-        rules = main_menu_view.draw_button("button.png", "How to play", 300, 440, 210, 50)
-        quit_game = main_menu_view.draw_button("button.png", "Quit", 300, 510, 210, 50)
+        screen.fill((234, 165, 108))
+        main_menu_view.draw_scaled_image(screen,"dungeonBackground.png", 0, 0, 810, 810)
+        main_menu_view.draw_scaled_image(screen,"banner.png", 155, 80, 500, 150)
+        main_menu_view.draw_header(screen,"Dungeon Adventure", 197, 120)
+        new_game = main_menu_view.draw_button(screen,"button.png", "New Game", 300, 300, 210, 50)
+        load_game = main_menu_view.draw_button(screen,"button.png", "Load Game", 300, 370, 210, 50)
+        rules = main_menu_view.draw_button(screen,"button.png", "How to play", 300, 440, 210, 50)
+        quit_game = main_menu_view.draw_button(screen,"button.png", "Quit", 300, 510, 210, 50)
 
         if(quit_game):
             is_running = False
@@ -28,8 +27,7 @@ def run(theScreen):
             Choose_Hero_Controller.run(screen)
 
         if(rules):
-            #how_to_play_controller.run()
-            you_win_controller.run(theScreen)
+            how_to_play_controller.run()
 
         if(load_game):
             pass
