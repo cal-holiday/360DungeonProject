@@ -23,6 +23,7 @@ class Dungeon:
         CharacterFactory.create_hero(hero_info[0], hero_info[1])
         Maze(6)
         Inventory()
+
         if from_pickle:
             Hero.get_instance().set_hp(hero_info[2])
             Hero.get_instance().set_x(hero_info[3])

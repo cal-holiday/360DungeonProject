@@ -60,7 +60,7 @@ def run(screen):
     toolbar_rects = dungeon_view.draw_toolbar(screen)
     health_potion_rects, vision_potion_rects = dungeon_view.draw_inventory(screen)
     array = Maze.get_instance().get_array()
-    if Hero.get_instance().get_x == -100:
+    if Hero.get_instance().get_x() == -100 and Hero.get_instance().get_y() == -100:
         empty_rooms = []
         for i in range(len(array)):
             for j in range(len(array[i])):
