@@ -2,7 +2,7 @@ from random import choice
 
 import pygame
 
-from Controller import Battle_Controller, you_win_controller
+from Controller import Battle_Controller, how_to_play_controller, you_win_controller
 from Model.Dungeon import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
@@ -32,6 +32,7 @@ exit_rect = None
 player = None
 array = []
 potion_time = 0
+SCREEN = None
 
 def run(screen):
     global room_rects
@@ -50,8 +51,8 @@ def run(screen):
     global INVENTORY_CLICKED
     global MAP_CLICKED
     global potion_time
-
-    potion_time = 0
+    global SCREEN
+    SCREEN = screen
     pygame.mixer.init()
     pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
     pygame.mixer.music.play(loops=-1)
@@ -67,6 +68,10 @@ def run(screen):
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
     inventory.add(VisionPotion())
+    inventory.add(EncapsulationPillar())
+    inventory.add(InheritancePillar())
+    inventory.add(AbstractionPillar())
+    inventory.add(PolymorphismPillar())
     health_potion_rects, vision_potion_rects = maze_view.draw_inventory(screen)
 
 
@@ -86,12 +91,13 @@ def run(screen):
     Hero.get_instance().set_x(int(x))
     Hero.get_instance().set_y(int(y))
 
+
+
     player = ControllerHero(maze_view.draw_hero(screen))
     INVENTORY_CLICKED = False
 
     while RUN:
         pygame.mixer.unpause()
-        camera_offset_x, camera_offset_y = maze_view.get_camera_offset()
         clock.tick(fps)
         screen.fill(0)
         room_rects = []
@@ -129,7 +135,7 @@ def run(screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 RUN = False
-            handle_event(event, screen)
+            handle_event(event)
 
         pygame.display.update()
     pygame.quit()
@@ -202,12 +208,13 @@ class ControllerHero(pygame.sprite.Sprite):
         return False
 
 
-def handle_event(event, screen):
+def handle_event(event):
     global RUN
     global INVENTORY_CLICKED
     global MAP_CLICKED
     global toolbar_rects
     global potion_time
+    global SCREEN
     room = get_current_room()
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
@@ -238,8 +245,7 @@ def handle_event(event, screen):
         Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
-        you_win_controller.run(screen)
-        print("END Game")
+        you_win_controller.run(SCREEN)
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
         for i in range(len(toolbar_rects)):
@@ -262,7 +268,7 @@ def handle_event(event, screen):
                 elif i == 2:
                     print("Save")
                 elif i == 3:
-                    print("Help")
+                    how_to_play_controller.run()
                 else:
                     RUN = False
             for i in range(len(health_potion_rects)):
