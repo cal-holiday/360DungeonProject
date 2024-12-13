@@ -44,7 +44,7 @@ The healthPotion child class of the Potion ABC
 class HealthPotion(Potion):
     def __init__(self):
         super().__init__("health")
-        self.image = "health_potion.png"
+        self.image = 'health_potion.png'
     def drink(self):
         if Hero.get_instance().get_hp() + 10 > Hero.get_instance().get_max_hp():
             Hero.get_instance().set_hp(Hero.get_instance().get_max_hp())
@@ -61,7 +61,7 @@ the vision potion child class of the Potion ABC
 class VisionPotion(Potion):
     def __init__(self):
         super().__init__("vision")
-        self.image = "vision_potion.png"
+        self.image = 'vision_potion.png'
     def drink(self):
         Hero.get_instance().set_vision_status(True)
     def get_image(self):

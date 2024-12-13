@@ -4,12 +4,14 @@ from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePil
 
 class Inventory:
     __instance = None
+
     @staticmethod
     def get_instance():
-        if Inventory.__instance is not None:
-            return Inventory.__instance
-        else:
-            raise Exception("Inventory does not exist yet!")
+        return Inventory.__instance
+
+    @staticmethod
+    def delete_instance():
+        Inventory.__instance = None
 
     def __init__(self):
         if Inventory.__instance is not None:
@@ -48,13 +50,13 @@ class Inventory:
 
     def drink_health_potion(self):
         if self.has_health_potion():
-            self.health_potions[0].drink()
-            del self.health_potions[0]
+            self.health_potions[-1].drink()
+            self.health_potions.pop()
 
     def drink_vision_potion(self):
         if len(self.vision_potions) > 0:
-            self.vision_potions[0].drink()
-            del self.vision_potions[0]
+            self.vision_potions[-1].drink()
+            self.vision_potions.pop()
 
     def has_all_pillars(self):
         return len(self.pillars) == 4

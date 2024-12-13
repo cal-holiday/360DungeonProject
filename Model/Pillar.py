@@ -13,10 +13,9 @@ class Pillar(ABC):
     @param image for that pillar (GUI)
     @param hero reference so pillars can give hero perks
     """
-    def __init__(self, name):
+    def __init__(self, name, image):
         self.name = name
-        self.image = None
-
+        self.image = image
 
     """
     Setter methods checks that name and image for pillar
@@ -24,19 +23,10 @@ class Pillar(ABC):
     to those values.
     """
 
-    """
-shouldn't need this because I edited constructors for subclasses to pass in name
-
-        def set_name(self, name):
-        if name is not None:
-            self.name = name
-        else:
-            raise ValueError("The name for this pillar is null")
-    """
-
 
     def get_name(self):
         return self.name
+
 
     def get_image(self):
         return self.image
@@ -62,8 +52,7 @@ Abstraction pillar adds +5 damage to basic and special attack
 """
 class AbstractionPillar(Pillar):
     def __init__(self):
-        super().__init__("abstraction")
-        self.image = "abstraction_pillar.png"
+        super().__init__("abstraction", "abstraction_pillar.png")
     def enhance(self):
         self.restore_health()
         Hero.get_instance().set_damage_mod(Hero.get_instance().get_damage_mod() + 5)
@@ -74,8 +63,7 @@ Polymorphism pillar increases hero's max health by 10
 """
 class PolymorphismPillar(Pillar):
     def __init__(self):
-        super().__init__("polymorphism")
-        self.image = "polymorphism_pillar.png"
+        super().__init__("polymorphism", "polymorphism_pillar.png")
     def enhance(self):
         self.restore_health()
         Hero.get_instance().set_max_hp(Hero.get_instance().get_max_hp() + 10)
@@ -86,8 +74,7 @@ Inheritance pillar does +2 hit chance
 """
 class InheritancePillar(Pillar):
     def __init__(self):
-        super().__init__("inheritance")
-        self.image = "inheritance_pillar.png"
+        super().__init__("inheritance", "inheritance_pillar.png")
     def enhance(self):
         self.restore_health()
         Hero.get_instance().set_attack_mod(Hero.get_instance().get_attack_mod() + 2)
@@ -97,8 +84,7 @@ Encapsulation pillar adds +4 to hero's agility stat
 """
 class EncapsulationPillar(Pillar):
     def __init__(self):
-        super().__init__("encapsulation")
-        self.image = "encapsulation_pillar.png"
+        super().__init__("encapsulation", "encapsulation_pillar.png")
     def enhance(self):
         self.restore_health()
         Hero.get_instance().set_agility(Hero.get_instance().get_agility() + 4)
