@@ -1,4 +1,3 @@
-
 from View import how_to_play_view as help_view
 import pygame
 
