@@ -2,7 +2,7 @@ from random import choice
 
 import pygame
 
-from Controller import Battle_Controller, how_to_play_controller, you_win_controller
+from Controller import Battle_Controller, how_to_play_controller, you_win_controller, save_file_controller
 from Model.Dungeon import Dungeon
 from Model.Maze import Maze
 from View import dungeon_view
@@ -242,7 +242,7 @@ def handle_event(screen, event):
                         player.right = False
                         player.left = False
                 elif i == 2:
-                    print("Save")
+                    save_file_controller.run()
                 elif i == 3:
                     how_to_play_controller.run()
                 else:
