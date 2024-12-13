@@ -11,19 +11,19 @@ from View import LoadView
 
 def run(screen):
     isRunning = True
-    file_list = [f for f in os.listdir("LoadGame") if f.endswith(".pickle")]
+    file_list = [f for f in os.listdir('LoadGame') if f.endswith(".pickle")]
     selected_file = None  # To track the selected file
 
     while isRunning:
         # Draw the background and UI
-        LoadView.draw_image(screen, "dungeonBackground.png", 0, 0, 810, 810)
-        LoadView.draw_image(screen, "banner.png", 45, 20, 700, 150)
+        LoadView.draw_image(screen, 'Assets/dungeonBackground.png', 0, 0, 810, 810)
+        LoadView.draw_image(screen, 'Assets/banner.png', 45, 20, 700, 150)
         LoadView.draw_header(screen, "Load Game", 300, 70)
-        save_button = LoadView.draw_button(screen,"buttonSquare_beige.png", "Confirm", 600, 700, 175, 75)
+        save_button = LoadView.draw_button(screen,'Assets/buttonSquare_beige.png', "Confirm", 600, 700, 175, 75)
         # Draw file buttons
         for i, file_name in enumerate(file_list):
             button_clicked = LoadView.draw_button(
-                screen, "button.png", file_name[:-7], 250, 300 + i * 100, 300, 50
+                screen, 'Assets/button.png', file_name[:-7], 250, 300 + i * 100, 300, 50
             )
             if button_clicked:
                 pygame.draw.rect(

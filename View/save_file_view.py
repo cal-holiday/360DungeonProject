@@ -3,7 +3,7 @@ pygame.init()
 
 SCREEN_WIDTH = 810
 SCREEN_HEIGHT = 300
-FONT = "8-bit-pusab.ttf"
+FONT = 'Assets/8-bit-pusab.ttf'
 COLOR = (87,57,46)
 WHITE = (255,255,255)
 

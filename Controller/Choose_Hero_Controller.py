@@ -31,8 +31,8 @@ def run(screen):
     while isRunning:
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI
-        View.draw_image(screen, "dungeonBackground.png", 0, 0, 810, 810)
-        View.draw_image(screen, "banner.png", 45, 20, 700, 150)
+        View.draw_image(screen, 'Assets/dungeonBackground.png', 0, 0, 810, 810)
+        View.draw_image(screen, 'Assets/banner.png', 45, 20, 700, 150)
         View.draw_header(screen, "Choose Your Hero", 90, 50)
 
         # Draw elements only if the confirmation prompt is NOT active
@@ -75,20 +75,20 @@ def run(screen):
                         data["rect"].inflate(10, 10),
                         2
                     )
-                View.draw_button(screen,f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
+                View.draw_button(screen, f'Assets/{hero}_hero.png', "", data["rect"].x, data["rect"].y, data["rect"].width,
                                  data["rect"].height)
 
             # Draw the Confirm button (at new position)
             if confirm_button_visible:
-                View.draw_button(screen,"button.png", "confirm", 302, 450, 200, 50)
+                View.draw_button(screen, 'Assets/button.png', "confirm", 302, 450, 200, 50)
 
         # Draw the confirmation prompt
         if confirmation_prompt:
             pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
             View.draw_text(screen,"Are you sure?", 280, 325)
             # Ensure confirmation prompt buttons have the correct positions
-            View.draw_button(screen,"button.png", "Yes", 250, 400, 100, 50)
-            View.draw_button(screen,"button.png", "No", 450, 400, 100, 50)
+            View.draw_button(screen, 'Assets/button.png', "Yes", 250, 400, 100, 50)
+            View.draw_button(screen, 'Assets/button.png', "No", 450, 400, 100, 50)
 
         # Handle events
         for event in pygame.event.get():
@@ -157,8 +157,8 @@ def run(screen):
                         confirm_button_visible = True
 
             # Draw the background and UI
-            View.draw_image(screen,"dungeonBackground.png", 0, 0, 810, 810)
-            View.draw_image(screen,"banner.png", 45, 20, 700, 150)
+            View.draw_image(screen,'Assets/dungeonBackground.png', 0, 0, 810, 810)
+            View.draw_image(screen,'Assets/banner.png', 45, 20, 700, 150)
             View.draw_header(screen,"Choose Your Hero", 90, 50)
 
             # Draw elements only if the confirmation prompt is NOT active
@@ -197,20 +197,20 @@ def run(screen):
                                 data["rect"].inflate(10, 10),
                                 2
                             )
-                    View.draw_button(screen,f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
+                    View.draw_button(screen, f'Assets/{hero}_hero.png', "", data["rect"].x, data["rect"].y, data["rect"].width,
                                      data["rect"].height)
 
                 # Draw the Confirm button (at new position)
                 if confirm_button_visible:
-                    View.draw_button(screen,"button.png", "confirm", 302, 450, 200, 50)
+                    View.draw_button(screen, 'Assets/button.png', "confirm", 302, 450, 200, 50)
 
             # Draw the confirmation prompt
             if confirmation_prompt:
                 pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
                 View.draw_text(screen,"Are you sure?", 280, 325)
                 # Ensure confirmation prompt buttons have the correct positions
-                View.draw_button(screen,"button.png", "Yes", 250, 400, 100, 50)
-                View.draw_button(screen,"button.png", "No", 450, 400, 100, 50)
+                View.draw_button(screen, 'Assets/button.png', "Yes", 250, 400, 100, 50)
+                View.draw_button(screen, 'Assets/button.png', "No", 450, 400, 100, 50)
 
             # Update the display
             pygame.display.update()

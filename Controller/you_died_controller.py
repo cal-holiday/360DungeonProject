@@ -13,9 +13,9 @@ def run(screen):
         you_died.setScreen(screen)
         you_died.screen.fill((0, 0, 0))
         you_died.draw_text("You Died :(",175,100)
-        new_game = you_died.draw_button("button.png","New Game",300,500,200,75)
-        quit_game = you_died.draw_button("button.png","Quit",300,600,200,75)
-        you_died.draw_rotated_image(hero.get_dead_image(),350,300,100,100,90) #change to hero get instance once its all plugged together
+        new_game = you_died.draw_button('Assets/button.png',"New Game",300,500,200,75)
+        quit_game = you_died.draw_button('Assets/button.png',"Quit",300,600,200,75)
+        you_died.draw_rotated_image("Assets/" + hero.get_dead_image(),350,300,100,100,90) #change to hero get instance once its all plugged together
         Dungeon.delete_instance()
         if (quit_game):
             is_running = False
@@ -24,7 +24,7 @@ def run(screen):
 
         if new_game:
             pygame.mixer.init()
-            pygame.mixer.music.load("buddy holly 10 12 24.wav")
+            pygame.mixer.music.load('Assets/buddy holly 10 12 24.wav')
             pygame.mixer.music.play(loops=-1)
             Choose_Hero_Controller.run(screen)
 

@@ -1,7 +1,7 @@
 import pygame
 pygame.init()
 
-FONT = "8-bit-pusab.ttf"
+FONT = 'Assets/8-bit-pusab.ttf'
 RED = (255,0,0)
 BLACK = (0,0,0)
 

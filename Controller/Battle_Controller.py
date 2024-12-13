@@ -15,7 +15,7 @@ pygame.init()
 
 def run(monster):
     pygame.mixer.init()
-    pygame.mixer.music.load("dean town 10 12 24.wav")
+    pygame.mixer.music.load('Assets/dean town 10 12 24.wav')
     pygame.mixer.music.play(loops=-1)
     screen = pygame.display.set_mode((810, 810))
     isRunning = True
@@ -31,7 +31,7 @@ def run(monster):
     def redraw_screen():
         """Redraw the screen elements."""
         screen.fill((0, 0, 0))
-        View.draw_image("battle_background.jpg", 0, 0, 810, 450)
+        View.draw_image('Assets/battle_background.jpg', 0, 0, 810, 450)
         pygame.draw.rect(screen, (0, 0, 0), black_rect)
         pygame.draw.rect(screen, (255, 255, 255), white_rect, 5)
         View.draw_text(f"Health Potions: {inventory.number_of_health_potions()}", 470, 625)
@@ -40,21 +40,21 @@ def run(monster):
     def redraw_sprites(character, action):
         if action == "hit":
             if isinstance(character, Monster):
-                View.draw_image(monster.get_hit_image(), 400, 330, 90, 90)
-                View.draw_image(hero.get_image(), 75, 330, 90, 90)
+                View.draw_image("Assets/" + monster.get_hit_image(), 400, 330, 90, 90)
+                View.draw_image("Assets/" + hero.get_image(), 75, 330, 90, 90)
             else:
-                View.draw_image(hero.get_hit_image(), 75, 330, 90, 90)
-                View.draw_image(monster.get_image(), 400, 330, 90, 90)
+                View.draw_image("Assets/" + hero.get_hit_image(), 75, 330, 90, 90)
+                View.draw_image("Assets/" + monster.get_image(), 400, 330, 90, 90)
         elif action == "dead":
             if isinstance(character, Monster):
-                View.draw_rotated_image(monster.get_dead_image(), 400, 350, 90, 90,270)
-                View.draw_image(hero.get_image(), 75, 330, 90, 90)
+                View.draw_rotated_image("Assets/" + monster.get_dead_image(), 400, 350, 90, 90,270)
+                View.draw_image("Assets/" + hero.get_image(), 75, 330, 90, 90)
             else:
-                View.draw_rotated_image(hero.get_dead_image(), 75, 350, 90, 90, 90)
-                View.draw_image(monster.get_image(), 400, 330, 90, 90)
+                View.draw_rotated_image("Assets/" + hero.get_dead_image(), 75, 350, 90, 90, 90)
+                View.draw_image("Assets/" + monster.get_image(), 400, 330, 90, 90)
         elif action == "idle":
-            View.draw_image(hero.get_image(), 75, 330, 90, 90)
-            View.draw_image(monster.get_image(), 400, 330, 90, 90)
+            View.draw_image("Assets/" + hero.get_image(), 75, 330, 90, 90)
+            View.draw_image("Assets/" + monster.get_image(), 400, 330, 90, 90)
 
     def update(character, text, damage):
         """Update health bars and display results."""
@@ -86,7 +86,7 @@ def run(monster):
                         if event.type == pygame.QUIT:
                             return False
                         elif event.type == pygame.MOUSEBUTTONDOWN:
-                            claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
+                            claim = View.draw_button('Assets/button.png', "claim", 315, 500, 175, 70)
                             if claim:  # If the claim button was clicked
                                 if monster.has_health_potion():
                                     inventory.add(monster.health_potion)
@@ -96,7 +96,7 @@ def run(monster):
                                     inventory.add(monster.get_pillar())
                                 clicked = True  # Set clicked to True to exit the loop
                                 pygame.mixer.init()
-                                pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+                                pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
                                 pygame.mixer.music.play(loops=-1)
                     pygame.display.update()
             return False
@@ -193,10 +193,10 @@ def run(monster):
         display_health_bars()
         redraw_sprites(hero, "idle")
 
-        View.draw_button("battle_button.png", "Attack", 20, 700, 185, 75)
-        View.draw_button("battle_button.png", "Special", 215, 700, 185, 75)
-        View.draw_button("battle_button.png", "Potion", 410, 700, 185, 75)
-        View.draw_button("battle_button.png", "Skip", 605, 700, 185, 75)
+        View.draw_button('Assets/battle_button.png', "Attack", 20, 700, 185, 75)
+        View.draw_button('Assets/battle_button.png', "Special", 215, 700, 185, 75)
+        View.draw_button('Assets/battle_button.png', "Potion", 410, 700, 185, 75)
+        View.draw_button('Assets/battle_button.png', "Skip", 605, 700, 185, 75)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -231,7 +231,7 @@ def run(monster):
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
                     pygame.mixer.init()
-                    pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+                    pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
                     pygame.mixer.music.play(loops=-1)
 
         pygame.display.update()

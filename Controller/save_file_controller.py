@@ -14,12 +14,12 @@ def run():
     while is_running:
 
         # Images
-        View.draw_scaled_image("panel.png", 0, 0, View.SCREEN_WIDTH, View.SCREEN_HEIGHT)
+        View.draw_scaled_image('Assets/panel.png', 0, 0, View.SCREEN_WIDTH, View.SCREEN_HEIGHT)
         save_file = View.draw_text_field(75, 155, 450, 75, "Save File Name", active, input_text)
 
         View.draw_header("Save Game", 162, 75)
-        save_button = View.draw_button("buttonSquare_beige.png", "save", 575, 155, 150, 75)
-        exit_button = View.draw_button("buttonSquare_beige.png", "x", 710, 40, 50, 50)
+        save_button = View.draw_button('Assets/buttonSquare_beige.png', "save", 575, 155, 150, 75)
+        exit_button = View.draw_button('Assets/buttonSquare_beige.png', "x", 710, 40, 50, 50)
 
 
         if save_button:

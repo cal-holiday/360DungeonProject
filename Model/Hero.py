@@ -5,8 +5,8 @@ class Hero(CharacterInterface):
     __instance = None
     damage_mod = 0
     attack_mod = 0
-    x = -100
-    y = -100
+    x = 0
+    y = 0
     drank_vision_potion = False
 
     @staticmethod

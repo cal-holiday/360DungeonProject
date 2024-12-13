@@ -12,42 +12,41 @@ from Model.Inventory import Inventory
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
 EXIT_DUNGEON = pygame.USEREVENT + 3
-POTION_REMOVED = False
-MONSTER_DEFEATED = False
-INVENTORY_CLICKED = False
-MAP_CLICKED = False
-RUN = True
-room_rects = []
-monster_rect = []
-potion_rect = []
-toolbar_rects = []
-health_potion_rects = []
-vision_potion_rects = []
-exit_rect = None
-player = None
-array = []
-potion_time = 0
+_potion_removed = False
+_monster_defeated = False
+_inventory_clicked = False
+_map_clicked = False
+_run = True
+_room_rects = []
+_monster_rect = []
+_potion_rect = []
+_toolbar_rects = []
+_health_potion_rects = []
+_vision_potion_rects = []
+_exit_rect = None
+_player = None
+_array = []
+_potion_time = 0
 
 def run(screen):
-    global room_rects
-    global monster_rect
-    global exit_rect
-    global player
-    global array
-    global toolbar_rects
+    global _monster_rect
+    global _exit_rect
+    global _player
+    global _array
+    global _toolbar_rects
     global GET_POTION
     global MONSTER_BATTLE
     global EXIT_DUNGEON
-    global RUN
-    global potion_rect
-    global health_potion_rects
-    global vision_potion_rects
-    global INVENTORY_CLICKED
-    global MAP_CLICKED
-    global potion_time
-    potion_time = 0
+    global _run
+    global _potion_rect
+    global _health_potion_rects
+    global _vision_potion_rects
+    global _inventory_clicked
+    global _map_clicked
+    global _potion_time
+    _potion_time = 0
     pygame.mixer.init()
-    pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
+    pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
     pygame.mixer.music.play(loops=-1)
     clock = pygame.time.Clock()
     fps = 60
@@ -57,63 +56,65 @@ def run(screen):
 
     dungeon_view.set_up(screen)
 
-    toolbar_rects = dungeon_view.draw_toolbar(screen)
-    health_potion_rects, vision_potion_rects = dungeon_view.draw_inventory(screen)
-    array = Maze.get_instance().get_array()
+    _toolbar_rects = dungeon_view.draw_toolbar(screen)
+    _health_potion_rects, _vision_potion_rects = dungeon_view.draw_inventory(screen)
+    _array = Maze.get_instance().get_array()
     if Hero.get_instance().get_x() == -100 and Hero.get_instance().get_y() == -100:
         empty_rooms = []
-        for i in range(len(array)):
-            for j in range(len(array[i])):
-                if array[i][j].get_monster() is None and array[i][j].get_potion() is None:
-                        empty_rooms.append(array[i][j])
+        for i in range(len(_array)):
+            for j in range(len(_array[i])):
+                if _array[i][j].get_monster() is None and _array[i][j].get_potion() is None:
+                        empty_rooms.append(_array[i][j])
         hero_room = choice(empty_rooms)
         x = hero_room.get_location()[0] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
         y = hero_room.get_location()[1] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
         Hero.get_instance().set_x(int(x))
         Hero.get_instance().set_y(int(y))
     print(Hero.get_instance().get_x(), Hero.get_instance().get_y())
-    player = ControllerHero(dungeon_view.draw_hero(screen))
-    INVENTORY_CLICKED = False
+    _player = ControllerHero(dungeon_view.draw_hero(screen))
+    _player.rect.topleft = (Hero.get_instance().get_x() - dungeon_view.get_camera_offset()[0],
+                            Hero.get_instance().get_y() - dungeon_view.get_camera_offset()[1])
+    _inventory_clicked = False
 
-    while RUN:
+    while _run:
         pygame.mixer.unpause()
         clock.tick(fps)
         screen.fill(0)
         room_rects = []
-        monster_rect = []
-        potion_rect = []
-        exit_rect = None
-        for i in range(len(array)):
-            for j in range(len(array[i])):
-                room_rects.append(dungeon_view.draw_room(screen,array[i][j]))
-                possible_monster = dungeon_view.draw_monster(screen, array[i][j])
+        _monster_rect = []
+        _potion_rect = []
+        _exit_rect = None
+        for i in range(len(_array)):
+            for j in range(len(_array[i])):
+                room_rects.append(dungeon_view.draw_room(screen, _array[i][j]))
+                possible_monster = dungeon_view.draw_monster(screen, _array[i][j])
                 if not possible_monster is None:
-                    monster_rect.append(possible_monster)
-                possible_potion = dungeon_view.draw_potion(screen, array[i][j])
+                    _monster_rect.append(possible_monster)
+                possible_potion = dungeon_view.draw_potion(screen, _array[i][j])
                 if not possible_potion is None:
-                    potion_rect.append(possible_potion)
-                possible_exit = dungeon_view.draw_exit(screen, array[i][j])
+                    _potion_rect.append(possible_potion)
+                possible_exit = dungeon_view.draw_exit(screen, _array[i][j])
                 if not possible_exit is None:
-                    exit_rect = possible_exit
+                    _exit_rect = possible_exit
 
-        player.move()
+        _player.move()
         dungeon_view.draw_hero(screen)
-        if potion_time == 0:
+        if _potion_time == 0:
             dungeon_view.draw_vision(screen)
         else:
-            potion_time -= 1
+            _potion_time -= 1
 
 
-        if INVENTORY_CLICKED:
+        if _inventory_clicked:
             dungeon_view.draw_inventory(screen)
-            health_potion_rects, vision_potion_rects = dungeon_view.draw_inventory(screen)
-        if MAP_CLICKED:
+            _health_potion_rects, _vision_potion_rects = dungeon_view.draw_inventory(screen)
+        if _map_clicked:
             dungeon_view.draw_mini_map(screen)
 
-        toolbar_rects = dungeon_view.draw_toolbar(screen)
+        _toolbar_rects = dungeon_view.draw_toolbar(screen)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                RUN = False
+                _run = False
             handle_event(screen, event)
 
         pygame.display.update()
@@ -134,15 +135,15 @@ class ControllerHero(pygame.sprite.Sprite):
         hero_x = Hero.get_instance().get_x()
         hero_y = Hero.get_instance().get_y()
 
-        for rect in potion_rect:
+        for rect in _potion_rect:
             if self.rect.colliderect(rect):
                 pygame.event.post(pygame.event.Event(GET_POTION))
                 break
-        for rect in monster_rect:
+        for rect in _monster_rect:
             if self.rect.colliderect(rect):
                 pygame.event.post(pygame.event.Event(MONSTER_BATTLE))
                 break
-        if exit_rect is not None and self.rect.colliderect(exit_rect):
+        if _exit_rect is not None and self.rect.colliderect(_exit_rect):
             pygame.event.post(pygame.event.Event(EXIT_DUNGEON))
         if self.down and not self.collide_down():
             Hero.get_instance().set_y(hero_y + 5)
@@ -155,28 +156,28 @@ class ControllerHero(pygame.sprite.Sprite):
         self.rect.topleft = (Hero.get_instance().get_x() - dungeon_view.get_camera_offset()[0], Hero.get_instance().get_y() - dungeon_view.get_camera_offset()[1])
 
     def collide_down(self):
-        for rect_list in room_rects:
+        for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
                     return True
         return False
 
     def collide_up(self):
-        for rect_list in room_rects:
+        for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.top >= rect.bottom - 5:
                     return True
         return False
 
     def collide_right(self):
-        for rect_list in room_rects:
+        for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
                     return True
         return False
 
     def collide_left(self):
-        for rect_list in room_rects:
+        for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.left >= rect.right - 5:
                     return True
@@ -184,77 +185,77 @@ class ControllerHero(pygame.sprite.Sprite):
 
 
 def handle_event(screen, event):
-    global RUN
-    global INVENTORY_CLICKED
-    global MAP_CLICKED
-    global toolbar_rects
-    global potion_time
+    global _run
+    global _inventory_clicked
+    global _map_clicked
+    global _toolbar_rects
+    global _potion_time
     room = get_current_room()
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
-            player.down = True
+            _player.down = True
         if event.key == pygame.K_w:
-            player.up = True
+            _player.up = True
         if event.key == pygame.K_d:
-            player.right = True
+            _player.right = True
         if event.key == pygame.K_a:
-            player.left = True
+            _player.left = True
     if event.type == pygame.KEYUP:
         if event.key == pygame.K_s:
-            player.down = False
+            _player.down = False
         if event.key == pygame.K_w:
-            player.up = False
+            _player.up = False
         if event.key == pygame.K_d:
-            player.right = False
+            _player.right = False
         if event.key == pygame.K_a:
-            player.left = False
+            _player.left = False
     if event.type == GET_POTION:
         Inventory.get_instance().add(room.get_potion())
         room.set_potion(None)
     if event.type == MONSTER_BATTLE:
-        player.down = False
-        player.up = False
-        player.right = False
-        player.left = False
+        _player.down = False
+        _player.up = False
+        _player.right = False
+        _player.left = False
         Battle_Controller.run(room.get_monster())
         room.set_monster(None)
     if event.type == EXIT_DUNGEON:
         you_win_controller.run(screen)
     if event.type == pygame.MOUSEBUTTONDOWN:
         # Check if a hero is clicked
-        for i in range(len(toolbar_rects)):
-            if toolbar_rects[i].collidepoint(event.pos):
+        for i in range(len(_toolbar_rects)):
+            if _toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
-                    if INVENTORY_CLICKED:
-                        INVENTORY_CLICKED = False
+                    if _inventory_clicked:
+                        _inventory_clicked = False
                     else:
-                        INVENTORY_CLICKED = True
+                        _inventory_clicked = True
 
                 elif i == 1:
-                    if MAP_CLICKED:
-                        MAP_CLICKED = False
+                    if _map_clicked:
+                        _map_clicked = False
                     else:
-                        MAP_CLICKED = True
-                        player.down = False
-                        player.up = False
-                        player.right = False
-                        player.left = False
+                        _map_clicked = True
+                        _player.down = False
+                        _player.up = False
+                        _player.right = False
+                        _player.left = False
                 elif i == 2:
                     save_file_controller.run()
                 elif i == 3:
                     how_to_play_controller.run()
                 else:
-                    RUN = False
-            for i in range(len(health_potion_rects)):
-                if health_potion_rects[i].collidepoint(event.pos):
+                    _run = False
+            for i in range(len(_health_potion_rects)):
+                if _health_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_health_potion()
-                    health_potion_rects.pop(i)
+                    _health_potion_rects.pop(i)
                     break
-            for i in range(len(vision_potion_rects)):
-                if vision_potion_rects[i].collidepoint(event.pos):
+            for i in range(len(_vision_potion_rects)):
+                if _vision_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_vision_potion()
-                    potion_time = 600
-                    vision_potion_rects.pop(i)
+                    _potion_time = 600
+                    _vision_potion_rects.pop(i)
                     break
 
 def get_current_room():
@@ -262,5 +263,5 @@ def get_current_room():
     y = Hero.get_instance().get_y()
     room_x = x//dungeon_view.ROOM_SIZE
     room_y = y//dungeon_view.ROOM_SIZE
-    array[room_x][room_y].set_hero_has_visited(True)
-    return array[room_x][room_y]
+    _array[room_x][room_y].set_hero_has_visited(True)
+    return _array[room_x][room_y]

@@ -1,9 +1,9 @@
 import pygame
 pygame.init()
 
-FONT = "8-bit-pusab.ttf"
+FONT = 'Assets/8-bit-pusab.ttf'
 COLOR = (118,59,54)
-pygame.display.set_caption("Main Menu")
+pygame.display.set_caption("Load Game")
 header_font = pygame.font.Font(FONT, 25)
 font = pygame.font.Font(FONT, 20)
 

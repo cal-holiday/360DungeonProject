@@ -10,11 +10,11 @@ def run():
 
 
         #images
-        help_view.draw_scaled_image("panel.png",0,0,help_view.SCREEN_WIDTH,help_view.SCREEN_HEIGHT)
-        help_view.draw_button("buttonSquare_beige.png","w", 500, 420, 75, 75)
-        help_view.draw_button("buttonSquare_beige.png","s",500, 500, 75, 75)
-        help_view.draw_button("buttonSquare_beige.png", "a", 420, 500, 75, 75)
-        help_view.draw_button("buttonSquare_beige.png", "d", 580, 500, 75, 75)
+        help_view.draw_scaled_image('Assets/panel.png',0,0,help_view.SCREEN_WIDTH,help_view.SCREEN_HEIGHT)
+        help_view.draw_button('Assets/buttonSquare_beige.png',"w", 500, 420, 75, 75)
+        help_view.draw_button('Assets/buttonSquare_beige.png',"s",500, 500, 75, 75)
+        help_view.draw_button('Assets/buttonSquare_beige.png', "a", 420, 500, 75, 75)
+        help_view.draw_button('Assets/buttonSquare_beige.png', "d", 580, 500, 75, 75)
 
         #texts
         help_view.draw_header("HOW TO PLAY", 50, 50)
@@ -31,7 +31,7 @@ def run():
 
 
 
-        exit_button = help_view.draw_button("buttonSquare_beige.png","x",710,50,50,50)
+        exit_button = help_view.draw_button('Assets/buttonSquare_beige.png',"x",710,50,50,50)
 
         if exit_button:
             is_running = False
