@@ -12,7 +12,7 @@ class TestRoom(unittest.TestCase):
         # Create instances of dependencies for the Room
         self.monster = CharacterFactory.create_monster(Element.WATER)
         self.potion = HealthPotion()  # Using HealthPotion for simplicity
-        self.location = [1][1]
+        self.location = (1,1)
 
         # Initialize a Room instance
         self.room = Room(True, True, True, True, self.location, self.potion, self.monster)
@@ -23,7 +23,7 @@ class TestRoom(unittest.TestCase):
         self.assertTrue(self.room.get_swall())
         self.assertTrue(self.room.get_ewall())
         self.assertTrue(self.room.get_wwall())
-        self.assertEqual(self.room.get_location(), [1][1])
+        self.assertEqual(self.room.get_location(), (1,1))
         self.assertEqual(self.room.get_potion(), self.potion)
         self.assertEqual(self.room.get_monster(), self.monster)
         self.assertFalse(self.room.get_has_visited())

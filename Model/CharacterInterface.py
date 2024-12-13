@@ -5,6 +5,11 @@ import pygame
 from Model.Element import Element
 from random import randint
 
+"""
+Character Interface for all state and behavior that
+both heroes and monsters have such as attacks, HP, images,
+agility, etc.
+"""
 
 class CharacterInterface(ABC):
     """
@@ -22,6 +27,8 @@ class CharacterInterface(ABC):
     
     @param name of the character
     @param image for the character (GUI)
+    @param hit image for character (Battle GUI)
+    @param dead image for character (Battle GUI)
     @param max hit points(hp) the character can have
     @param agility score of the character, determines if an attack hits
     @param element of the character, enumerated element type
@@ -37,9 +44,8 @@ class CharacterInterface(ABC):
 
 
     """
-    Setter methods checks that name and image for the character
-    is not null and then sets fields for character object
-    to those values.
+    Checks that name string is not null
+    @param name
     """
     def set_name(self, name):
         if name is not None:
@@ -47,6 +53,9 @@ class CharacterInterface(ABC):
         else:
             print("Name string is null")
 
+    """
+    
+    """
     def set_image(self, image):
         if image is not None:
             self.image = image
