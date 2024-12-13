@@ -1,18 +1,24 @@
 import pygame
 
 from Controller import DungeonController
-from Model.CharacterFactory import CharacterFactory
 from Model.Dungeon import Dungeon
 from Model.Element import Element
 from View import ChooseHeroView as View
 
+"""
+A method for running the choose character screen.
 
+@param the pygame screen being passed into each controller window
+"""
 def run(screen):
+
+    # Initialize pygame items
     isRunning = True
     clock = pygame.time.Clock()
     hero_name = ""
     text_field_active = False
     text_field_rect = pygame.Rect(200, 180, 400, 50)
+
     # Hero button definitions
     heroes = {
         "fire": {"rect": pygame.Rect(150, 675, 100, 100), "element": "Fire", "health": "60", "agility": "12"},
@@ -28,6 +34,8 @@ def run(screen):
     confirmation_prompt = False
     # Confirmation state
     confirmation_result = False
+
+    #main game loop
     while isRunning:
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI

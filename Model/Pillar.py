@@ -23,16 +23,6 @@ class Pillar(ABC):
     to those values.
     """
 
-    """
-shouldn't need this because I edited constructors for subclasses to pass in name
-
-        def set_name(self, name):
-        if name is not None:
-            self.name = name
-        else:
-            raise ValueError("The name for this pillar is null")
-    """
-
 
     def get_name(self):
         return self.name

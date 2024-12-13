@@ -1,53 +1,75 @@
 from random import choice
-
 import pygame
 
 from Controller import BattleController, HowToPlayController, YouWinController, SaveFileController
-from Model.Maze import Maze
-from View import DungeonView
 from Model.Hero import Hero
 from Model.Inventory import Inventory
+from Model.Maze import Maze
+from View import DungeonView
 
+# Declare new pygame events
+EXIT_DUNGEON = pygame.USEREVENT + 3
 GET_POTION = pygame.USEREVENT + 1
 MONSTER_BATTLE = pygame.USEREVENT + 2
-EXIT_DUNGEON = pygame.USEREVENT + 3
-_potion_removed = False
-_monster_defeated = False
+
+
+# Declare file variables
+
 _inventory_clicked = False
 _map_clicked = False
+_monster_defeated = False
+_potion_removed = False
 _run = True
-_room_rects = []
-_monster_rect = []
-_potion_rect = []
-_toolbar_rects = []
-_health_potion_rects = []
-_vision_potion_rects = []
-_exit_rect = None
-_player = None
-_array = []
+
 _potion_time = 0
 
+_array = []
+_exit_rect = None
+_health_potion_rects = []
+_monster_rect = []
+_potion_rect = []
+_room_rects = []
+_toolbar_rects = []
+_vision_potion_rects = []
+
+_player = None
+
+
+"""
+A method to run the dungeon screen.
+
+@param screen the pygame screen being passed into controller files
+"""
 def run(screen):
-    global _monster_rect
-    global _exit_rect
-    global _room_rects
-    global _player
-    global _array
-    global _toolbar_rects
+    global EXIT_DUNGEON
     global GET_POTION
     global MONSTER_BATTLE
-    global EXIT_DUNGEON
-    global _run
-    global _potion_rect
-    global _health_potion_rects
-    global _vision_potion_rects
+
     global _inventory_clicked
     global _map_clicked
+    global _run
+
     global _potion_time
+
+    global _array
+    global _exit_rect
+    global _health_potion_rects
+    global _monster_rect
+    global _potion_rect
+    global _room_rects
+    global _toolbar_rects
+    global _vision_potion_rects
+
+    global _player
+
     _potion_time = 0
+
+    # Start dungeon music
     pygame.mixer.init()
     pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
     pygame.mixer.music.play(loops=-1)
+
+    # Initialize pygame items
     clock = pygame.time.Clock()
     fps = 60
     GET_POTION = pygame.USEREVENT + 1
@@ -59,6 +81,11 @@ def run(screen):
     _toolbar_rects = DungeonView.draw_toolbar(screen)
     _health_potion_rects, _vision_potion_rects = DungeonView.draw_inventory(screen)
     _array = Maze.get_instance().get_array()
+
+    """
+    A Hero not coming from a pickled file will be placed in a random empty room. 
+    Newly generated Heroes start at -100,-100 to avoid immediate collisions.
+    """
     if Hero.get_instance().get_x() == -100 and Hero.get_instance().get_y() == -100:
         empty_rooms = []
         for i in range(len(_array)):
@@ -70,20 +97,24 @@ def run(screen):
         y = hero_room.get_location()[1] * DungeonView.ROOM_SIZE + DungeonView.ROOM_SIZE * .5
         Hero.get_instance().set_x(int(x))
         Hero.get_instance().set_y(int(y))
-    print(Hero.get_instance().get_x(), Hero.get_instance().get_y())
+
     _player = ControllerHero(DungeonView.draw_hero(screen))
     _player.rect.topleft = (Hero.get_instance().get_x() - DungeonView.get_camera_offset()[0],
                             Hero.get_instance().get_y() - DungeonView.get_camera_offset()[1])
-    _inventory_clicked = False
-
+    # main game loop
     while _run:
-        pygame.mixer.unpause()
+
+        # Initialize pygem fps and screen fill
         clock.tick(fps)
         screen.fill(0)
+
+        # Empty the collision lists so they are updated with each redraw
         _room_rects = []
         _monster_rect = []
         _potion_rect = []
         _exit_rect = None
+
+        # Add necessary rectangles for collisions in each room
         for i in range(len(_array)):
             for j in range(len(_array[i])):
                 _room_rects.append(DungeonView.draw_room(screen, _array[i][j]))
@@ -97,21 +128,29 @@ def run(screen):
                 if not possible_exit is None:
                     _exit_rect = possible_exit
 
+        # Update player based on input
         _player.move()
         DungeonView.draw_hero(screen)
+
+        # Add the vision screen unless a vision potion has been used
         if _potion_time == 0:
             DungeonView.draw_vision(screen)
         else:
             _potion_time -= 1
 
-
+        # Open inventory
         if _inventory_clicked:
             DungeonView.draw_inventory(screen)
             _health_potion_rects, _vision_potion_rects = DungeonView.draw_inventory(screen)
+
+        # Open Map
         if _map_clicked:
             DungeonView.draw_mini_map(screen)
 
+        # Draw the toolbar over the dungeon and vision screen
         _toolbar_rects = DungeonView.draw_toolbar(screen)
+
+        # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 _run = False
@@ -119,18 +158,31 @@ def run(screen):
 
         pygame.display.update()
     pygame.quit()
+
+"""
+An internal class to handle the Hero's interactions in the maze. Extends pygame Sprite
+"""
 class ControllerHero(pygame.sprite.Sprite):
+
+    """ Keep track of the direction the player is going, allows for diagonal movement"""
     left = False
     right = False
     up = False
     down = False
 
+    """ 
+    Constructor for making a new controller hero
+    
+    @param rect the rect that is generated by drawing the hero in view
+    """
     def __init__(self, rect):
         pygame.sprite.Sprite.__init__(self)
         self.rect = rect
         self.rect.topleft = (Hero.get_instance().get_x(), Hero.get_instance().get_y())
 
-
+    """
+    Handles the player's movements by checking for collisions.
+    """
     def move(self):
         hero_x = Hero.get_instance().get_x()
         hero_y = Hero.get_instance().get_y()
@@ -155,13 +207,20 @@ class ControllerHero(pygame.sprite.Sprite):
             Hero.get_instance().set_x(hero_x - 5)
         self.rect.topleft = (Hero.get_instance().get_x() - DungeonView.get_camera_offset()[0], Hero.get_instance().get_y() - DungeonView.get_camera_offset()[1])
 
+    """
+    Checks for collisions below the character if the character is trying to move down.
+    Returns true of there is a collision.
+    """
     def collide_down(self):
         for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.bottom <= rect.top + 5:
                     return True
         return False
-
+    """
+    Checks for collisions above the character if the character is trying to move up.
+    Returns true of there is a collision.
+    """
     def collide_up(self):
         for rect_list in _room_rects:
             for rect in rect_list:
@@ -169,13 +228,20 @@ class ControllerHero(pygame.sprite.Sprite):
                     return True
         return False
 
+    """
+    Checks for collisions to the right of the character if the character is trying to move right.
+    Returns true of there is a collision.
+    """
     def collide_right(self):
         for rect_list in _room_rects:
             for rect in rect_list:
                 if self.rect.colliderect(rect) and self.rect.right <= rect.left + 5:
                     return True
         return False
-
+    """
+    Checks for collisions to the left of the character if the character is trying to move left.
+    Returns true of there is a collision.
+    """
     def collide_left(self):
         for rect_list in _room_rects:
             for rect in rect_list:
@@ -183,7 +249,12 @@ class ControllerHero(pygame.sprite.Sprite):
                     return True
         return False
 
+"""
+Event handler for various keyboard and mouse click events
 
+@param screen the pygame screen which is needed for some events
+@param event the type of event that has occurred
+"""
 def handle_event(screen, event):
     global _run
     global _inventory_clicked
