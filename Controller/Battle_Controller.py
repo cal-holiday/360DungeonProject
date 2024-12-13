@@ -88,7 +88,6 @@ def run(monster):
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                             claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
                             if claim:  # If the claim button was clicked
-                                print("Claim button clicked")
                                 if monster.has_health_potion():
                                     inventory.add(monster.health_potion)
                                 if monster.has_vision_potion():

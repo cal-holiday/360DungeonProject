@@ -11,39 +11,29 @@ from View import Choose_Hero_View as View, LoadView
 
 def run(screen):
     isRunning = True
-    clock = pygame.time.Clock()
     file_list = [f for f in os.listdir("LoadGame") if f.endswith(".pickle")]
     selected_file = None  # To track the selected file
-    dungeon_list = None  # To store loaded dungeon data
 
     while isRunning:
-
         # Draw the background and UI
         View.draw_image(screen, "dungeonBackground.png", 0, 0, 810, 810)
         View.draw_image(screen, "banner.png", 45, 20, 700, 150)
         View.draw_header(screen, "Load Game", 225, 50)
-
         # Draw file buttons
-        button_list = []
         for i, file_name in enumerate(file_list):
             button_clicked = LoadView.draw_button(
                 screen, "button.png", file_name[:-7], 250, 300 + i * 100, 300, 50
             )
-            button_list.append(button_clicked)
             if button_clicked:
-                selected_file = file_name  # Save the selected file
-
-        # Draw the Confirm button
-        confirm_click = False
-        if selected_file:
-            confirm_click = View.draw_button(screen, "button.png", "confirm", 600, 700, 200, 50)
+                selected_file = file_name
 
         # Handle confirm click
-        if confirm_click and selected_file:
-            dungeon_list = SaveLoad.load_game(selected_file[:-7])  # Load the dungeon data
-            if dungeon_list:  # Ensure the data is valid
+        if selected_file:
+            if View.draw_button(screen, "button.png", "confirm", 600, 700, 200, 50):
+                dungeon_list = SaveLoad.load_game(selected_file[:-7])  # Load the dungeon data
                 Dungeon(True, dungeon_list[0], dungeon_list[1], dungeon_list[2])
                 dungeon_controller.run(screen)
+                isRunning = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -51,4 +41,3 @@ def run(screen):
                 exit()
 
         pygame.display.update()
-        clock.tick(30)  # Limit to 30 FPS

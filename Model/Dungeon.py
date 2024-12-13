@@ -25,16 +25,18 @@ class Dungeon:
         Inventory()
 
         if from_pickle:
-            Hero.get_instance().set_hp(hero_info[2])
-            Hero.get_instance().set_x(hero_info[3])
-            Hero.get_instance().set_y(hero_info[4])
+            Hero.get_instance().set_max_hp(hero_info[2])
+            Hero.get_instance().set_hp(hero_info[3])
+            Hero.get_instance().set_x(hero_info[4])
+            Hero.get_instance().set_y(hero_info[5])
             Maze.get_instance().set_array(maze_info[0])
             for item in inventory_info:
                 Inventory.get_instance().add(item)
         Dungeon.__instance = self
     @staticmethod
     def pickle_dungeon():
-        hero_info = [Hero.get_instance().get_name(), Hero.get_instance().get_element(), Hero.get_instance().get_hp(),
+        hero_info = [Hero.get_instance().get_name(), Hero.get_instance().get_element(), Hero.get_instance().get_max_hp(),
+                     Hero.get_instance().get_hp(),
                      Hero.get_instance().get_x(), Hero.get_instance().get_y()]
         maze_info = [Maze.get_instance().get_array()]
         inventory_info = []
