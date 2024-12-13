@@ -3,12 +3,14 @@ import os
 
 from Controller import DungeonController
 from Controller.SaveLoad import SaveLoad
-from Model.CharacterFactory import CharacterFactory
 from Model.Dungeon import Dungeon
-from Model.Element import Element
 from View import LoadView
 
+"""
+A method for displaying the load screen from the main menu.
 
+@param screen the pygame screen being passed around by the controllers. 
+"""
 def run(screen):
     isRunning = True
     file_list = [f for f in os.listdir('LoadGame') if f.endswith(".pickle")]

@@ -262,6 +262,8 @@ def handle_event(screen, event):
     global _toolbar_rects
     global _potion_time
     room = get_current_room()
+
+    #Check for directional movements using 'awsd' keys
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_s:
             _player.down = True
@@ -280,9 +282,13 @@ def handle_event(screen, event):
             _player.right = False
         if event.key == pygame.K_a:
             _player.left = False
+
+    #Check if new potion was acquired
     if event.type == GET_POTION:
         Inventory.get_instance().add(room.get_potion())
         room.set_potion(None)
+
+    #Check if collided with a monster
     if event.type == MONSTER_BATTLE:
         _player.down = False
         _player.up = False
@@ -290,10 +296,13 @@ def handle_event(screen, event):
         _player.left = False
         BattleController.run(room.get_monster())
         room.set_monster(None)
+
+    #Check if found the exit
     if event.type == EXIT_DUNGEON:
         YouWinController.run(screen)
+
+    #Check if the mouse was used to click on items in the toolbar
     if event.type == pygame.MOUSEBUTTONDOWN:
-        # Check if a hero is clicked
         for i in range(len(_toolbar_rects)):
             if _toolbar_rects[i].collidepoint(event.pos):
                 if i == 0:
@@ -317,6 +326,7 @@ def handle_event(screen, event):
                     HowToPlayController.run()
                 else:
                     _run = False
+            # If inventory is open, check for potion actions
             for i in range(len(_health_potion_rects)):
                 if _health_potion_rects[i].collidepoint(event.pos):
                     Inventory.get_instance().drink_health_potion()
@@ -328,7 +338,10 @@ def handle_event(screen, event):
                     _potion_time = 600
                     _vision_potion_rects.pop(i)
                     break
-
+"""
+Uses the Hero's coordinates to calculate where in the Room array the Hero currently is.
+Returns the Room and marks it has visited by the Hero.
+"""
 def get_current_room():
     x = Hero.get_instance().get_x()
     y = Hero.get_instance().get_y()
