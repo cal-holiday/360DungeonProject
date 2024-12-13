@@ -65,6 +65,7 @@ def draw_button(img, text, x, y, width, height):
     return False
 
 
+
 def reward_text(text, x, y):
     img = reward_font.render(text, True, (101, 67, 33))
     screen.blit(img, (x, y))

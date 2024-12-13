@@ -37,6 +37,7 @@ shouldn't need this because I edited constructors for subclasses to pass in name
     def get_name(self):
         return self.name
 
+
     def get_image(self):
         return self.image
 
