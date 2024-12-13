@@ -3,7 +3,9 @@ import pygame
 
 pygame.init()
 Clock = pygame.time.Clock()
-
+"""
+A method for displaying the help screen in the main menu and in the dungeon.
+"""
 def run():
     is_running = True
     while is_running:
