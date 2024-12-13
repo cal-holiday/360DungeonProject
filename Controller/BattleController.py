@@ -24,7 +24,7 @@ def run(monster):
 
     # Pygame set up
     screen = pygame.display.set_mode((810, 810))
-    isRunning = True
+    is_running = True
     clock = pygame.time.Clock()
     hero = Hero.get_instance()
     inventory = Inventory.get_instance()
@@ -181,7 +181,7 @@ def run(monster):
                 return update(hero, f"{monster.get_name()} missed!", 0)
         else:
             healed = monster.heal()
-            if healed == False:
+            if not healed:
                 result = monster.attack()
                 if result[0] > hero.get_agility():
                     return update(hero, f"{monster.get_name()} dealt {result[1]} damage!", -result[1])
@@ -217,7 +217,7 @@ def run(monster):
             return update(monster, f"{hero.get_name()} used a health potion!", 0)
 
     """ Main game loop"""
-    while isRunning and in_battle:
+    while is_running and in_battle:
         redraw_screen()
         display_health_bars()
         redraw_sprites(hero, "idle")
@@ -230,7 +230,7 @@ def run(monster):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                isRunning = False
+                is_running = False
                 pygame.mixer.music.stop()
                 pygame.quit()
                 exit()
@@ -260,7 +260,7 @@ def run(monster):
                         View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
-                    isRunning = False
+                    is_running = False
                     if monster.has_health_potion():
                         inventory.add(monster.health_potion)
                     if monster.has_vision_potion():

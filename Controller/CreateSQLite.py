@@ -2,6 +2,7 @@ import sqlite3
 from Model.Element import Element
 con = sqlite3.connect("character.db")
 cur = con.cursor()
+# Create monster table
 cur.execute("CREATE TABLE IF NOT EXISTS monster(name, image, hit_image, dead_image, element UNIQUE, max_health, agility)")
 data = [
     ('Earth Monster', 'earth_monster.png', 'earth_monster_hit.png','earth_monster_dead.png',Element.EARTH.value, 50, 4),
@@ -11,6 +12,7 @@ data = [
 ]
 cur.executemany("INSERT INTO monster VALUES(?, ?, ? ,?, ?, ?, ?)", data)
 con.commit()
+# Create Hero table
 cur.execute("CREATE TABLE IF NOT EXISTS hero(image, hit_image, dead_image, element UNIQUE, max_health, agility)")
 data = [
     ('earth_hero.png', 'earth_hero_hit.png','earth_hero_dead.png',Element.EARTH.value, 100, 4),

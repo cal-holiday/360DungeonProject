@@ -3,25 +3,31 @@ from Model.Dungeon import Dungeon
 from View import SaveFileView as View
 import pygame
 
+#initialize pygame
 pygame.init()
 Clock = pygame.time.Clock()
 
+"""
+A method for displaying the save file screen in the dungeon.
+"""
 def run():
     is_running = True
     input_text = ""  # Variable to store the text input
     active = False
 
     while is_running:
-
-        # Images
+        # Draw the panel
         View.draw_scaled_image('Assets/panel.png', 0, 0, View.SCREEN_WIDTH, View.SCREEN_HEIGHT)
+        View.draw_header("Save Game", 162, 75)
+
+        # Draw the textfield
         save_file = View.draw_text_field(75, 155, 450, 75, "Save File Name", active, input_text)
 
-        View.draw_header("Save Game", 162, 75)
+        # Draw the buttons
         save_button = View.draw_button('Assets/buttonSquare_beige.png', "save", 575, 155, 150, 75)
         exit_button = View.draw_button('Assets/buttonSquare_beige.png', "x", 710, 40, 50, 50)
 
-
+        # Handle button clicks
         if save_button:
             SaveLoad.save_game(Dungeon.get_instance().pickle_dungeon(), input_text)
             is_running = False
@@ -36,7 +42,8 @@ def run():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = event.pos
-                if 75 <= mx <= 525 and 155 <= my <= 230:  # Check if mouse click is in the text field area
+                # Check if mouse click is in the text field area
+                if 75 <= mx <= 525 and 155 <= my <= 230:
                     active = True
                 else:
                     active = False
@@ -44,7 +51,8 @@ def run():
             if event.type == pygame.KEYDOWN and active:
                 if event.key == pygame.K_RETURN:  # Press Enter to save the input
                     SaveLoad.save_game(Dungeon.get_instance().pickle_dungeon(), input_text)
-                    active = False  # Deactivate the text field after saving
+                    # Deactivate the text field after saving
+                    active = False
                     is_running = False
                 elif event.key == pygame.K_BACKSPACE:
                     input_text = input_text[:-1]  # Handle backspace
@@ -52,6 +60,3 @@ def run():
                     input_text += event.unicode  # Add the character to the input text
 
         pygame.display.update()
-
-if __name__ == '__main__':
-    run()

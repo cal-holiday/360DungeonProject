@@ -5,7 +5,7 @@ from Controller import BattleController, HowToPlayController, YouWinController, 
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Maze import Maze
-from View import DungeonView
+from View import DungeonView as View
 
 # Declare new pygame events
 EXIT_DUNGEON = pygame.USEREVENT + 3
@@ -76,10 +76,10 @@ def run(screen):
     MONSTER_BATTLE = pygame.USEREVENT + 2
     EXIT_DUNGEON = pygame.USEREVENT + 3
 
-    DungeonView.set_up(screen)
+    View.set_up(screen)
 
-    _toolbar_rects = DungeonView.draw_toolbar(screen)
-    _health_potion_rects, _vision_potion_rects = DungeonView.draw_inventory(screen)
+    _toolbar_rects = View.draw_toolbar(screen)
+    _health_potion_rects, _vision_potion_rects = View.draw_inventory(screen)
     _array = Maze.get_instance().get_array()
 
     """
@@ -93,14 +93,14 @@ def run(screen):
                 if _array[i][j].get_monster() is None and _array[i][j].get_potion() is None:
                         empty_rooms.append(_array[i][j])
         hero_room = choice(empty_rooms)
-        x = hero_room.get_location()[0] * DungeonView.ROOM_SIZE + DungeonView.ROOM_SIZE * .5
-        y = hero_room.get_location()[1] * DungeonView.ROOM_SIZE + DungeonView.ROOM_SIZE * .5
+        x = hero_room.get_location()[0] * View.ROOM_SIZE + View.ROOM_SIZE * .5
+        y = hero_room.get_location()[1] * View.ROOM_SIZE + View.ROOM_SIZE * .5
         Hero.get_instance().set_x(int(x))
         Hero.get_instance().set_y(int(y))
 
-    _player = ControllerHero(DungeonView.draw_hero(screen))
-    _player.rect.topleft = (Hero.get_instance().get_x() - DungeonView.get_camera_offset()[0],
-                            Hero.get_instance().get_y() - DungeonView.get_camera_offset()[1])
+    _player = ControllerHero(View.draw_hero(screen))
+    _player.rect.topleft = (Hero.get_instance().get_x() - View.get_camera_offset()[0],
+                            Hero.get_instance().get_y() - View.get_camera_offset()[1])
     # main game loop
     while _run:
 
@@ -117,38 +117,38 @@ def run(screen):
         # Add necessary rectangles for collisions in each room
         for i in range(len(_array)):
             for j in range(len(_array[i])):
-                _room_rects.append(DungeonView.draw_room(screen, _array[i][j]))
-                possible_monster = DungeonView.draw_monster(screen, _array[i][j])
+                _room_rects.append(View.draw_room(screen, _array[i][j]))
+                possible_monster = View.draw_monster(screen, _array[i][j])
                 if not possible_monster is None:
                     _monster_rect.append(possible_monster)
-                possible_potion = DungeonView.draw_potion(screen, _array[i][j])
+                possible_potion = View.draw_potion(screen, _array[i][j])
                 if not possible_potion is None:
                     _potion_rect.append(possible_potion)
-                possible_exit = DungeonView.draw_exit(screen, _array[i][j])
+                possible_exit = View.draw_exit(screen, _array[i][j])
                 if not possible_exit is None:
                     _exit_rect = possible_exit
 
         # Update player based on input
         _player.move()
-        DungeonView.draw_hero(screen)
+        View.draw_hero(screen)
 
         # Add the vision screen unless a vision potion has been used
         if _potion_time == 0:
-            DungeonView.draw_vision(screen)
+            View.draw_vision(screen)
         else:
             _potion_time -= 1
 
         # Open inventory
         if _inventory_clicked:
-            DungeonView.draw_inventory(screen)
-            _health_potion_rects, _vision_potion_rects = DungeonView.draw_inventory(screen)
+            View.draw_inventory(screen)
+            _health_potion_rects, _vision_potion_rects = View.draw_inventory(screen)
 
         # Open Map
         if _map_clicked:
-            DungeonView.draw_mini_map(screen)
+            View.draw_mini_map(screen)
 
         # Draw the toolbar over the dungeon and vision screen
-        _toolbar_rects = DungeonView.draw_toolbar(screen)
+        _toolbar_rects = View.draw_toolbar(screen)
 
         # Handle events
         for event in pygame.event.get():
@@ -205,7 +205,7 @@ class ControllerHero(pygame.sprite.Sprite):
             Hero.get_instance().set_x(hero_x + 5)
         if self.left and not self.collide_left():
             Hero.get_instance().set_x(hero_x - 5)
-        self.rect.topleft = (Hero.get_instance().get_x() - DungeonView.get_camera_offset()[0], Hero.get_instance().get_y() - DungeonView.get_camera_offset()[1])
+        self.rect.topleft = (Hero.get_instance().get_x() - View.get_camera_offset()[0], Hero.get_instance().get_y() - View.get_camera_offset()[1])
 
     """
     Checks for collisions below the character if the character is trying to move down.
@@ -345,7 +345,7 @@ Returns the Room and marks it has visited by the Hero.
 def get_current_room():
     x = Hero.get_instance().get_x()
     y = Hero.get_instance().get_y()
-    room_x = x//DungeonView.ROOM_SIZE
-    room_y = y//DungeonView.ROOM_SIZE
+    room_x = x//View.ROOM_SIZE
+    room_y = y//View.ROOM_SIZE
     _array[room_x][room_y].set_hero_has_visited(True)
     return _array[room_x][room_y]
