@@ -60,19 +60,17 @@ def run(screen):
     toolbar_rects = dungeon_view.draw_toolbar(screen)
     health_potion_rects, vision_potion_rects = dungeon_view.draw_inventory(screen)
     array = Maze.get_instance().get_array()
-
-    empty_rooms = []
-    for i in range(len(array)):
-        for j in range(len(array[i])):
-            if array[i][j].get_monster() is None and array[i][j].get_potion() is None:
-                    empty_rooms.append(array[i][j])
-    hero_room = choice(empty_rooms)
-    x = hero_room.get_location()[0] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
-    y = hero_room.get_location()[1] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
-    Hero.get_instance().set_x(int(x))
-    Hero.get_instance().set_y(int(y))
-
-
+    if Hero.get_instance().get_x == -100:
+        empty_rooms = []
+        for i in range(len(array)):
+            for j in range(len(array[i])):
+                if array[i][j].get_monster() is None and array[i][j].get_potion() is None:
+                        empty_rooms.append(array[i][j])
+        hero_room = choice(empty_rooms)
+        x = hero_room.get_location()[0] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
+        y = hero_room.get_location()[1] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
+        Hero.get_instance().set_x(int(x))
+        Hero.get_instance().set_y(int(y))
 
     player = ControllerHero(dungeon_view.draw_hero(screen))
     INVENTORY_CLICKED = False

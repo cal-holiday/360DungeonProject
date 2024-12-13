@@ -27,7 +27,7 @@ class Dungeon:
             Hero.get_instance().set_hp(hero_info[2])
             Hero.get_instance().set_x(hero_info[3])
             Hero.get_instance().set_y(hero_info[4])
-            Maze.get_instance().set_array(maze_info)
+            Maze.get_instance().set_array(maze_info[0])
             for item in inventory_info:
                 Inventory.get_instance().add(item)
         Dungeon.__instance = self
