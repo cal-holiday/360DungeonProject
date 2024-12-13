@@ -1,3 +1,5 @@
+from Controller.SaveLoad import SaveLoad
+from Model.Dungeon import Dungeon
 from View import save_file_view as View
 import pygame
 
@@ -21,8 +23,8 @@ def run():
 
 
         if save_button:
-#THIS IS WHAT YOU SHOULD UPDATE CAL!! :)))
-            print("save_file is a string that should be sent to load controller:", input_text)
+            SaveLoad.save_game(Dungeon.get_instance().pickle_dungeon(), input_text)
+            is_running = False
 
         if exit_button:
             is_running = False
@@ -41,9 +43,9 @@ def run():
 
             if event.type == pygame.KEYDOWN and active:
                 if event.key == pygame.K_RETURN:  # Press Enter to save the input
-#SAME ACTION SHOULD BE HERE IF THE USER TYPES AND PRESSES ENTER IF YOU WANT
-                    print("save_file is a string that should be sent to load controller:", input_text)
+                    SaveLoad.save_game(Dungeon.get_instance().pickle_dungeon(), input_text)
                     active = False  # Deactivate the text field after saving
+                    is_running = False
                 elif event.key == pygame.K_BACKSPACE:
                     input_text = input_text[:-1]  # Handle backspace
                 else:
