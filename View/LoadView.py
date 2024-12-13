@@ -2,10 +2,19 @@ import pygame
 pygame.init()
 
 FONT = "8-bit-pusab.ttf"
-COLOR = (211,191,143)
+COLOR = (118,59,54)
 pygame.display.set_caption("Main Menu")
 header_font = pygame.font.Font(FONT, 25)
 font = pygame.font.Font(FONT, 20)
+
+def draw_header(screen, text, x,y):
+    img = header_font.render(text, True, (0,0,0))
+    screen.blit(img,(x,y))
+
+def draw_image(screen, img, x, y, width, height):
+    original_img = pygame.image.load(img).convert()
+    scaled_img = pygame.transform.scale(original_img, (width, height))
+    screen.blit(scaled_img, (x, y))
 
 def draw_button(screen, img, text, x, y, width, height):
     # Load the button image

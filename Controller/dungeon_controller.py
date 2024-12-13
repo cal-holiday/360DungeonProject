@@ -71,7 +71,7 @@ def run(screen):
         y = hero_room.get_location()[1] * dungeon_view.ROOM_SIZE + dungeon_view.ROOM_SIZE * .5
         Hero.get_instance().set_x(int(x))
         Hero.get_instance().set_y(int(y))
-
+    print(Hero.get_instance().get_x(), Hero.get_instance().get_y())
     player = ControllerHero(dungeon_view.draw_hero(screen))
     INVENTORY_CLICKED = False
 
@@ -262,4 +262,5 @@ def get_current_room():
     y = Hero.get_instance().get_y()
     room_x = x//dungeon_view.ROOM_SIZE
     room_y = y//dungeon_view.ROOM_SIZE
+    array[room_x][room_y].set_hero_has_visited(True)
     return array[room_x][room_y]

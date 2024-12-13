@@ -20,16 +20,16 @@ class Dungeon:
     def __init__(self, from_pickle, hero_info, maze_info=None, inventory_info=None):
         if not Dungeon.__instance is None:
             Dungeon.delete_instance()
-        CharacterFactory.create_hero(hero_info[0], hero_info[1])
         Maze(6)
         Inventory()
+        CharacterFactory.create_hero(hero_info[0], hero_info[1])
 
         if from_pickle:
+            Maze.get_instance().set_array(maze_info[0])
             Hero.get_instance().set_max_hp(hero_info[2])
             Hero.get_instance().set_hp(hero_info[3])
             Hero.get_instance().set_x(hero_info[4])
             Hero.get_instance().set_y(hero_info[5])
-            Maze.get_instance().set_array(maze_info[0])
             for item in inventory_info:
                 Inventory.get_instance().add(item)
         Dungeon.__instance = self
