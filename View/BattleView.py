@@ -88,22 +88,22 @@ def draw_rewards(monster):
     if monster.has_health_potion() and monster.has_vision_potion() and monster.has_pillar():
         draw_image('Assets/health_potion.png', three_items[0][0], three_items[0][1], 100, 100)
         draw_image('Assets/vision_potion.png', three_items[1][0], three_items[1][1], 100, 100)
-        draw_image(monster.get_pillar().get_image(), three_items[2][0], three_items[2][1], 100, 100)
+        draw_image("Assets/" + monster.get_pillar().get_image(), three_items[2][0], three_items[2][1], 100, 100)
     elif monster.has_health_potion() and monster.has_vision_potion():
         draw_image('Assets/health_potion.png', two_items[0][0], two_items[0][1], 100, 100)
         draw_image('Assets/vision_potion.png', two_items[1][0], two_items[1][1], 100, 100)
     elif monster.has_health_potion() and monster.has_pillar():
         draw_image('Assets/health_potion.png', two_items[0][0], two_items[0][1], 100, 100)
-        draw_image(monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
+        draw_image("Assets/" + monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
     elif monster.has_vision_potion() and monster.has_pillar():
         draw_image('Assets/vision_potion.png', two_items[0][0], two_items[0][1], 100, 100)
-        draw_image(monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
+        draw_image("Assets/" + monster.get_pillar().get_image(), two_items[1][0], two_items[1][1], 100, 100)
     elif monster.has_health_potion():
         draw_image('Assets/health_potion.png', one_item[0], one_item[1], 100, 100)
     elif monster.has_vision_potion():
         draw_image('Assets/vision_potion.png', one_item[0], one_item[1], 100, 100)
     elif monster.has_pillar():
-        draw_image(monster.get_pillar().get_image(), one_item[0], one_item[1], 100, 100)
+        draw_image("Assets/" + monster.get_pillar().get_image(), one_item[0], one_item[1], 100, 100)
 
     draw_button('Assets/button.png', "claim", 315, 500, 175, 70)
 
