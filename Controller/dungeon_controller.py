@@ -3,9 +3,8 @@ from random import choice
 import pygame
 
 from Controller import Battle_Controller, how_to_play_controller, you_win_controller
+from Model.Dungeon import Dungeon
 from Model.Maze import Maze
-from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
-from Model.Potion import HealthPotion, VisionPotion
 from View import dungeon_view
 from Model.Hero import Hero
 from Model.Inventory import Inventory
@@ -46,6 +45,7 @@ def run(screen):
     global INVENTORY_CLICKED
     global MAP_CLICKED
     global potion_time
+    potion_time = 0
     pygame.mixer.init()
     pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
     pygame.mixer.music.play(loops=-1)
@@ -58,22 +58,8 @@ def run(screen):
     dungeon_view.set_up(screen)
 
     toolbar_rects = dungeon_view.draw_toolbar(screen)
-
-    inventory = Inventory()
-    inventory.add(VisionPotion())
-    inventory.add(VisionPotion())
-    inventory.add(VisionPotion())
-    inventory.add(EncapsulationPillar())
-    inventory.add(InheritancePillar())
-    inventory.add(AbstractionPillar())
-    inventory.add(PolymorphismPillar())
     health_potion_rects, vision_potion_rects = dungeon_view.draw_inventory(screen)
-
-
-
-
-    dungeon = Maze(6)
-    array = dungeon.room_array
+    array = Maze.get_instance().get_array()
 
     empty_rooms = []
     for i in range(len(array)):

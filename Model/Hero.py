@@ -5,8 +5,8 @@ class Hero(CharacterInterface):
     __instance = None
     damage_mod = 0
     attack_mod = 0
-    x = 0
-    y = 0
+    x = -100
+    y = -100
     drank_vision_potion = False
 
     @staticmethod
@@ -64,7 +64,6 @@ class Hero(CharacterInterface):
         else:
             raise ValueError("Parameter needs to be a boolean")
 
-
     def get_damage_mod(self):
         return self.damage_mod
 
@@ -76,9 +75,6 @@ class Hero(CharacterInterface):
 
     def get_y(self):
         return self.y
-
-    def get_direction(self):
-        return self.direction
 
     def get_drank_vision_potion(self):
         return self.drank_vision_potion
