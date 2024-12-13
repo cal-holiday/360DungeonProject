@@ -1,6 +1,6 @@
 import pygame
 
-from Model.Dungeon import Dungeon
+from Model.Maze import Dungeon
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 pygame.init()

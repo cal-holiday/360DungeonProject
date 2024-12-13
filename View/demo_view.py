@@ -1,6 +1,7 @@
 import pygame
 from Model.Hero import Hero
 from Model.Inventory import Inventory
+
 pygame.init()
 
 width = 810
@@ -11,7 +12,7 @@ default_size = width // 18
 
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Dungeon Adventure')
-
+"""
 def get_camera_offset():
     x_min = max(0, Hero.get_instance().get_x() - width // 2)
     y_min = max(30, Hero.get_instance().get_y() - height // 2)
@@ -237,3 +238,4 @@ def draw_inventory():
 def draw_vision():
     img = pygame.image.load("vision.png")
     screen.blit(img, (0,30))
+"""

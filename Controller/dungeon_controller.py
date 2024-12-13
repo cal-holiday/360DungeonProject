@@ -3,7 +3,7 @@ from random import choice
 import pygame
 
 from Controller import Battle_Controller, how_to_play_controller, you_win_controller
-from Model.Dungeon import Dungeon
+from Model.Maze import Dungeon
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
 from View import maze_view

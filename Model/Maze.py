@@ -1,13 +1,13 @@
-import pygame
+
 
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
-from Model.Hero import Hero
+
 from Model.Pillar import PolymorphismPillar, AbstractionPillar, EncapsulationPillar, InheritancePillar
 from Model.Potion import HealthPotion, VisionPotion
 from Model.Room import Room
 from random import choice
-from View import View
+from View import demo_view
 class Dungeon:
     __instance = None
     @staticmethod
@@ -139,25 +139,3 @@ class Dungeon:
                 row.set_potion(potion)
             else:
                 i -= 1
-
-
-"""
-CharacterFactory.create_hero("TEST", Element.AIR)
-Hero.get_instance().set_x(258)
-Hero.get_instance().set_y(258)
-thing = Dungeon(6)
-array = thing.generate_maze()
-thing.add_exit()
-thing.add_monsters()
-thing.add_potions()
-run = True
-while run:
-    View.screen.fill(0)
-    for i in range(len(array)):
-        for j in range(len(array[i])):
-            View.draw_room(array[i][j])
-            #View.draw_exit(array[i][j])
-            View.draw_monster(array[i][j])
-            #View.draw_potion(array[i][j])
-    pygame.display.update()
-"""

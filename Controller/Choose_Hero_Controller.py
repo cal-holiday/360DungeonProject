@@ -1,6 +1,6 @@
 import pygame
 
-from Controller import maze_controller, Battle_Controller
+from Controller import dungeon_controller, Battle_Controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from View import Choose_Hero_View as View
