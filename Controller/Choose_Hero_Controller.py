@@ -2,6 +2,7 @@ import pygame
 
 from Controller import dungeon_controller
 from Model.CharacterFactory import CharacterFactory
+from Model.Dungeon import Dungeon
 from Model.Element import Element
 from View import Choose_Hero_View as View
 
@@ -14,8 +15,8 @@ def run(screen):
     text_field_rect = pygame.Rect(200, 180, 400, 50)
     # Hero button definitions
     heroes = {
-        "fire": {"rect": pygame.Rect(150, 675, 100, 100), "element": "Fire", "health": "80", "agility": "12"},
-        "water": {"rect": pygame.Rect(450, 550, 100, 100), "element": "Water", "health": "60", "agility": "8"},
+        "fire": {"rect": pygame.Rect(150, 675, 100, 100), "element": "Fire", "health": "60", "agility": "12"},
+        "water": {"rect": pygame.Rect(450, 550, 100, 100), "element": "Water", "health": "80", "agility": "8"},
         "air": {"rect": pygame.Rect(250, 550, 100, 100), "element": "Air", "health": "40", "agility": "16"},
         "earth": {"rect": pygame.Rect(550, 675, 100, 100), "element": "Earth", "health": "100", "agility": "4"},
     }
@@ -137,13 +138,18 @@ def run(screen):
                     if pygame.Rect(250, 400, 100, 50).collidepoint(event.pos):  # Yes button
                         confirmation_result = True
                         if selected_stats["element"] == "Fire":
-                            CharacterFactory.create_hero(hero_name, Element.FIRE)
+                            element = Element.FIRE
+                            #CharacterFactory.create_hero(hero_name, Element.FIRE)
                         elif selected_stats["element"] == "Water":
-                            CharacterFactory.create_hero(hero_name, Element.WATER)
+                            element = Element.WATER
+                            #CharacterFactory.create_hero(hero_name, Element.WATER)
                         elif selected_stats["element"] == "Air":
-                            CharacterFactory.create_hero(hero_name, Element.AIR)
+                            element = Element.AIR
+                            #CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
-                            CharacterFactory.create_hero(hero_name, Element.EARTH)
+                            element = Element.EARTH
+                            #CharacterFactory.create_hero(hero_name, Element.EARTH)
+                        Dungeon(False, [hero_name, element])
                         dungeon_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button

@@ -105,7 +105,7 @@ class Maze:
         row = choice(col)
         row.set_has_exit(True)
     def add_monsters(self):
-        number = 4 + self.size//4
+        number = 4 + self.size//3
         for i in range(number):
             monster = CharacterFactory.create_monster(Element(i%4 +1))
             if i == 0:
@@ -139,3 +139,7 @@ class Maze:
                 row.set_potion(potion)
             else:
                 i -= 1
+    def get_array(self):
+        return self.room_array
+    def set_array(self, rooms):
+        self.room_array = rooms

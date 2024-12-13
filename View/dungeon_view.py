@@ -164,7 +164,7 @@ def draw_toolbar(screen):
     rect = image.get_rect()
     rect.topleft = (0, 0)
     screen.blit(image, rect)
-    inventory_button = pygame.Rect(5,0,DEFAULT_SIZE*2, DEFAULT_SIZE)
+    inventory_button = pygame.Rect(5,0,DEFAULT_SIZE*3, DEFAULT_SIZE)
     map_button = pygame.Rect(DEFAULT_SIZE * 4, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
     save_button = pygame.Rect(DEFAULT_SIZE * 6, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)
     help_button = pygame.Rect(DEFAULT_SIZE * 8, 0, DEFAULT_SIZE * 2, DEFAULT_SIZE)

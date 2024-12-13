@@ -15,8 +15,8 @@ cur.execute("CREATE TABLE IF NOT EXISTS hero(image, hit_image, dead_image, eleme
 data = [
     ('earth_hero.png', 'earth_hero_hit.png','earth_hero_dead.png',Element.EARTH.value, 100, 4),
     ('air_hero.png', 'air_hero_hit.png','air_hero_dead.png',Element.AIR.value, 40, 16),
-    ('water_hero.png', 'water_hero_hit.png','water_hero_dead.png',Element.WATER.value, 60, 8),
-    ('fire_hero.png', 'fire_hero_hit.png','fire_hero_dead.png',Element.FIRE.value, 80, 12),
+    ('water_hero.png', 'water_hero_hit.png','water_hero_dead.png',Element.WATER.value, 80, 8),
+    ('fire_hero.png', 'fire_hero_hit.png','fire_hero_dead.png',Element.FIRE.value, 60, 12),
 ]
 cur.executemany("INSERT INTO hero VALUES(?, ?, ?, ?, ?, ?)", data)
 con.commit()

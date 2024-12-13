@@ -88,7 +88,6 @@ def run(monster):
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                             claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
                             if claim:  # If the claim button was clicked
-                                print("Claim button clicked")
                                 if monster.has_health_potion():
                                     inventory.add(monster.health_potion)
                                 if monster.has_vision_potion():
@@ -172,17 +171,21 @@ def run(monster):
         monster_agility = monster.get_agility()
         if action == "attack":
             result = hero.attack()
+            damage = result[1]
+            if monster.element is hero.element.get_opposite():
+                damage *= 2
             if result[0] > monster_agility:
-                return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
+                return update(monster, f"{hero.get_name()} did {damage} damage!", -damage)
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
 
         elif action == "special":
             result = hero.special_attack()
-            if result[0] > monster.get_agility() and monster.get_element() == hero.get_opposite_element():
-                return update(monster, f"{hero.get_name()} did {2 * result[1]} damage!", 2 * -result[1])
-            elif result[0] > monster.get_agility():
-                return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
+            damage = result[1]
+            if monster.element is hero.element.get_opposite():
+                damage *= 2
+            if result[0] > monster.get_agility():
+                return update(monster, f"{hero.get_name()} did {damage} damage!", -damage)
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
         elif action == "potion":
