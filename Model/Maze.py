@@ -8,17 +8,17 @@ from Model.Potion import HealthPotion, VisionPotion
 from Model.Room import Room
 from random import choice
 from View import demo_view
-class Dungeon:
+class Maze:
     __instance = None
     @staticmethod
     def get_instance():
-        if Dungeon.__instance is not None:
-            return Dungeon.__instance
+        if Maze.__instance is not None:
+            return Maze.__instance
         else:
             raise Exception("Dungeon does not exist yet!")
 
     def __init__(self, size):
-        if Dungeon.__instance is not None:
+        if Maze.__instance is not None:
             raise Exception("Dungeon already exists!")
         else:
             self.size = size
@@ -29,7 +29,7 @@ class Dungeon:
             self.add_monsters()
             self.add_health_potions()
             self.add_vision_potions()
-            Dungeon.__instance = self
+            Maze.__instance = self
     def check_neighbors(self, room):
         location = room.get_location()
         col = location[0]

@@ -2,16 +2,12 @@ import pygame
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 
-pygame.init()
+#pygame.init()
 
 width = 810
 height = 810
-room_size = width//3
-default_size = width // 18
-
-
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Dungeon Adventure')
+#screen = pygame.display.set_mode((width, height))
+#pygame.display.set_caption('Dungeon Adventure')
 """
 def get_camera_offset():
     x_min = max(0, Hero.get_instance().get_x() - width // 2)

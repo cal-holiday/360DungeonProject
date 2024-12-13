@@ -1,12 +1,12 @@
 import pygame
 
-from Controller import dungeon_controller, Battle_Controller
+from Controller import dungeon_controller
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from View import Choose_Hero_View as View
 
+
 def run(screen):
-    View.pass_screen(screen)
     isRunning = True
     clock = pygame.time.Clock()
     hero_name = ""
@@ -30,9 +30,9 @@ def run(screen):
     while isRunning:
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI
-        View.draw_image("dungeonBackground.png", 0, 0, 810, 810)
-        View.draw_image("banner.png", 45, 20, 700, 150)
-        View.draw_header("Choose Your Hero", 90, 50)
+        View.draw_image(screen, "dungeonBackground.png", 0, 0, 810, 810)
+        View.draw_image(screen, "banner.png", 45, 20, 700, 150)
+        View.draw_header(screen, "Choose Your Hero", 90, 50)
 
         # Draw elements only if the confirmation prompt is NOT active
         if not confirmation_prompt:
@@ -40,15 +40,16 @@ def run(screen):
             border_color = (0, 255, 0) if text_field_active else (255, 255, 255)
             pygame.draw.rect(pygame.display.get_surface(), border_color, text_field_rect, 2)
             View.draw_text_field(
+                screen,
                 text_field_rect.x, text_field_rect.y,
                 text_field_rect.width, text_field_rect.height,
                 "Name Your Hero", text_field_active, hero_name
             )
 
             # Draw current stats
-            View.draw_text(f"Element: {current_stats['element']}", 283, 260)
-            View.draw_text(f"Health: {current_stats['health']}", 305, 320)
-            View.draw_text(f"Agility: {current_stats['agility']}", 297, 380)
+            View.draw_text(screen, f"Element: {current_stats['element']}", 283, 260)
+            View.draw_text(screen, f"Health: {current_stats['health']}", 305, 320)
+            View.draw_text(screen,f"Agility: {current_stats['agility']}", 297, 380)
 
             # Draw hero buttons
             for hero, data in heroes.items():
@@ -73,20 +74,20 @@ def run(screen):
                         data["rect"].inflate(10, 10),
                         2
                     )
-                View.draw_button(f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
+                View.draw_button(screen,f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
                                  data["rect"].height)
 
             # Draw the Confirm button (at new position)
             if confirm_button_visible:
-                View.draw_button("button.png", "confirm", 302, 450, 200, 50)
+                View.draw_button(screen,"button.png", "confirm", 302, 450, 200, 50)
 
         # Draw the confirmation prompt
         if confirmation_prompt:
             pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
-            View.draw_text("Are you sure?", 280, 325)
+            View.draw_text(screen,"Are you sure?", 280, 325)
             # Ensure confirmation prompt buttons have the correct positions
-            View.draw_button("button.png", "Yes", 250, 400, 100, 50)
-            View.draw_button("button.png", "No", 450, 400, 100, 50)
+            View.draw_button(screen,"button.png", "Yes", 250, 400, 100, 50)
+            View.draw_button(screen,"button.png", "No", 450, 400, 100, 50)
 
         # Handle events
         for event in pygame.event.get():
@@ -143,16 +144,16 @@ def run(screen):
                             CharacterFactory.create_hero(hero_name, Element.AIR)
                         else:
                             CharacterFactory.create_hero(hero_name, Element.EARTH)
-                        maze_controller.run(screen)
+                        dungeon_controller.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False
                         confirm_button_visible = True
 
             # Draw the background and UI
-            View.draw_image("dungeonBackground.png", 0, 0, 810, 810)
-            View.draw_image("banner.png", 45, 20, 700, 150)
-            View.draw_header("Choose Your Hero", 90, 50)
+            View.draw_image(screen,"dungeonBackground.png", 0, 0, 810, 810)
+            View.draw_image(screen,"banner.png", 45, 20, 700, 150)
+            View.draw_header(screen,"Choose Your Hero", 90, 50)
 
             # Draw elements only if the confirmation prompt is NOT active
             if not confirmation_prompt:
@@ -160,15 +161,16 @@ def run(screen):
                 border_color = (0, 255, 0) if text_field_active else (255, 255, 255)
                 pygame.draw.rect(pygame.display.get_surface(), border_color, text_field_rect, 2)
                 View.draw_text_field(
+                    screen,
                     text_field_rect.x, text_field_rect.y,
                     text_field_rect.width, text_field_rect.height,
                     "Name Your Hero", text_field_active, hero_name
                 )
 
                 # Draw current stats
-                View.draw_text(f"Element: {current_stats['element']}", 283, 260)
-                View.draw_text(f"Health: {current_stats['health']}", 305, 320)
-                View.draw_text(f"Agility: {current_stats['agility']}", 297, 380)
+                View.draw_text(screen,f"Element: {current_stats['element']}", 283, 260)
+                View.draw_text(screen,f"Health: {current_stats['health']}", 305, 320)
+                View.draw_text(screen,f"Agility: {current_stats['agility']}", 297, 380)
 
                 # Draw hero buttons
                 for hero, data in heroes.items():
@@ -189,20 +191,20 @@ def run(screen):
                                 data["rect"].inflate(10, 10),
                                 2
                             )
-                    View.draw_button(f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
+                    View.draw_button(screen,f"{hero}_hero.png", "", data["rect"].x, data["rect"].y, data["rect"].width,
                                      data["rect"].height)
 
                 # Draw the Confirm button (at new position)
                 if confirm_button_visible:
-                    View.draw_button("button.png", "confirm", 302, 450, 200, 50)
+                    View.draw_button(screen,"button.png", "confirm", 302, 450, 200, 50)
 
             # Draw the confirmation prompt
             if confirmation_prompt:
                 pygame.draw.rect(pygame.display.get_surface(), (0, 0, 0), (200, 300, 400, 200))  # Background box
-                View.draw_text("Are you sure?", 280, 325)
+                View.draw_text(screen,"Are you sure?", 280, 325)
                 # Ensure confirmation prompt buttons have the correct positions
-                View.draw_button("button.png", "Yes", 250, 400, 100, 50)
-                View.draw_button("button.png", "No", 450, 400, 100, 50)
+                View.draw_button(screen,"button.png", "Yes", 250, 400, 100, 50)
+                View.draw_button(screen,"button.png", "No", 450, 400, 100, 50)
 
             # Update the display
             pygame.display.update()
