@@ -1,7 +1,6 @@
 from View import main_menu_view
-from Controller import Choose_Hero_Controller, you_win_controller
+from Controller import Choose_Hero_Controller, you_win_controller, LoadController
 from Controller import how_to_play_controller
-from Controller import you_died_controller
 import pygame
 pygame.mixer.init()
 pygame.mixer.music.load("buddy holly 10 12 24.wav")
@@ -30,7 +29,7 @@ def run(screen):
             how_to_play_controller.run()
 
         if(load_game):
-            pass
+            LoadController.run(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
