@@ -1,59 +1,80 @@
 import unittest
 
-from Element import Element
-from Model.Hero import Hero
+from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
 from Model.Inventory import Inventory
-
-from Model.Pillar import PolymorphismPillar, AbstractionPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
+from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
 
 
-class MyTestCase(unittest.TestCase):
+class TestInventory(unittest.TestCase):
+    CharacterFactory.create_hero("hero", Element.EARTH)
+    Inventory()
     def setUp(self):
-        self.hero = Hero("name", "image", 100, 2, Element.EARTH)
-        self.inventory = Inventory()
-        self.abstraction_pillar = AbstractionPillar("image", self.hero)
-        self.polymorphism_pillar = PolymorphismPillar("image", self.hero)
-        self.inheritance_pillar = InheritancePillar("image", self.hero)
-        self.encapsulation_pillar = EncapsulationPillar("image", self.hero)
-        self.health_potion = HealthPotion("image", self.hero)
-        self.vision_potion = VisionPotion("image", self.hero)
+        # Initialize a new instance of Inventory for each test
+        self.inventory = Inventory.get_instance()
 
-    def test_inventory_constructor(self):
-        self.assertEqual(self.inventory.health_potions, [])
-        self.assertEqual(self.inventory.vision_potions,[])
-        self.assertEqual(self.inventory.pillars,[])
+    def test_singleton_instance(self):
+        # Test to ensure Inventory class maintains only one instance
+        inventory2 = Inventory.get_instance()
+        self.assertEqual(self.inventory, inventory2)
+
+        # Deleting the instance and creating a new one to test if singleton logic works
+        Inventory.delete_instance()
+        inventory3 = Inventory.get_instance()
+        self.assertNotEqual(self.inventory, inventory3)
+
+    def test_add_null_object(self):
+        # Test to ensure ValueError is raised when adding a null object
+        with self.assertRaises(ValueError):
+            self.inventory.add(None)
 
     def test_add_pillar(self):
-        original_hp = self.hero.get_max_hp()
-        self.inventory.add(self.polymorphism_pillar)
-        self.assertEqual(self.hero.get_max_hp(), original_hp + 10)
-        self.assertEqual(len(self.inventory.pillars), 1)
+        # Test adding different types of pillars to the inventory
+        abstraction_pillar = AbstractionPillar()
+        polymorphism_pillar = PolymorphismPillar()
+        inheritance_pillar = InheritancePillar()
+        encapsulation_pillar = EncapsulationPillar()
 
-    def test_add_potions(self):
-        self.inventory.add(self.health_potion)
-        self.assertEqual(len(self.inventory.health_potions), 1)
+        self.inventory.add(abstraction_pillar)
+        self.inventory.add(polymorphism_pillar)
+        self.inventory.add(inheritance_pillar)
+        self.inventory.add(encapsulation_pillar)
 
-        self.inventory.add(self.vision_potion)
-        self.assertEqual(len(self.inventory.vision_potions), 1)
-
-    def test_drink_potions(self):
-        self.inventory.add(self.health_potion)
-        self.inventory.drink_potion(self.health_potion)
-        self.assertEqual(len(self.inventory.health_potions), 0)
-
-        self.inventory.add(self.vision_potion)
-        self.inventory.drink_potion(self.vision_potion)
-        self.assertEqual(len(self.inventory.vision_potions), 0)
-
-    def test_has_all_pillars(self):
-        self.inventory.add(self.abstraction_pillar)
-        self.inventory.add(self.polymorphism_pillar)
-        self.assertEqual(self.inventory.has_all_pillars(), False)
-
-        self.inventory.add(self.inheritance_pillar)
-        self.inventory.add(self.encapsulation_pillar)
         self.assertEqual(self.inventory.has_all_pillars(), True)
+        self.assertEqual(len(self.inventory.get_pillars()), 4)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_add_health_potion(self):
+        # Test adding a health potion to the inventory
+        health_potion = HealthPotion()
+        self.inventory.add(health_potion)
+
+        self.assertTrue(self.inventory.has_health_potion())
+        self.assertEqual(self.inventory.number_of_health_potions(), 1)
+
+    def test_add_vision_potion(self):
+        # Test adding a vision potion to the inventory
+        vision_potion = VisionPotion()
+        self.inventory.add(vision_potion)
+
+        self.assertTrue(self.inventory.has_vision_potion())
+        self.assertEqual(len(self.inventory.get_vision_potions()), 1)
+
+    def test_drink_health_potion(self):
+        # Test drinking a health potion
+        health_potion = HealthPotion()
+        self.inventory.add(health_potion)
+        self.inventory.drink_health_potion()
+
+        self.assertFalse(self.inventory.has_health_potion())
+        self.assertEqual(self.inventory.number_of_health_potions(), 0)
+
+    def test_drink_vision_potion(self):
+        # Test drinking a vision potion
+        vision_potion = VisionPotion()
+        self.inventory.add(vision_potion)
+        self.inventory.drink_vision_potion()
+
+        self.assertFalse(self.inventory.has_vision_potion())
+        self.assertEqual(len(self.inventory.get_vision_potions()), 0)
+

@@ -1,29 +1,107 @@
 import unittest
-from Room import Room
 
-class MyTestCase(unittest.TestCase):
-    def test_room_constructor_all_walls_no_monster_no_potion(self):
-        room = Room(True,True,True,True,(3,4),None,None)
-        self.assertEqual(room.get_ewall(),True)
-        self.assertEqual(room.get_wwall(),True)
-        self.assertEqual(room.get_nwall(),True)
-        self.assertEqual(room.get_swall(),True)
-        self.assertEqual(room.location,(3,4))
-        self.assertEqual(room.potion,None)
-        self.assertEqual(room.monster,None)
+from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
+from Model.Potion import HealthPotion, VisionPotion
+from Model.Monster import Monster  # Assuming there's a Monster class for testing purposes
+from Model.Room import Room
 
-    def test_room_constructor_monster_and_potion(self):
-        room = Room(False, False, False, False, (3, 2), True, True)
-        self.assertEqual(room.monster,True)
-        self.assertEqual(room.potion,True)
+class TestRoom(unittest.TestCase):
 
-    def test_room_no_walls(self):
-        room = Room(False,False,False,False,(3,2),None,None)
-        self.assertEqual(room.get_ewall(), False)  # add assertion here
-        self.assertEqual(room.get_wwall(), False)
-        self.assertEqual(room.get_nwall(), False)
-        self.assertEqual(room.get_swall(), False)
+    def setUp(self):
+        # Create instances of dependencies for the Room
+        self.monster = CharacterFactory.create_monster(Element.WATER)
+        self.potion = HealthPotion()  # Using HealthPotion for simplicity
+        self.location = [1][1]
 
+        # Initialize a Room instance
+        self.room = Room(True, True, True, True, self.location, self.potion, self.monster)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_constructor(self):
+        # Test the constructor initializes all attributes correctly
+        self.assertTrue(self.room.get_nwall())
+        self.assertTrue(self.room.get_swall())
+        self.assertTrue(self.room.get_ewall())
+        self.assertTrue(self.room.get_wwall())
+        self.assertEqual(self.room.get_location(), [1][1])
+        self.assertEqual(self.room.get_potion(), self.potion)
+        self.assertEqual(self.room.get_monster(), self.monster)
+        self.assertFalse(self.room.get_has_visited())
+        self.assertFalse(self.room.get_hero_has_visited())
+        self.assertFalse(self.room.get_has_exit())
+
+    def test_set_nwall(self):
+        self.room.set_nwall(False)
+        self.assertFalse(self.room.get_nwall())
+
+        with self.assertRaises(ValueError):
+            self.room.set_nwall(None)
+
+    def test_set_swall(self):
+        self.room.set_swall(False)
+        self.assertFalse(self.room.get_swall())
+
+        with self.assertRaises(ValueError):
+            self.room.set_swall(None)
+
+    def test_set_ewall(self):
+        self.room.set_ewall(False)
+        self.assertFalse(self.room.get_ewall())
+
+        with self.assertRaises(ValueError):
+            self.room.set_ewall(None)
+
+    def test_set_wwall(self):
+        self.room.set_wwall(False)
+        self.assertFalse(self.room.get_wwall())
+
+        with self.assertRaises(ValueError):
+            self.room.set_wwall(None)
+
+    def test_set_monster(self):
+        new_monster = Monster("New Monster", 60, 15)
+        self.room.set_monster(new_monster)
+        self.assertEqual(self.room.get_monster(), new_monster)
+
+    def test_set_potion(self):
+        new_potion = VisionPotion()
+        self.room.set_potion(new_potion)
+        self.assertEqual(self.room.get_potion(), new_potion)
+
+    def test_set_location(self):
+        self.room.set_location("New Location")
+        self.assertEqual(self.room.get_location(), "New Location")
+
+        with self.assertRaises(ValueError):
+            self.room.set_location(None)
+
+    def test_set_has_visited(self):
+        self.room.set_has_visited(True)
+        self.assertTrue(self.room.get_has_visited())
+
+        self.room.set_has_visited(False)
+        self.assertFalse(self.room.get_has_visited())
+
+        with self.assertRaises(ValueError):
+            self.room.set_has_visited(None)
+
+    def test_set_hero_has_visited(self):
+        self.room.set_hero_has_visited(True)
+        self.assertTrue(self.room.get_hero_has_visited())
+
+        self.room.set_hero_has_visited(False)
+        self.assertFalse(self.room.get_hero_has_visited())
+
+        with self.assertRaises(ValueError):
+            self.room.set_hero_has_visited(None)
+
+    def test_set_has_exit(self):
+        self.room.set_has_exit(True)
+        self.assertTrue(self.room.get_has_exit())
+
+        self.room.set_has_exit(False)
+        self.assertFalse(self.room.get_has_exit())
+
+        with self.assertRaises(ValueError):
+            self.room.set_has_exit(None)
+
