@@ -44,7 +44,7 @@ class CharacterInterface(ABC):
 
 
     """
-    Checks that name string is not null
+    Checks that name string is not null and sets field to name
     @param name
     """
     def set_name(self, name):
@@ -54,29 +54,40 @@ class CharacterInterface(ABC):
             print("Name string is null")
 
     """
-    
+    Checks that image is not null and sets field to image
+    @param image string format
     """
     def set_image(self, image):
         if image is not None:
             self.image = image
-            #for testing I am calling image a string rn AW-11/14/24
-            #self.image = pygame.image.load(image)
-            #self.rect = self.image.get_rect()
         else:
             print("Image string is null")
 
+    """
+    Checks that hit image is not null and sets field to image
+    @param image string format
+    """
     def set_hit_image(self, image):
         if image is not None:
             self.hit_image = image
         else:
             print("Image string is null")
 
+    """
+    Checks that dead image is not null and sets field to image
+    @param image string format
+    """
     def set_dead_image(self, image):
         if image is not None:
             self.dead_image = image
         else:
             print("Image string is null")
 
+    """
+    Checks that number for maxHP passed in is a number greater than 0
+    and sets character's max HP to that number
+    @param number for max HP
+    """
     def set_max_hp(self, max_hp):
         if isinstance(max_hp,int) and max_hp > 0:
             self.max_hp = max_hp
@@ -84,18 +95,34 @@ class CharacterInterface(ABC):
         else:
             print("Max HP must be an int and cannot be 0 or negative")
 
+
+    """
+    Checks that number passed in is greater than or equal to 0 and less
+    than or equal to max HP
+    @param number for HP
+    """
     def set_hp(self, hp):
         if isinstance(hp,int) and 0 <= hp <= self.max_hp:
             self.hp = hp
         else:
             print("HP must be an int and cannot be 0 or negative or higher than MaxHP")
 
+
+    """
+    Checks that agility is greater than 0 and sets agility field to that number
+    @param agility for character
+    """
     def set_agility(self, agility):
         if isinstance(agility,int) and agility > 0:
             self.agility = agility
         else:
             print("Agility must be an int and cannot be 0 or negative")
 
+    """
+    Checks that element passed in is one of the Enums specified in Element
+    class and makes it character's element
+    @param Element as Enum (e.g. Element.EARTH)
+    """
     def set_element(self, element):
         if isinstance(element, Element):
             self.element = element
@@ -104,33 +131,65 @@ class CharacterInterface(ABC):
 
 
     """
-    Getters return the values of the fields for a 
-    character object
+    Gets name of character
+    @return name
     """
     def get_name(self):
         return self.name
 
+    """
+    Gets character image
+    @return idle image for character
+    """
     def get_image(self):
         return self.image
 
+    """
+    Gets hit image for character
+    @return hit image
+    """
     def get_hit_image(self):
         return self.hit_image
 
+    """
+    Gets dead image for character
+    @return dead image
+    """
     def get_dead_image(self):
         return self.dead_image
 
+    """
+    Gets max HP of character
+    @return max HP
+    """
     def get_max_hp(self):
         return self.max_hp
 
+    """
+    Gets HP for character
+    @return current HP
+    """
     def get_hp(self):
         return self.hp
 
+    """
+    Gets agility of character
+    @return agility
+    """
     def get_agility(self):
         return self.agility
 
+    """
+    Gets character's element
+    @return element as Enum
+    """
     def get_element(self):
         return self.element
 
+    """
+    Returns opposite of character's element (e.g. Earth and Air, Fire and Water)
+    @return opposite element as Enum
+    """
     def get_opposite_element(self):
         return self.element.get_opposite()
 
