@@ -4,12 +4,14 @@ from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePil
 
 class Inventory:
     __instance = None
+
     @staticmethod
     def get_instance():
-        if Inventory.__instance is not None:
-            return Inventory.__instance
-        else:
-            raise Exception("Inventory does not exist yet!")
+        return Inventory.__instance
+
+    @staticmethod
+    def delete_instance():
+        Inventory.__instance = None
 
     def __init__(self):
         if Inventory.__instance is not None:

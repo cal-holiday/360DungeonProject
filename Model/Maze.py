@@ -7,15 +7,15 @@ from Model.Pillar import PolymorphismPillar, AbstractionPillar, EncapsulationPil
 from Model.Potion import HealthPotion, VisionPotion
 from Model.Room import Room
 from random import choice
-from View import demo_view
 class Maze:
     __instance = None
     @staticmethod
     def get_instance():
-        if Maze.__instance is not None:
-            return Maze.__instance
-        else:
-            raise Exception("Dungeon does not exist yet!")
+        return Maze.__instance
+
+    @staticmethod
+    def delete_instance():
+        Maze.__instance = None
 
     def __init__(self, size):
         if Maze.__instance is not None:

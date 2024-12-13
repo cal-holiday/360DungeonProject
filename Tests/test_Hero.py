@@ -1,6 +1,4 @@
 from unittest import TestCase
-
-from Model.Direction import Direction
 from Element import Element
 from Model.Hero import Hero
 
@@ -67,13 +65,6 @@ class TestHero(TestCase):
 
         self.hero.set_damage_mod(10)
         self.assertEqual(self.hero.get_damage_mod(), 10)
-
-    def test_set_direction(self):
-        with self.assertRaises(ValueError):
-            self.hero.set_direction("Hello")
-
-        self.hero.set_direction(Direction.NORTH)
-        self.assertEqual(self.hero.get_direction(), Direction.NORTH)
 
     def test_set_x(self):
         with self.assertRaises(ValueError):

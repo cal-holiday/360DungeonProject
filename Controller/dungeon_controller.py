@@ -7,10 +7,6 @@ from Model.Maze import Maze
 from Model.Pillar import AbstractionPillar, PolymorphismPillar, InheritancePillar, EncapsulationPillar
 from Model.Potion import HealthPotion, VisionPotion
 from View import dungeon_view
-from Model.Direction import Direction
-from Model.Element import Element
-from Model.CharacterFactory import CharacterFactory
-from Model.Room import Room
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 
@@ -165,16 +161,12 @@ class ControllerHero(pygame.sprite.Sprite):
         if exit_rect is not None and self.rect.colliderect(exit_rect):
             pygame.event.post(pygame.event.Event(EXIT_DUNGEON))
         if self.down and not self.collide_down():
-            Hero.get_instance().set_direction(Direction.SOUTH)
             Hero.get_instance().set_y(hero_y + 5)
         if self.up and not self.collide_up():
-            Hero.get_instance().set_direction(Direction.NORTH)
             Hero.get_instance().set_y(hero_y - 5)
         if self.right and not self.collide_right():
-            Hero.get_instance().set_direction(Direction.EAST)
             Hero.get_instance().set_x(hero_x + 5)
         if self.left and not self.collide_left():
-            Hero.get_instance().set_direction(Direction.WEST)
             Hero.get_instance().set_x(hero_x - 5)
         self.rect.topleft = (Hero.get_instance().get_x() - dungeon_view.get_camera_offset()[0], Hero.get_instance().get_y() - dungeon_view.get_camera_offset()[1])
 
