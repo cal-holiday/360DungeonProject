@@ -24,7 +24,6 @@ def run(monster):
     inventory = Inventory.get_instance()
     in_battle = True
     action_delay = 400  # Delay in milliseconds between turns
-    is_hero_turn = True
 
     black_rect = pygame.Rect(25, 475, 760, 190)
     white_rect = pygame.Rect(20, 470, 770, 200)
@@ -74,10 +73,7 @@ def run(monster):
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
-                pygame.display.update()
-                pygame.time.wait(2000)
                 you_died_controller.run(screen)
-                pygame.display.update()
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
@@ -92,6 +88,7 @@ def run(monster):
                         elif event.type == pygame.MOUSEBUTTONDOWN:
                             claim = View.draw_button("button.png", "claim", 315, 500, 175, 70)
                             if claim:  # If the claim button was clicked
+                                print("Claim button clicked")
                                 if monster.has_health_potion():
                                     inventory.add(monster.health_potion)
                                 if monster.has_vision_potion():
@@ -170,27 +167,22 @@ def run(monster):
                     return update(hero, f"{monster.get_name()} missed!", 0)
             return update(hero, f" {monster.get_name()} healed!", 0)
 
-
     def hero_turn(action):
         """Handle hero's actions based on input."""
         monster_agility = monster.get_agility()
         if action == "attack":
             result = hero.attack()
-            damage = result[1]
-            if monster.element is hero.element.get_opposite():
-                damage *= 2
             if result[0] > monster_agility:
-                return update(monster, f"{hero.get_name()} did {damage} damage!", -damage)
+                return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
 
         elif action == "special":
             result = hero.special_attack()
-            damage = result[1]
-            if monster.element is hero.element.get_opposite():
-                damage *= 2
-            if result[0] > monster.get_agility():
-                return update(monster, f"{hero.get_name()} did {damage} damage!", -damage)
+            if result[0] > monster.get_agility() and monster.get_element() == hero.get_opposite_element():
+                return update(monster, f"{hero.get_name()} did {2 * result[1]} damage!", 2 * -result[1])
+            elif result[0] > monster.get_agility():
+                return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
         elif action == "potion":
@@ -214,44 +206,43 @@ def run(monster):
                 pygame.quit()
                 exit()
 
-            if is_hero_turn and event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mx, my = event.pos
 
                 if 20 <= mx <= 205 and 700 <= my <= 775:
                     in_battle = hero_turn("attack")
-                    clock.tick(10)
-                    in_battle = monsters_turn()
-
+                    if in_battle:
+                        clock.tick(10)
+                        in_battle = monsters_turn()
 
                 elif 215 <= mx <= 400 and 700 <= my <= 775:
                     in_battle = hero_turn("special")
-                    clock.tick(10)
-                    in_battle = monsters_turn()
+                    if in_battle:
+                        clock.tick(10)
+                        in_battle = monsters_turn()
 
                 elif 410 <= mx <= 595 and 700 <= my <= 775:
                     if inventory.has_health_potion() and hero.get_hp() + 10 <= hero.get_max_hp():
                         in_battle = hero_turn("potion")
                         clock.tick(10)
                         in_battle = monsters_turn()
-                        is_hero_turn = True
                     else:
                         View.draw_result("You can't use that", 40, 500)
-
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
                     pygame.mixer.init()
                     pygame.mixer.music.load("Goblins_Dance_(Battle).wav")
                     pygame.mixer.music.play(loops=-1)
+
         pygame.display.update()
         clock.tick(60)
-"""
+
 if __name__ == '__main__':
-    hero = CharacterFactory.create_hero("hero", Element.EARTH)
+    hero = CharacterFactory.create_hero("hero", Element.WATER)
     screen = pygame.display.set_mode((810, 810))
-    monster = CharacterFactory.create_monster(Element.AIR)
+    monster = CharacterFactory.create_monster(Element.EARTH)
     inventory = Inventory()
     inventory.add(HealthPotion())
     inventory.add(HealthPotion())
     run(monster)
-    """
