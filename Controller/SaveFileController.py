@@ -1,6 +1,6 @@
 from Controller.SaveLoad import SaveLoad
 from Model.Dungeon import Dungeon
-from View import save_file_view as View
+from View import SaveFileView as View
 import pygame
 
 pygame.init()

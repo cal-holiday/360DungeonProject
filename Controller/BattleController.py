@@ -1,14 +1,14 @@
 import pygame
 import random
 
-from Controller import you_died_controller
+from Controller import YouDiedController
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Monster import Monster
 from Model.Potion import HealthPotion
-from View import Battle_View as View
+from View import BattleView as View
 
 # Initialize pygame
 pygame.init()
@@ -73,7 +73,7 @@ def run(monster):
             if character.get_name() == hero.get_name():
                 View.draw_monster_result(hero.get_name() + " was defeated", 40, 500)
                 redraw_sprites(hero, "dead")
-                you_died_controller.run(screen)
+                YouDiedController.run(screen)
             else:
                 View.draw_result(hero.get_name() + " won!", 40, 500)
                 redraw_sprites(monster, "dead")
@@ -230,6 +230,12 @@ def run(monster):
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
                     isRunning = False
+                    if monster.has_health_potion():
+                        inventory.add(monster.health_potion)
+                    if monster.has_vision_potion():
+                        inventory.add(monster.vision_potion)
+                    if monster.has_pillar():
+                        inventory.add(monster.get_pillar())
                     pygame.mixer.init()
                     pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
                     pygame.mixer.music.play(loops=-1)

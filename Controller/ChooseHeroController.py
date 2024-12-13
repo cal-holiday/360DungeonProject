@@ -1,10 +1,10 @@
 import pygame
 
-from Controller import dungeon_controller
+from Controller import DungeonController
 from Model.CharacterFactory import CharacterFactory
 from Model.Dungeon import Dungeon
 from Model.Element import Element
-from View import Choose_Hero_View as View
+from View import ChooseHeroView as View
 
 
 def run(screen):
@@ -150,7 +150,7 @@ def run(screen):
                             element = Element.EARTH
                             #CharacterFactory.create_hero(hero_name, Element.EARTH)
                         Dungeon(False, [hero_name, element])
-                        dungeon_controller.run(screen)
+                        DungeonController.run(screen)
                     # Check for No button click
                     elif pygame.Rect(450, 400, 100, 50).collidepoint(event.pos):  # No button
                         confirmation_prompt = False

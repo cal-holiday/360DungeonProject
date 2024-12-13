@@ -1,7 +1,7 @@
 import pygame
 import os
 
-from Controller import dungeon_controller
+from Controller import DungeonController
 from Controller.SaveLoad import SaveLoad
 from Model.CharacterFactory import CharacterFactory
 from Model.Dungeon import Dungeon
@@ -37,7 +37,7 @@ def run(screen):
         if selected_file and save_button:
             dungeon_list = SaveLoad.load_game(selected_file[:-7])  # Load the dungeon data
             Dungeon(True, dungeon_list[0], dungeon_list[1], dungeon_list[2])
-            dungeon_controller.run(screen)
+            DungeonController.run(screen)
             isRunning = False
 
         for event in pygame.event.get():
