@@ -166,6 +166,8 @@ class Maze:
                 monster.set_pillar(InheritancePillar())
             col = choice(self.room_array)
             row = choice(col)
+            while not row.get_monster() is None:
+                row = choice(col)
             row.set_monster(monster)
 
     """
