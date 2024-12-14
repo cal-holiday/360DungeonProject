@@ -1,11 +1,13 @@
 import unittest
+
+from Model.CharacterFactory import CharacterFactory
 from Model.Hero import Hero
 from Model.Element import Element
 
 class TestHero(unittest.TestCase):
     def setUp(self):
         Hero.delete_instance()  # Ensure fresh singleton instance
-        self.hero = Hero("hero", "hero.png", "hero_hit.png", "hero_dead.png", 100, 10, Element.FIRE)
+        self.hero = CharacterFactory.create_hero("hero", Element.WATER)
 
     def tearDown(self):
         Hero.delete_instance()  # Clean up singleton instance after tests
