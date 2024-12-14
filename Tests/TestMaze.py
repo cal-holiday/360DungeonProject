@@ -1,16 +1,13 @@
 import unittest
 from Model.Maze import Maze
 from Model.Room import Room
-from Model.Pillar import PolymorphismPillar, AbstractionPillar, EncapsulationPillar, InheritancePillar
 from Model.Potion import HealthPotion, VisionPotion
-from Model.CharacterFactory import CharacterFactory
-from Model.Element import Element
 
 
 class TestMaze(unittest.TestCase):
     def setUp(self):
         Maze.delete_instance()  # Ensure fresh singleton instance for each test
-        self.maze_size = 5
+        self.maze_size = 3
         self.maze = Maze(self.maze_size)
 
     def tearDown(self):
@@ -76,6 +73,18 @@ class TestMaze(unittest.TestCase):
         self.maze.remove_walls(self.maze.room_array[1][1], self.maze.room_array[1][2])
         self.assertEqual(self.maze.room_array[1][1].get_swall(), False)
         self.assertEqual(self.maze.room_array[1][2].get_nwall(), False)
+
+    def test_generate_maze(self):
+        self.maze.set_array([[Room(True, True, True, True, (x, y), None, None) for y in range(3)] for x in range(3)])
+        self.maze.set_array(self.maze.generate_maze())
+        all_visited = True
+        for i in range(len(self.maze.get_array())):
+            for j in range(len(self.maze.room_array[i])):
+                if not self.maze.room_array[i][j].get_has_visited():
+                    print(self.maze.room_array[i][j].get_nwall(), self.maze.room_array[i][j].get_swall())
+                    print(self.maze.room_array[i][j].get_ewall(), self.maze.room_array[i][j].get_wwall())
+                    all_visited = False
+        self.assertTrue(all_visited)
 
     def test_exit(self):
         self.maze.set_array([[Room(True, True, True, True, (x, y), None, None) for y in range(3)] for x in range(3)])
