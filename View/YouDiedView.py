@@ -9,7 +9,6 @@ FONT = 'Assets/8-bit-pusab.ttf'
 BIG_FONT = pygame.font.Font(FONT, 50)
 SMALL_FONT = pygame.font.Font(FONT, 20)
 
-Clock = pygame.time.Clock()
 
 """
 A method for drawing text.

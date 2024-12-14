@@ -6,7 +6,7 @@ from View import MainMenuView as View
 
 # Start main menu music
 pygame.mixer.init()
-pygame.mixer.music.load('Assets/buddy holly 10 12 24.wav')
+pygame.mixer.music.load('Assets/menu music.wav')
 pygame.mixer.music.play(loops=-1)
 
 """

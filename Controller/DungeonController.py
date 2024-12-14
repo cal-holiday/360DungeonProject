@@ -66,7 +66,7 @@ def run(screen):
 
     # Start dungeon music
     pygame.mixer.init()
-    pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
+    pygame.mixer.music.load('Assets/dungeon music.wav')
     pygame.mixer.music.play(loops=-1)
 
     # Initialize pygame items

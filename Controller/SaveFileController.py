@@ -5,7 +5,6 @@ import pygame
 
 #initialize pygame
 pygame.init()
-Clock = pygame.time.Clock()
 
 """
 A method for displaying the save file screen in the dungeon.

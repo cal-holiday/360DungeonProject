@@ -35,7 +35,7 @@ def run(screen):
             exit()
         if new_game:
             pygame.mixer.init()
-            pygame.mixer.music.load('Assets/buddy holly 10 12 24.wav')
+            pygame.mixer.music.load('Assets/menu music.wav')
             pygame.mixer.music.play(loops=-1)
             ChooseHeroController.run(screen)
             is_running = False

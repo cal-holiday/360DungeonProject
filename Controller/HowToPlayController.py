@@ -2,7 +2,6 @@ from View import HowToPlayView as View
 import pygame
 
 pygame.init()
-Clock = pygame.time.Clock()
 """
 A method for displaying the help screen in the main menu and in the dungeon.
 """

@@ -17,7 +17,7 @@ def run(screen):
     # Main game loop
     while is_running:
         # Draw background
-        View.screen.fill((0, 0, 0))
+        screen.fill((0, 0, 0))
         View.draw_text(screen, "You Died :(", 175, 100)
 
         # Draw buttons
@@ -38,7 +38,7 @@ def run(screen):
 
         if new_game:
             pygame.mixer.init()
-            pygame.mixer.music.load('Assets/buddy holly 10 12 24.wav')
+            pygame.mixer.music.load('Assets/menu music.wav')
             pygame.mixer.music.play(loops=-1)
             ChooseHeroController.run(screen)
 
