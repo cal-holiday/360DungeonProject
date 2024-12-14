@@ -1,4 +1,6 @@
 import unittest
+
+from Model.CharacterFactory import CharacterFactory
 from Model.Monster import Monster
 from Model.Element import Element
 from Model.Pillar import AbstractionPillar
@@ -6,15 +8,14 @@ from Model.Pillar import AbstractionPillar
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        self.monster = Monster("monster", "air_monster.png", "air_monster_hit.png",
-                               "air_monster_dead.png", 50, 4, Element.AIR)
+        self.monster = CharacterFactory.create_monster(Element.AIR)
         self.monster.set_pillar(AbstractionPillar())
 
     def test_monster_constructor(self):
-        self.assertEqual(self.monster.get_hp(), 50)
+        self.assertEqual(self.monster.get_hp(), 20)
         self.assertEqual(self.monster.get_image(), "air_monster.png")
-        self.assertEqual(self.monster.get_max_hp(), 50)
-        self.assertEqual(self.monster.get_agility(), 4)
+        self.assertEqual(self.monster.get_max_hp(), 20)
+        self.assertEqual(self.monster.get_agility(), 16)
         self.assertEqual(self.monster.get_element(), Element.AIR)
 
     def test_heal_if_not_at_full_health(self):
