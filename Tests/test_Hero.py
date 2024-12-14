@@ -1,95 +1,112 @@
-from unittest import TestCase
-from Element import Element
+import unittest
 from Model.Hero import Hero
+from Model.Element import Element
 
-
-class TestHero(TestCase):
+class TestHero(unittest.TestCase):
     def setUp(self):
-        self.hero = Hero("name", "image", 100, 2, Element.EARTH)
+        Hero.delete_instance()  # Ensure fresh singleton instance
+        self.hero = Hero("hero", "hero.png", "hero_hit.png", "hero_dead.png", 100, 10, Element.FIRE)
+
+    def tearDown(self):
+        Hero.delete_instance()  # Clean up singleton instance after tests
+
+    def test_singleton_enforcement(self):
+        # Ensure only one instance can exist
+        with self.assertRaises(Exception) as context:
+            Hero("another_hero", "hero.png", "hero_hit.png", "hero_dead.png", 50, 5, Element.WATER)
+        self.assertEqual(str(context.exception), "Hero already exists!")
+
+    def test_get_instance(self):
+        # Test that get_instance returns the singleton
+        self.assertEqual(Hero.get_instance(), self.hero)
+
+    def test_delete_instance(self):
+        # Test that deleting the instance allows recreation
+        Hero.delete_instance()
+        new_hero = Hero("new_hero", "hero.png", "hero_hit.png", "hero_dead.png", 80, 8, Element.EARTH)
+        self.assertNotEqual(self.hero, new_hero)
+
     def test_attack(self):
-        isTrue = False
-        result = self.hero.attack()
-        if result[0] >= 1 and result[1] >= 5:
-            isTrue = True
-        self.assertEqual(isTrue, True)
-
-    def test_attack_with_attack_mod(self):
-        isTrue = False
-        self.hero.set_attack_mod(2) #simulating hero with inheritance pillar
-        result = self.hero.attack()
-        if result[0] >= 3 and result[1] >= 5:
-            isTrue = True
-        self.assertEqual(isTrue, True)
-
-    def test_attack_with_damage_mod(self):
-        isTrue = False
-        self.hero.set_damage_mod(5) #simulating hero with abstraction pillar
-        result = self.hero.attack()
-        if result[0] >= 1 and result[1] >= 10:
-            isTrue = True
-        self.assertEqual(isTrue, True)
+        chance, damage = self.hero.attack()
+        self.assertGreaterEqual(chance, 1)
+        self.assertLessEqual(chance, 20)
+        self.assertEqual(damage, 5)
 
     def test_special_attack(self):
-        isTrue = False
-        result = self.hero.special_attack()
-        if result[0] >= 1 and result[1] >= 10:
-            isTrue = True
-        self.assertEqual(isTrue, True)
+        chance, damage = self.hero.special_attack()
+        self.assertGreaterEqual(chance, -3)
+        self.assertLessEqual(chance, 20)
+        self.assertEqual(damage, 10)
 
-    def test_special_attack_with_attack_mod(self):
-        isTrue = False
-        self.hero.set_attack_mod(2)  # simulating hero with inheritance pillar
-        result = self.hero.special_attack()
-        if result[0] >= 3 and result[1] >= 10:
-            isTrue = True
-        self.assertEqual(isTrue, True)
+    def test_set_attack_mod_valid(self):
+        self.hero.set_attack_mod(5)
+        self.assertEqual(self.hero.get_attack_mod(), 5)
 
-    def test_special_attack_with_damage_mod(self):
-        isTrue = False
-        self.hero.set_damage_mod(5)  # simulating hero with abstraction pillar
-        result = self.hero.special_attack()
-        if result[0] >= 1 and result[1] >= 15:
-            isTrue = True
-        self.assertEqual(isTrue, True)
-
-    def test_set_attack_mod(self):
+    def test_set_attack_mod_invalid(self):
         with self.assertRaises(ValueError):
-            self.hero.set_attack_mod(-1)
+            self.hero.set_attack_mod(-1)  # Negative value
+        with self.assertRaises(ValueError):
+            self.hero.set_attack_mod("string")  # Non-integer
 
+    def test_set_damage_mod_valid(self):
+        self.hero.set_damage_mod(4)
+        self.assertEqual(self.hero.get_damage_mod(), 4)
+
+    def test_set_damage_mod_invalid(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_damage_mod(0)  # Zero
+        with self.assertRaises(ValueError):
+            self.hero.set_damage_mod(None)  # Non-integer
+
+    def test_set_x_valid(self):
+        self.hero.set_x(10)
+        self.assertEqual(self.hero.get_x(), 10)
+
+    def test_set_x_invalid(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_x("invalid")  # Non-integer
+        with self.assertRaises(ValueError):
+            self.hero.set_x(3.5)  # Float
+
+    def test_set_y_valid(self):
+        self.hero.set_y(20)
+        self.assertEqual(self.hero.get_y(), 20)
+
+    def test_set_y_invalid(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_y("invalid")  # Non-integer
+        with self.assertRaises(ValueError):
+            self.hero.set_y(None)  # None
+
+    def test_set_vision_status_valid(self):
+        self.hero.set_vision_status(True)
+        self.assertTrue(self.hero.get_drank_vision_potion())
+        self.hero.set_vision_status(False)
+        self.assertFalse(self.hero.get_drank_vision_potion())
+
+    def test_set_vision_status_invalid(self):
+        with self.assertRaises(ValueError):
+            self.hero.set_vision_status("not_boolean")  # Non-boolean
+        with self.assertRaises(ValueError):
+            self.hero.set_vision_status(None)  # None
+
+    def test_get_damage_mod(self):
+        self.hero.set_damage_mod(7)
+        self.assertEqual(self.hero.get_damage_mod(), 7)
+
+    def test_get_attack_mod(self):
         self.hero.set_attack_mod(6)
         self.assertEqual(self.hero.get_attack_mod(), 6)
 
-    def test_set_damage_mod(self):
-        with self.assertRaises(ValueError):
-            self.hero.set_damage_mod(-1)
+    def test_get_coordinates(self):
+        self.hero.set_x(15)
+        self.hero.set_y(25)
+        self.assertEqual(self.hero.get_x(), 15)
+        self.assertEqual(self.hero.get_y(), 25)
 
-        self.hero.set_damage_mod(10)
-        self.assertEqual(self.hero.get_damage_mod(), 10)
-
-    def test_set_x(self):
-        with self.assertRaises(ValueError):
-            self.hero.set_x("Hi")
-
-        self.hero.set_x(58)
-        self.assertEqual(self.hero.get_x(), 58)
-
-        self.hero.set_x(-24)
-        self.assertEqual(self.hero.get_x(),-24)
-
-    def test_set_y(self):
-        with self.assertRaises(ValueError):
-            self.hero.set_y("Hi")
-
-        self.hero.set_y(45)
-        self.assertEqual(self.hero.get_y(), 45)
-
-        self.hero.set_y(-38)
-        self.assertEqual(self.hero.get_y(), -38)
-
-    def test_set_vision_status(self):
-        self.assertEqual(self.hero.drank_vision_potion, False)
+    def test_vision_status(self):
         self.hero.set_vision_status(True)
-        self.assertEqual(self.hero.drank_vision_potion, True)
+        self.assertTrue(self.hero.get_drank_vision_potion())
+        self.hero.set_vision_status(False)
+        self.assertFalse(self.hero.get_drank_vision_potion())
 
-    def test_get_vision_status(self):
-        self.assertEqual(self.hero.get_drank_vision_potion(), False)

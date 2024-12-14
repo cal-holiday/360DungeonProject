@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
                                "air_monster_dead.png", 50, 4, Element.AIR)
         self.monster.set_pillar(AbstractionPillar())
 
-    def test_monsterconstructor(self):
+    def test_monster_constructor(self):
         self.assertEqual(self.monster.get_hp(), 50)
         self.assertEqual(self.monster.get_image(), "air_monster.png")
         self.assertEqual(self.monster.get_max_hp(), 50)
