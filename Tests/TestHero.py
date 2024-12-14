@@ -109,3 +109,6 @@ class TestHero(unittest.TestCase):
         self.assertTrue(self.hero.get_drank_vision_potion())
         self.hero.set_vision_status(False)
         self.assertFalse(self.hero.get_drank_vision_potion())
+
+if __name__ == '__main__':
+    unittest.main()

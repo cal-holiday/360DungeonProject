@@ -41,4 +41,3 @@ class TestPotions(unittest.TestCase):
         potion = VisionPotion()
         potion.drink()
         self.assertTrue(self.hero.get_drank_vision_potion())  # Hero should gain vision status
-
