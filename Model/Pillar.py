@@ -18,16 +18,16 @@ class Pillar(ABC):
         self.image = image
 
     """
-    Setter methods checks that name and image for pillar
-    is not null and then sets fields for pillar object
-    to those values.
+    Returns name of pillar
+    @return name
     """
-
-
     def get_name(self):
         return self.name
 
-
+    """
+    Returns image of pillar
+    @return image
+    """
     def get_image(self):
         return self.image
 
