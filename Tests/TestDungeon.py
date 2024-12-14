@@ -10,7 +10,7 @@ from Model.Potion import VisionPotion, HealthPotion
 from Model.Room import Room
 
 
-class MyTestCase(unittest.TestCase):
+class TestDungeon(unittest.TestCase):
     def test_dungeon_get_instance_none(self):
         self.assertIsNone(Dungeon.get_instance())
     def test_dungeon_get_instance_dungeon(self):
