@@ -15,7 +15,7 @@ def run(screen):
     # Main game loop
     while is_running:
         # Draw background
-        View.SCREEN.fill((0, 0, 0))
+        screen.fill((0, 0, 0))
         View.draw_scaled_image(screen, 'Assets/dungeonBackground.png', 0, 0, 810, 810)
         View.draw_scaled_image(screen, 'Assets/banner.png', 155, 200, 500, 150)
         View.draw_text(screen, "You Win!", 260, 230)
