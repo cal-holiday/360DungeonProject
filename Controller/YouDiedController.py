@@ -17,7 +17,7 @@ def run(screen):
     # Main game loop
     while is_running:
         # Draw background
-        View.screen.fill((0, 0, 0))
+        screen.fill((0, 0, 0))
         View.draw_text(screen, "You Died :(", 175, 100)
 
         # Draw buttons

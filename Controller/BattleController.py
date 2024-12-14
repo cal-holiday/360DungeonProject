@@ -19,7 +19,7 @@ A method for running the battle screen.
 def run(monster):
     # Starts battle music
     pygame.mixer.init()
-    pygame.mixer.music.load('Assets/dean town 10 12 24.wav')
+    pygame.mixer.music.load('Assets/battle music.wav')
     pygame.mixer.music.play(loops=-1)
 
     # Pygame set up

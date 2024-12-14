@@ -13,7 +13,7 @@ A method for running the choose character screen.
 def run(screen):
 
     # Initialize pygame items
-    isRunning = True
+    is_running = True
     clock = pygame.time.Clock()
     hero_name = ""
     text_field_active = False
@@ -36,7 +36,7 @@ def run(screen):
     confirmation_result = False
 
     #main game loop
-    while isRunning:
+    while is_running:
         mouse_pos = pygame.mouse.get_pos()
         # Draw the background and UI
         View.draw_image(screen, 'Assets/dungeonBackground.png', 0, 0, 810, 810)
@@ -101,7 +101,7 @@ def run(screen):
         # Handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                isRunning = False
+                is_running = False
                 pygame.quit()
                 exit()
 
