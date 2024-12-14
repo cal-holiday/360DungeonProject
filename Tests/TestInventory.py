@@ -2,18 +2,18 @@ import unittest
 
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
+from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Potion import HealthPotion, VisionPotion
 from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
 class TestInventory(unittest.TestCase):
-    CharacterFactory.create_hero("hero", Element.EARTH)
-    Inventory()
-    def setUp(self):
-        Inventory()
-        self.inventory = Inventory.get_instance()
 
-    def tearDown(self):
+    def setUp(self):
         Inventory.delete_instance()
+        Hero.delete_instance()
+        Inventory()
+        CharacterFactory.create_hero("hero", Element.EARTH)
+        self.inventory = Inventory.get_instance()
 
     def test_add_null_object(self):
         # Test to ensure ValueError is raised when adding a null object
