@@ -2,6 +2,8 @@ import pygame
 import random
 
 from Controller import YouDiedController
+from Model.CharacterFactory import CharacterFactory
+from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Monster import Monster
@@ -260,16 +262,29 @@ def run(monster):
                         View.draw_result("You can't use that", 40, 500)
 
                 elif 605 <= mx <= 790 and 700 <= my <= 775:
+                    View.draw_rewards(monster)
+                    clicked = False  # Initialize claim flag as False
+                    while not clicked:  # Keep checking for the claim button click
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                return False
+                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                claim = View.draw_button('Assets/button.png', "claim", 315, 500, 175, 70)
+                                if claim:  # If the claim button was clicked
+                                    if monster.has_health_potion():
+                                        inventory.add(monster.health_potion)
+                                    if monster.has_vision_potion():
+                                        inventory.add(monster.vision_potion)
+                                    if monster.has_pillar():
+                                        inventory.add(monster.get_pillar())
+                                    clicked = True  # Set clicked to True to exit the loop
+                                    pygame.mixer.init()
+                                    pygame.mixer.music.load('Assets/dungeon music.wav')
+                                    pygame.mixer.music.play(loops=-1)
+                        pygame.display.update()
                     is_running = False
-                    if monster.has_health_potion():
-                        inventory.add(monster.health_potion)
-                    if monster.has_vision_potion():
-                        inventory.add(monster.vision_potion)
-                    if monster.has_pillar():
-                        inventory.add(monster.get_pillar())
-                    pygame.mixer.init()
                     pygame.mixer.music.load('Assets/dungeon music.wav')
                     pygame.mixer.music.play(loops=-1)
-
         pygame.display.update()
         clock.tick(60)
+
