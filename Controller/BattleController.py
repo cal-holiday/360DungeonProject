@@ -206,9 +206,7 @@ def run(monster):
 
         elif action == "special":
             result = hero.special_attack()
-            if result[0] > monster.get_agility() and monster.get_element() == hero.get_opposite_element():
-                return update(monster, f"{hero.get_name()} did {2 * result[1]} damage!", 2 * -result[1])
-            elif result[0] > monster.get_agility():
+            if result[0] > monster.get_agility():
                 return update(monster, f"{hero.get_name()} did {result[1]} damage!", -result[1])
             else:
                 return update(monster, f"{hero.get_name()} missed!", 0)
