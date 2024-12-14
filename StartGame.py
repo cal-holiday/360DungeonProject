@@ -7,3 +7,4 @@ class StartGame:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     MainMenuController.run(screen)
+    #yippie

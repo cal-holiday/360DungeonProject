@@ -1,22 +1,40 @@
-
-
 from Model.CharacterFactory import CharacterFactory
 from Model.Element import Element
-
 from Model.Pillar import PolymorphismPillar, AbstractionPillar, EncapsulationPillar, InheritancePillar
 from Model.Potion import HealthPotion, VisionPotion
 from Model.Room import Room
 from random import choice
+
+"""
+Maze follows the Singleton design pattern, adds rooms,
+potions, and monsters to rooms. Uses a depth first search algorithm
+to build maze and break walls to generate a traversable maze.
+"""
 class Maze:
     __instance = None
+
+    """
+    Returns single instance of maze
+    @return instance of maze
+    """
     @staticmethod
     def get_instance():
         return Maze.__instance
 
+    """
+    Deletes instance of Maze
+    """
     @staticmethod
     def delete_instance():
         Maze.__instance = None
 
+    """
+    Constructor for maze checks if maze already exists, if not
+    it will construct a maze with an array of rooms, call the algorithm
+    to break the walls and make the maze traversable, add monsters, potions, and exit.
+    
+    @param size of maze (e.g. input 3 will generate a 3x3 maze)
+    """
     def __init__(self, size):
         if Maze.__instance is not None:
             raise Exception("Dungeon already exists!")
@@ -30,6 +48,14 @@ class Maze:
             self.add_health_potions()
             self.add_vision_potions()
             Maze.__instance = self
+
+    """
+    This method examines the neighboring rooms in the `room_array` relative to the 
+    given room's location. It identifies neighbors that have not yet been visited 
+    and selects one at random to return. If all neighbors are visited, it returns `None`.
+    
+    @param room to check neighbor
+    """
     def check_neighbors(self, room):
         location = room.get_location()
         col = location[0]
@@ -54,6 +80,13 @@ class Maze:
                 neighbors.append(south)
         return choice(neighbors) if neighbors else None
 
+    """
+    Method takes 2 rooms and removes walls so that hero is able to go
+    between rooms
+    
+    @param location of current room
+    @param location of next room
+    """
     def remove_walls(self, current, next_room):
         curr_location = current.get_location()
         next_location = next_room.get_location()
@@ -84,7 +117,13 @@ class Maze:
             self.room_array[curr_col+1][curr_row].set_wwall(False)
 
 
-
+    """
+    Generates a maze using a depth-first search (DFS) algorithm with backtracking.
+    This method starts from the top-left room in the `room_array` and iteratively
+    traverses the grid, carving out paths between rooms by removing walls. It 
+    uses a stack to manage backtracking when dead ends are encountered. The maze 
+    is complete when all accessible rooms have been visited.
+    """
     def generate_maze(self):
         current_room = self.room_array[0][0]
         stack = [current_room]
@@ -100,10 +139,19 @@ class Maze:
                 while self.check_neighbors(current_room) is None and stack:
                     current_room = stack.pop()
         return self.room_array
+
+    """
+    Adds an exit to one of the rooms and only appears when Hero has all 4 pillars
+    """
     def add_exit(self):
         col = choice(self.room_array)
         row = choice(col)
         row.set_has_exit(True)
+
+    """
+    Randomly puts (4 + mazeSize) /3 monsters into the maze where the first 
+    four monsters generated have the 4 pillars of OO
+    """
     def add_monsters(self):
         number = 4 + self.size//3
         for i in range(number):
@@ -119,6 +167,10 @@ class Maze:
             col = choice(self.room_array)
             row = choice(col)
             row.set_monster(monster)
+
+    """
+    Randomly adds (2 + mazeSize) / 8 health potions to maze
+    """
     def add_health_potions(self):
         number = 2 + self.size//8
         potion = HealthPotion()
@@ -129,6 +181,10 @@ class Maze:
                 row.set_potion(potion)
             else:
                 i -= i
+
+    """
+    Randomly adds (2 + mazeSize) / 8 vision potions to maze
+    """
     def add_vision_potions(self):
         number = 2 + self.size//8
         potion = VisionPotion()
@@ -139,7 +195,17 @@ class Maze:
                 row.set_potion(potion)
             else:
                 i -= 1
+
+    """
+    Returns room array 
+    @return room array
+    """
     def get_array(self):
         return self.room_array
+
+    """
+    Sets array of rooms
+    @array of rooms
+    """
     def set_array(self, rooms):
         self.room_array = rooms

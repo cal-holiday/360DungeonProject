@@ -2,7 +2,19 @@ import sqlite3
 from Model.Monster import Monster
 from Model.Hero import Hero
 
+"""
+Factory class that creates monsters and heroes from SQLite database
+"""
+
 class CharacterFactory:
+    """
+    Static method that creates an elemental monster based on element
+    passed in, all other data for monster is retrieved from the database
+    and used to call constructor in Monster class
+
+    @param element for monster
+    @return Monster object of specific element
+    """
     @staticmethod
     def create_monster(element):
         element_val = element.value
@@ -20,6 +32,13 @@ class CharacterFactory:
             con.close()
             raise ValueError(f"No monster found for element {element_val}")
 
+    """
+    Static method that constructs a hero using the name and element passed in.
+    All other data is retrieved from the database.
+    
+    @param Hero name and element
+    @return Hero object
+    """
     @staticmethod
     def create_hero(name, element):
         element_val = element.value
