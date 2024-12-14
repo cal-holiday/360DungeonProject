@@ -114,7 +114,7 @@ def run(monster):
                                     inventory.add(monster.get_pillar())
                                 clicked = True  # Set clicked to True to exit the loop
                                 pygame.mixer.init()
-                                pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
+                                pygame.mixer.music.load('Assets/dungeon music.wav')
                                 pygame.mixer.music.play(loops=-1)
                     pygame.display.update()
             return False
@@ -268,7 +268,7 @@ def run(monster):
                     if monster.has_pillar():
                         inventory.add(monster.get_pillar())
                     pygame.mixer.init()
-                    pygame.mixer.music.load('Assets/Goblins_Dance_(Battle).wav')
+                    pygame.mixer.music.load('Assets/dungeon music.wav')
                     pygame.mixer.music.play(loops=-1)
 
         pygame.display.update()
