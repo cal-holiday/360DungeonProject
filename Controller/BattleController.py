@@ -2,14 +2,12 @@ import pygame
 import random
 
 from Controller import YouDiedController
-from Model.CharacterFactory import CharacterFactory
-from Model.Element import Element
 from Model.Hero import Hero
 from Model.Inventory import Inventory
 from Model.Monster import Monster
 from View import BattleView as View
 
-# Initialize pygame
+
 pygame.init()
 
 """
@@ -287,4 +285,3 @@ def run(monster):
                     pygame.mixer.music.play(loops=-1)
         pygame.display.update()
         clock.tick(60)
-
