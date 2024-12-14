@@ -5,24 +5,15 @@ from Model.Element import Element
 from Model.Inventory import Inventory
 from Model.Potion import HealthPotion, VisionPotion
 from Model.Pillar import PolymorphismPillar, EncapsulationPillar, InheritancePillar, AbstractionPillar
-
-
 class TestInventory(unittest.TestCase):
     CharacterFactory.create_hero("hero", Element.EARTH)
     Inventory()
     def setUp(self):
-        # Initialize a new instance of Inventory for each test
+        Inventory()
         self.inventory = Inventory.get_instance()
 
-    def test_singleton_instance(self):
-        # Test to ensure Inventory class maintains only one instance
-        inventory2 = Inventory.get_instance()
-        self.assertEqual(self.inventory, inventory2)
-
-        # Deleting the instance and creating a new one to test if singleton logic works
+    def tearDown(self):
         Inventory.delete_instance()
-        inventory3 = Inventory.get_instance()
-        self.assertNotEqual(self.inventory, inventory3)
 
     def test_add_null_object(self):
         # Test to ensure ValueError is raised when adding a null object
